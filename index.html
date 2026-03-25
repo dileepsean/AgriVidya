@@ -738,6 +738,94 @@ document.getElementById('modalOverlay').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
 </script>
+<!-- VIDYABOT + WHATSAPP BUBBLES -->
+<div id="popupChat" style="position:fixed;bottom:24px;right:24px;z-index:9999;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:flex-end;gap:10px">
 
+  <!-- VidyaBot Chat Window -->
+  <div id="popupWindow" style="display:none;flex-direction:column;width:300px;background:white;border-radius:16px;border:1px solid #E1F5EE;box-shadow:0 4px 24px rgba(8,80,65,0.15);overflow:hidden">
+    <div style="background:#085041;padding:12px 14px;display:flex;align-items:center;gap:10px">
+      <div style="width:32px;height:32px;background:#1D9E75;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:white;flex-shrink:0">VB</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600;color:white">VidyaBot 📚</div>
+        <div style="font-size:10px;color:#9FE1CB">● Online — ask me anything</div>
+      </div>
+      <button onclick="togglePopup()" style="background:none;border:none;color:#9FE1CB;font-size:18px;cursor:pointer">✕</button>
+    </div>
+    <div id="popupMsgs" style="padding:12px;display:flex;flex-direction:column;gap:8px;max-height:240px;overflow-y:auto;background:#F8FAFA">
+      <div style="background:#E1F5EE;color:#04342C;font-size:12px;padding:8px 10px;border-radius:4px 10px 10px 10px;max-width:88%;line-height:1.5">Namaste! I'm VidyaBot 📚 — ask me anything about Food Engineering, Agricultural Engineering or GATE/ICAR prep!</div>
+    </div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;padding:8px 12px;background:#F8FAFA">
+      <button onclick="popupQuick('Explain psychrometrics')" style="background:white;border:1px solid #E1F5EE;color:#085041;font-size:10px;padding:4px 8px;border-radius:12px;cursor:pointer;font-family:inherit">Psychrometrics</button>
+      <button onclick="popupQuick('GATE XL syllabus topics')" style="background:white;border:1px solid #E1F5EE;color:#085041;font-size:10px;padding:4px 8px;border-radius:12px;cursor:pointer;font-family:inherit">GATE XL</button>
+      <button onclick="popupQuick('Food preservation methods')" style="background:white;border:1px solid #E1F5EE;color:#085041;font-size:10px;padding:4px 8px;border-radius:12px;cursor:pointer;font-family:inherit">Preservation</button>
+    </div>
+    <div id="popupTypingEl" style="display:none;font-size:11px;color:#7A9E94;font-style:italic;padding:0 12px 4px;background:#F8FAFA">VidyaBot is typing...</div>
+    <div style="display:flex;gap:6px;padding:10px 12px;border-top:1px solid #E1F5EE;background:white">
+      <input id="popupInput" type="text" placeholder="Ask VidyaBot..." onkeydown="if(event.key==='Enter')sendPopupMsg()" style="flex:1;padding:7px 10px;border-radius:8px;border:1px solid #E1F5EE;font-size:12px;outline:none;font-family:inherit"/>
+      <button onclick="sendPopupMsg()" style="background:#085041;color:white;border:none;padding:7px 12px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:500;font-family:inherit">Send</button>
+    </div>
+  </div>
+
+  <!-- VidyaBot Bubble -->
+  <button onclick="togglePopup()" title="Chat with VidyaBot" style="width:54px;height:54px;background:#085041;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(8,80,65,0.35);transition:transform 0.2s" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.477 2 2 6.077 2 11c0 2.09.7 4.02 1.87 5.57L3 22l5.47-.88C9.89 21.67 10.93 22 12 22c5.523 0 10-4.077 10-9s-4.477-9-10-9z" fill="white"/><circle cx="8" cy="11" r="1.3" fill="#085041"/><circle cx="12" cy="11" r="1.3" fill="#085041"/><circle cx="16" cy="11" r="1.3" fill="#085041"/></svg>
+  </button>
+
+  <!-- WhatsApp Bubble -->
+  <button onclick="window.open('https://wa.me/919581313313?text=Hello AgriVidya! I want to know more.','_blank')" title="Chat on WhatsApp" style="width:54px;height:54px;background:#25D366;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(37,211,102,0.4);transition:transform 0.2s" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.083.535 4.04 1.472 5.747L.057 23.882l6.29-1.648A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.802 9.802 0 01-5.001-1.368l-.359-.213-3.733.978.994-3.63-.234-.373A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182c5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
+  </button>
+
+</div>
+
+<script>
+const popupBotMessages = [];
+function togglePopup() {
+  const w = document.getElementById('popupWindow');
+  const isOpen = w.style.display === 'flex';
+  w.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen) document.getElementById('popupInput').focus();
+}
+function popupQuick(q) {
+  document.getElementById('popupInput').value = q;
+  sendPopupMsg();
+}
+async function sendPopupMsg() {
+  const input = document.getElementById('popupInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  const msgs = document.getElementById('popupMsgs');
+  const u = document.createElement('div');
+  u.style.cssText = 'background:#085041;color:white;font-size:12px;padding:8px 10px;border-radius:10px 4px 10px 10px;max-width:80%;align-self:flex-end;line-height:1.5;margin-left:auto';
+  u.textContent = msg;
+  msgs.appendChild(u);
+  msgs.scrollTop = msgs.scrollHeight;
+  document.getElementById('popupTypingEl').style.display = 'block';
+  popupBotMessages.push({ role: 'user', content: msg });
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: popupBotMessages, max_tokens: 400 })
+    });
+    const data = await res.json();
+    const reply = data.content[0].text.replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1').replace(/^#{1,6}\s+/gm,'').replace(/^[-*+]\s+/gm,'').trim();
+    popupBotMessages.push({ role: 'assistant', content: reply });
+    document.getElementById('popupTypingEl').style.display = 'none';
+    const a = document.createElement('div');
+    a.style.cssText = 'background:#E1F5EE;color:#04342C;font-size:12px;padding:8px 10px;border-radius:4px 10px 10px 10px;max-width:88%;line-height:1.5';
+    a.textContent = reply;
+    msgs.appendChild(a);
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch(e) {
+    document.getElementById('popupTypingEl').style.display = 'none';
+    const a = document.createElement('div');
+    a.style.cssText = 'background:#E1F5EE;color:#04342C;font-size:12px;padding:8px 10px;border-radius:4px 10px 10px 10px;max-width:88%;line-height:1.5';
+    a.textContent = 'VidyaBot unavailable. WhatsApp us: +91 95813 13313';
+    msgs.appendChild(a);
+  }
+}
+</script>
 </body>
 </html>
