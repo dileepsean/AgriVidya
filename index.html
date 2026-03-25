@@ -3,175 +3,234 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AgriVidya - India's AI Brain for Agri & Food Engineering. GATE/ICAR prep, AI Study Bot, Learn AI, Bank & Govt exam prep.">
-<meta name="keywords" content="AgriVidya, Food Engineering, Agricultural Engineering, GATE Food Technology, ICAR JRF, AI tutor">
-<meta name="author" content="AgriVidya">
-<meta property="og:title" content="AgriVidya - AI Brain for Agri & Food Engineering">
-<meta property="og:description" content="From Soil to Solution. Built by Engineers, for Engineers.">
-<meta property="og:url" content="https://agrividya.in">
+<meta name="description" content="AgriVidya - India's AI Brain for Agri & Food Engineering.">
 <title>AgriVidya - AI Brain for Agri & Food Engineering</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--green-darkest:#021E17;--green-dark:#04342C;--green-mid:#085041;--green:#0F6E56;--green-bright:#1D9E75;--green-light:#5DCAA5;--green-pale:#9FE1CB;--green-softest:#E1F5EE;--white:#fff;--gray-100:#F8FAFA;--text-primary:#0D1F1A;--text-secondary:#3D5E54;--text-muted:#7A9E94}
-body{font-family:'DM Sans',sans-serif;color:var(--text-primary);background:var(--white);line-height:1.6}
-nav{display:flex;justify-content:space-between;align-items:center;padding:0.75rem 1.5rem;border-bottom:1px solid var(--green-softest);background:var(--white);position:sticky;top:0;z-index:100}
+:root{
+  --gd:#021E17;--gda:#04342C;--gm:#085041;--g:#0F6E56;
+  --gb:#1D9E75;--gl:#5DCAA5;--gp:#9FE1CB;--gs:#E1F5EE;
+  --w:#fff;--g1:#F8FAFA;--tp:#0D1F1A;--ts:#3D5E54;--tm:#7A9E94
+}
+body{font-family:'DM Sans',sans-serif;color:var(--tp);background:var(--w);line-height:1.6}
+
+/* ===== NAV ===== */
+nav{display:flex;justify-content:space-between;align-items:center;padding:0.75rem 1.5rem;border-bottom:1px solid var(--gs);background:var(--w);position:sticky;top:0;z-index:200;gap:12px}
 .logo-wrap{display:flex;align-items:center;gap:8px;cursor:pointer;text-decoration:none;flex-shrink:0}
-.logo-icon{width:36px;height:36px;background:var(--green-mid);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.logo-text{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--green-mid)}
-.logo-text span{color:var(--green-bright)}
-.nav-links{display:flex;gap:1rem;overflow-x:auto;scrollbar-width:none}
-.nav-links::-webkit-scrollbar{display:none}
-.nav-links a{text-decoration:none;font-size:12px;color:var(--text-secondary);cursor:pointer;font-weight:500;white-space:nowrap;transition:color 0.2s}
-.nav-links a:hover,.nav-links a.nav-active{color:var(--green-bright)}
-.nav-links a.nav-active{background:var(--green-softest);padding:4px 10px;border-radius:6px}
+.logo-icon{width:34px;height:34px;background:var(--gm);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-text{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--gm)}
+.logo-text span{color:var(--gb)}
+.nav-links{display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;flex:1}
+.nav-links a{text-decoration:none;font-size:12px;color:var(--ts);cursor:pointer;font-weight:500;padding:5px 8px;border-radius:6px;white-space:nowrap;transition:all 0.2s}
+.nav-links a:hover{color:var(--gb);background:var(--gs)}
+.nav-links a.nav-active{color:var(--gb);background:var(--gs)}
 .nav-right{display:flex;gap:6px;flex-shrink:0}
-.btn-login{background:transparent;color:var(--green-mid);border:1.5px solid var(--green-mid);padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;white-space:nowrap}
-.btn-signup{background:var(--green-mid);color:white;border:none;padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;white-space:nowrap}
-.btn-user{background:var(--green-softest);color:var(--green-mid);border:1.5px solid var(--green-mid);padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;display:none;white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis}
+.btn-login{background:transparent;color:var(--gm);border:1.5px solid var(--gm);padding:6px 12px;border-radius:7px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;white-space:nowrap}
+.btn-signup{background:var(--gm);color:white;border:none;padding:6px 12px;border-radius:7px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;white-space:nowrap}
+.btn-user{background:var(--gs);color:var(--gm);border:1.5px solid var(--gm);padding:6px 12px;border-radius:7px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;display:none;white-space:nowrap}
+
+/* Mobile nav */
+.mobile-nav{display:none;background:var(--w);border-top:1px solid var(--gs);padding:0.5rem}
+.mobile-nav a{display:block;padding:10px 1rem;font-size:14px;color:var(--ts);cursor:pointer;font-weight:500;border-radius:8px;margin-bottom:2px}
+.mobile-nav a:hover,.mobile-nav a.nav-active-m{color:var(--gb);background:var(--gs)}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:4px;flex-shrink:0}
+.hamburger span{display:block;width:22px;height:2px;background:var(--gm);margin:5px 0;border-radius:2px;transition:all 0.3s}
+
+/* PAGES */
 .page{display:none}.page.active{display:block}
-.hero{background:var(--green-dark);padding:3rem 1.5rem;text-align:center}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-mid);color:var(--green-pale);font-size:11px;padding:4px 14px;border-radius:20px;margin-bottom:1.25rem;border:1px solid var(--green)}
-.hero-dot{width:5px;height:5px;background:var(--green-light);border-radius:50%;animation:pulse 2s infinite}
+
+/* HERO */
+.hero{background:var(--gda);padding:3rem 1.5rem;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--gm);color:var(--gp);font-size:11px;padding:4px 14px;border-radius:20px;margin-bottom:1.25rem;border:1px solid var(--g)}
+.hero-dot{width:5px;height:5px;background:var(--gl);border-radius:50%;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 .hero h1{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:white;line-height:1.2;margin-bottom:0.75rem}
-.hero h1 em{color:var(--green-light);font-style:normal}
+.hero h1 em{color:var(--gl);font-style:normal}
 .hero-spec{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:0.75rem 0}
-.spec-tag{background:var(--green-mid);color:var(--green-pale);font-size:10px;padding:3px 12px;border-radius:20px;border:1px solid var(--green)}
-.hero-sub{font-size:14px;color:var(--green-pale);margin:0.75rem auto 1.5rem;max-width:480px}
+.spec-tag{background:var(--gm);color:var(--gp);font-size:10px;padding:3px 12px;border-radius:20px;border:1px solid var(--g)}
+.hero-sub{font-size:14px;color:var(--gp);margin:0.75rem auto 1.5rem;max-width:480px}
 .hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:2rem}
-.btn-hero{background:var(--green-bright);color:white;border:none;padding:11px 22px;border-radius:9px;font-size:13px;cursor:pointer;font-weight:500}
-.btn-hero-out{background:transparent;color:var(--green-pale);border:1.5px solid var(--green);padding:11px 22px;border-radius:9px;font-size:13px;cursor:pointer}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--green-mid);border-radius:10px;overflow:hidden;max-width:480px;margin:0 auto}
-.stat{background:var(--green-dark);padding:0.875rem 0.5rem;text-align:center}
-.stat-num{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--green-light)}
-.stat-label{font-size:9px;color:var(--green-pale);margin-top:2px}
+.btn-hero{background:var(--gb);color:white;border:none;padding:11px 22px;border-radius:9px;font-size:13px;cursor:pointer;font-weight:500;font-family:'DM Sans',sans-serif}
+.btn-hero-out{background:transparent;color:var(--gp);border:1.5px solid var(--g);padding:11px 22px;border-radius:9px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--gm);border-radius:10px;overflow:hidden;max-width:480px;margin:0 auto}
+.stat{background:var(--gda);padding:0.875rem 0.5rem;text-align:center}
+.stat-num{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--gl)}
+.stat-label{font-size:9px;color:var(--gp);margin-top:2px}
+
+/* SECTIONS */
 .section{padding:2rem 1.5rem}
-.section-alt{background:var(--gray-100)}
-.section-label{font-size:10px;font-weight:500;color:var(--green-bright);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:0.3rem}
+.section-alt{background:var(--g1)}
+.section-label{font-size:10px;font-weight:500;color:var(--gb);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:0.3rem}
 .section-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:0.4rem}
-.section-sub{font-size:13px;color:var(--text-secondary);margin-bottom:1.5rem}
-.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.section-sub{font-size:13px;color:var(--ts);margin-bottom:1.5rem}
+
+/* CARDS */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
 .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.card{background:var(--white);border:1px solid var(--green-softest);border-radius:12px;padding:1.25rem;cursor:pointer;transition:all 0.2s}
-.card:hover{border-color:var(--green-bright);transform:translateY(-2px)}
-.card-icon{width:38px;height:38px;border-radius:8px;background:var(--green-softest);display:flex;align-items:center;justify-content:center;margin-bottom:0.75rem;font-size:18px}
+.card{background:var(--w);border:1px solid var(--gs);border-radius:12px;padding:1.25rem;cursor:pointer;transition:all 0.2s}
+.card:hover{border-color:var(--gb);transform:translateY(-2px)}
+.card-icon{width:38px;height:38px;border-radius:8px;background:var(--gs);display:flex;align-items:center;justify-content:center;margin-bottom:0.75rem;font-size:18px}
 .card h3{font-size:14px;font-weight:500;margin-bottom:5px}
-.card p{font-size:12px;color:var(--text-secondary);line-height:1.5}
-.card-tag{display:inline-block;font-size:10px;background:var(--green-softest);color:var(--green-mid);padding:2px 8px;border-radius:4px;margin-top:8px;font-weight:500}
+.card p{font-size:12px;color:var(--ts);line-height:1.5}
+.card-tag{display:inline-block;font-size:10px;background:var(--gs);color:var(--gm);padding:2px 8px;border-radius:4px;margin-top:8px;font-weight:500}
 .card-tag-soon{background:#F0F0F0;color:#888}
-.card-arrow{font-size:11px;color:var(--green-bright);margin-top:8px;display:block;font-weight:500}
+.card-arrow{font-size:11px;color:var(--gb);margin-top:8px;display:block;font-weight:500}
+
+/* BANNER */
 .banner-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
 .banner{border-radius:12px;padding:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-.banner-green{background:var(--green-mid)}
-.banner-dark{background:var(--green-dark);border:1px solid var(--green)}
+.banner-green{background:var(--gm)}
+.banner-dark{background:var(--gda);border:1px solid var(--g)}
 .banner h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:white;margin-bottom:5px}
-.banner p{font-size:12px;color:var(--green-pale)}
+.banner p{font-size:12px;color:var(--gp)}
 .banner-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
-.banner-tag{background:rgba(255,255,255,0.1);color:var(--green-pale);font-size:10px;padding:2px 8px;border-radius:4px;border:1px solid var(--green)}
-/* BOT PAGE - compact */
-.bot-compact{background:var(--gray-100);border-radius:12px;border:1px solid var(--green-softest);overflow:hidden;max-width:680px;margin:0 auto}
-.bot-top{background:var(--green-mid);padding:0.875rem 1.25rem;display:flex;align-items:center;gap:10px}
-.bot-av{width:32px;height:32px;background:var(--green-bright);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0}
+.banner-tag{background:rgba(255,255,255,0.1);color:var(--gp);font-size:10px;padding:2px 8px;border-radius:4px;border:1px solid var(--g)}
+
+/* BOT */
+.bot-wrap{background:var(--g1);border-radius:12px;border:1px solid var(--gs);overflow:hidden;max-width:700px;margin:0 auto}
+.bot-top{background:var(--gm);padding:0.875rem 1.25rem;display:flex;align-items:center;gap:10px}
+.bot-av{width:32px;height:32px;background:var(--gb);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0}
 .bot-name{font-size:13px;font-weight:500;color:white}
-.bot-status{font-size:10px;color:var(--green-light);display:flex;align-items:center;gap:4px}
-.bot-dot{width:4px;height:4px;background:var(--green-light);border-radius:50%;animation:pulse 2s infinite}
-.chat-area{padding:1rem;display:flex;flex-direction:column;gap:8px;height:280px;overflow-y:auto}
-.msg-ai{background:var(--green-softest);border-radius:4px 10px 10px 10px;padding:0.6rem 0.875rem;font-size:12px;color:var(--green-dark);max-width:85%;line-height:1.5}
-.msg-user{background:var(--green-mid);border-radius:10px 4px 10px 10px;padding:0.6rem 0.875rem;font-size:12px;color:white;max-width:78%;align-self:flex-end}
-.chat-input-row{display:flex;gap:6px;padding:0.75rem 1rem;border-top:1px solid var(--green-softest);background:var(--white)}
-.chat-input-row input{flex:1;padding:8px 12px;border-radius:8px;border:1px solid var(--green-softest);font-size:12px;color:var(--text-primary);font-family:'DM Sans',sans-serif;outline:none}
-.chat-input-row input:focus{border-color:var(--green-bright)}
-.chat-typing{display:none;font-size:11px;color:var(--text-muted);padding:0 1rem 0.4rem;font-style:italic;background:var(--gray-100)}
+.bot-status{font-size:10px;color:var(--gl);display:flex;align-items:center;gap:4px}
+.bot-dot{width:4px;height:4px;background:var(--gl);border-radius:50%;animation:pulse 2s infinite}
+.chat-area{padding:1rem;display:flex;flex-direction:column;gap:8px;height:300px;overflow-y:auto}
+.msg-ai{background:var(--gs);border-radius:4px 10px 10px 10px;padding:0.6rem 0.875rem;font-size:12px;color:var(--gda);max-width:85%;line-height:1.5}
+.msg-user{background:var(--gm);border-radius:10px 4px 10px 10px;padding:0.6rem 0.875rem;font-size:12px;color:white;max-width:78%;align-self:flex-end}
+.chat-input-row{display:flex;gap:6px;padding:0.75rem 1rem;border-top:1px solid var(--gs);background:var(--w)}
+.chat-input-row input{flex:1;padding:8px 12px;border-radius:8px;border:1px solid var(--gs);font-size:12px;color:var(--tp);font-family:'DM Sans',sans-serif;outline:none}
+.chat-input-row input:focus{border-color:var(--gb)}
+.chat-typing{display:none;font-size:11px;color:var(--tm);padding:0 1rem 0.4rem;font-style:italic;background:var(--g1)}
+
 /* PAYWALL */
-.paywall{background:var(--green-softest);border:1.5px solid var(--green-bright);border-radius:12px;padding:1.5rem;text-align:center;margin-top:1rem;display:none}
-.paywall h3{font-family:'Syne',sans-serif;font-size:18px;color:var(--green-dark);margin-bottom:0.5rem}
-.paywall p{font-size:13px;color:var(--text-secondary);margin-bottom:1rem}
-.paywall .price{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--green-mid);margin-bottom:0.25rem}
-.paywall .price-sub{font-size:11px;color:var(--text-muted);margin-bottom:1rem}
-.btn-pay{background:var(--green-bright);color:white;border:none;padding:12px 28px;border-radius:9px;font-size:14px;cursor:pointer;font-weight:500;font-family:'DM Sans',sans-serif;width:100%}
+.paywall{background:var(--gs);border:1.5px solid var(--gb);border-radius:12px;padding:1.5rem;text-align:center;margin-top:1rem;display:none}
+.paywall h3{font-family:'Syne',sans-serif;font-size:18px;color:var(--gda);margin-bottom:0.5rem}
+.paywall p{font-size:13px;color:var(--ts);margin-bottom:1rem}
+.btn-pay{background:var(--gb);color:white;border:none;padding:12px 28px;border-radius:9px;font-size:14px;cursor:pointer;font-weight:500;font-family:'DM Sans',sans-serif;width:100%}
+
 /* ABOUT */
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
-.about-point{background:var(--white);border:1px solid var(--green-softest);border-radius:10px;padding:1rem;display:flex;gap:10px}
-.about-icon{width:32px;height:32px;background:var(--green-softest);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.about-point{background:var(--w);border:1px solid var(--gs);border-radius:10px;padding:1rem;display:flex;gap:10px}
+.about-icon{width:32px;height:32px;background:var(--gs);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
 .about-point h4{font-size:13px;font-weight:500;margin-bottom:3px}
-.about-point p{font-size:11px;color:var(--text-secondary);line-height:1.5}
+.about-point p{font-size:11px;color:var(--ts);line-height:1.5}
 .expertise-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:1.25rem}
-.exp-tag{background:var(--green-mid);color:var(--green-pale);font-size:11px;padding:5px 12px;border-radius:6px}
+.exp-tag{background:var(--gm);color:var(--gp);font-size:11px;padding:5px 12px;border-radius:6px}
+
 /* CONTACT */
-.contact-bg{background:var(--green-dark);padding:2rem 1.5rem}
+.contact-bg{background:var(--gda);padding:2rem 1.5rem}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
-.contact-card{background:var(--green-mid);border-radius:12px;padding:1.25rem;border:1px solid var(--green)}
-.contact-card h4{font-size:11px;color:var(--green-light);margin-bottom:0.875rem;font-weight:500;text-transform:uppercase;letter-spacing:1px}
+.contact-card{background:var(--gm);border-radius:12px;padding:1.25rem;border:1px solid var(--g)}
+.contact-card h4{font-size:11px;color:var(--gl);margin-bottom:0.875rem;font-weight:500;text-transform:uppercase;letter-spacing:1px}
 .contact-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.contact-icon{width:28px;height:28px;background:var(--green);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.contact-label{font-size:9px;color:var(--green-light)}
+.contact-icon{width:28px;height:28px;background:var(--g);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.contact-label{font-size:9px;color:var(--gl)}
 .contact-val{font-size:12px;color:white}
-.wa-btn{display:flex;align-items:center;gap:8px;background:#25D366;color:white;border:none;padding:9px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:500;width:100%;justify-content:center;margin-top:0.875rem}
+.wa-btn{display:flex;align-items:center;gap:8px;background:#25D366;color:white;border:none;padding:9px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:500;width:100%;justify-content:center;margin-top:0.875rem;font-family:'DM Sans',sans-serif}
 .form-group{margin-bottom:8px}
-.form-group input,.form-group textarea,.form-group select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--green);font-size:12px;background:var(--green);color:white;font-family:'DM Sans',sans-serif;outline:none}
-.form-group input::placeholder,.form-group textarea::placeholder{color:var(--green-pale)}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--g);font-size:12px;background:var(--g);color:white;font-family:'DM Sans',sans-serif;outline:none}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--gp)}
 .form-group textarea{resize:none;height:70px}
-.form-group select{color:var(--green-pale)}
-.form-group select option{background:var(--green-mid);color:white}
-.btn-submit{background:var(--green-bright);color:white;border:none;padding:9px;border-radius:8px;font-size:12px;cursor:pointer;width:100%;font-weight:500}
-.form-alert{background:var(--green-softest);color:var(--green-mid);border-radius:7px;padding:8px 12px;font-size:12px;margin-top:7px;display:none;border:1px solid var(--green-bright)}
+.form-group select{color:var(--gp)}
+.form-group select option{background:var(--gm);color:white}
+.btn-submit{background:var(--gb);color:white;border:none;padding:9px;border-radius:8px;font-size:12px;cursor:pointer;width:100%;font-weight:500;font-family:'DM Sans',sans-serif}
+.form-alert{background:var(--gs);color:var(--gm);border-radius:7px;padding:8px 12px;font-size:12px;margin-top:7px;display:none;border:1px solid var(--gb)}
+
+/* LEGAL */
 .legal-content{max-width:760px;margin:0 auto;padding:2rem 1.5rem}
 .legal-content h1{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;margin-bottom:0.4rem}
-.legal-content .legal-date{font-size:12px;color:var(--text-muted);margin-bottom:1.5rem}
-.legal-content h2{font-size:15px;font-weight:500;margin:1.5rem 0 0.5rem;color:var(--green-mid)}
-.legal-content p{font-size:13px;color:var(--text-secondary);line-height:1.8;margin-bottom:0.875rem}
-.legal-content ul{font-size:13px;color:var(--text-secondary);line-height:1.8;padding-left:1.25rem;margin-bottom:0.875rem}
+.legal-content .legal-date{font-size:12px;color:var(--tm);margin-bottom:1.5rem}
+.legal-content h2{font-size:15px;font-weight:500;margin:1.5rem 0 0.5rem;color:var(--gm)}
+.legal-content p{font-size:13px;color:var(--ts);line-height:1.8;margin-bottom:0.875rem}
+.legal-content ul{font-size:13px;color:var(--ts);line-height:1.8;padding-left:1.25rem;margin-bottom:0.875rem}
+
+/* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;padding:1rem}
 .modal-overlay.open{display:flex}
-.modal{background:var(--white);border-radius:14px;padding:1.75rem;width:100%;max-width:360px;position:relative}
-.modal-close{position:absolute;top:0.875rem;right:0.875rem;background:none;border:none;font-size:17px;cursor:pointer;color:var(--text-muted)}
+.modal{background:var(--w);border-radius:14px;padding:1.75rem;width:100%;max-width:360px;position:relative}
+.modal-close{position:absolute;top:0.875rem;right:0.875rem;background:none;border:none;font-size:17px;cursor:pointer;color:var(--tm)}
 .modal h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:0.2rem}
-.modal>div>p{font-size:12px;color:var(--text-secondary);margin-bottom:1.25rem}
-.modal-input{width:100%;padding:8px 12px;border-radius:8px;border:1px solid #E0E0E0;font-size:12px;color:var(--text-primary);font-family:'DM Sans',sans-serif;margin-bottom:8px;outline:none}
-.modal-input:focus{border-color:var(--green-bright)}
-.modal-select{width:100%;padding:8px 12px;border-radius:8px;border:1px solid #E0E0E0;font-size:12px;color:var(--text-primary);font-family:'DM Sans',sans-serif;margin-bottom:8px;background:white}
-.modal-btn{background:var(--green-mid);color:white;border:none;padding:10px;border-radius:8px;font-size:13px;cursor:pointer;width:100%;font-weight:500;margin-top:3px}
-.modal-switch{font-size:11px;color:var(--text-secondary);text-align:center;margin-top:12px}
-.modal-switch a{color:var(--green-bright);cursor:pointer;text-decoration:none;font-weight:500}
-.modal-success{background:var(--green-softest);color:var(--green-mid);border-radius:7px;padding:10px;font-size:12px;text-align:center;display:none;border:1px solid var(--green-bright);margin-top:8px}
+.modal>div>p{font-size:12px;color:var(--ts);margin-bottom:1.25rem}
+.modal-input{width:100%;padding:8px 12px;border-radius:8px;border:1px solid #E0E0E0;font-size:12px;color:var(--tp);font-family:'DM Sans',sans-serif;margin-bottom:8px;outline:none}
+.modal-input:focus{border-color:var(--gb)}
+.modal-select{width:100%;padding:8px 12px;border-radius:8px;border:1px solid #E0E0E0;font-size:12px;color:var(--tp);font-family:'DM Sans',sans-serif;margin-bottom:8px;background:white}
+.modal-btn{background:var(--gm);color:white;border:none;padding:10px;border-radius:8px;font-size:13px;cursor:pointer;width:100%;font-weight:500;margin-top:3px;font-family:'DM Sans',sans-serif}
+.modal-switch{font-size:11px;color:var(--ts);text-align:center;margin-top:12px}
+.modal-switch a{color:var(--gb);cursor:pointer;text-decoration:none;font-weight:500}
+.modal-success{background:var(--gs);color:var(--gm);border-radius:7px;padding:10px;font-size:12px;text-align:center;display:none;border:1px solid var(--gb);margin-top:8px}
 .modal-error{background:#FFF0F0;color:#C0392B;border-radius:7px;padding:10px;font-size:12px;text-align:center;display:none;border:1px solid #E74C3C;margin-top:8px}
-.modal-loading{font-size:12px;color:var(--text-muted);text-align:center;display:none;margin-top:6px}
-.cookie-banner{position:fixed;bottom:0;left:0;right:0;background:var(--green-dark);color:var(--green-pale);padding:0.875rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:0.875rem;z-index:999;flex-wrap:wrap;border-top:1px solid var(--green)}
+.modal-loading{font-size:12px;color:var(--tm);text-align:center;display:none;margin-top:6px}
+
+/* COOKIE */
+.cookie-banner{position:fixed;bottom:0;left:0;right:0;background:var(--gda);color:var(--gp);padding:0.875rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:0.875rem;z-index:999;flex-wrap:wrap;border-top:1px solid var(--g)}
 .cookie-banner p{font-size:11px;line-height:1.5}
-.cookie-banner a{color:var(--green-light);text-decoration:none}
+.cookie-banner a{color:var(--gl);text-decoration:none}
 .cookie-btns{display:flex;gap:7px;flex-shrink:0}
-.btn-cookie-accept{background:var(--green-bright);color:white;border:none;padding:6px 14px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:500}
-.btn-cookie-decline{background:transparent;color:var(--green-pale);border:1px solid var(--green);padding:6px 14px;border-radius:6px;font-size:11px;cursor:pointer}
-footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
+.btn-cookie-accept{background:var(--gb);color:white;border:none;padding:6px 14px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:500}
+.btn-cookie-decline{background:transparent;color:var(--gp);border:1px solid var(--g);padding:6px 14px;border-radius:6px;font-size:11px;cursor:pointer}
+
+/* FOOTER */
+footer{background:var(--gd);padding:1.75rem 1.5rem;text-align:center}
 .footer-logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:white;margin-bottom:3px}
-.footer-logo span{color:var(--green-bright)}
-.footer-tagline{font-size:10px;color:var(--green-pale);margin-bottom:1.25rem}
+.footer-logo span{color:var(--gb)}
+.footer-tagline{font-size:10px;color:var(--gp);margin-bottom:1.25rem}
 .footer-links{display:flex;gap:1rem;justify-content:center;margin-bottom:0.875rem;flex-wrap:wrap}
-.footer-links a{font-size:11px;color:var(--green-light);text-decoration:none;cursor:pointer}
+.footer-links a{font-size:11px;color:var(--gl);text-decoration:none;cursor:pointer}
 .footer-links a:hover{color:white}
-.footer-divider{height:1px;background:var(--green-mid);margin:0.875rem auto;max-width:360px}
-.footer-copy{font-size:10px;color:var(--green)}
+.footer-divider{height:1px;background:var(--gm);margin:0.875rem auto;max-width:360px}
+.footer-copy{font-size:10px;color:var(--g)}
+
 /* ASSIGN */
-.assign-type-btn{background:white;border:1.5px solid var(--green-softest);color:var(--text-secondary);font-size:11px;padding:5px 10px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
-.assign-type-btn.active{background:var(--green-softest);border-color:var(--green-bright);color:var(--green-mid);font-weight:500}
-@media(max-width:768px){
+.assign-type-btn{background:white;border:1.5px solid var(--gs);color:var(--ts);font-size:11px;padding:5px 10px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.assign-type-btn.active{background:var(--gs);border-color:var(--gb);color:var(--gm);font-weight:500}
+
+/* BUBBLES */
+.bubble-wrap{position:fixed;bottom:20px;right:14px;z-index:9999;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.bubble-popup{display:none;flex-direction:column;width:min(285px,86vw);background:white;border-radius:14px;border:1px solid #E1F5EE;box-shadow:0 4px 20px rgba(8,80,65,0.15);overflow:hidden}
+.bubble-header{background:#085041;padding:10px 12px;display:flex;align-items:center;gap:8px}
+.bubble-av{width:28px;height:28px;background:#1D9E75;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:white;flex-shrink:0}
+.bubble-msgs{padding:10px;display:flex;flex-direction:column;gap:7px;max-height:180px;overflow-y:auto;background:#F8FAFA}
+.bubble-chips{display:flex;gap:4px;flex-wrap:wrap;padding:6px 10px;background:#F8FAFA}
+.bubble-chip{background:white;border:1px solid #E1F5EE;color:#085041;font-size:9px;padding:3px 7px;border-radius:10px;cursor:pointer;font-family:inherit}
+.bubble-input-row{display:flex;gap:5px;padding:8px 10px;border-top:1px solid #E1F5EE;background:white}
+.bubble-input-row input{flex:1;padding:6px 9px;border-radius:7px;border:1px solid #E1F5EE;font-size:11px;outline:none;font-family:inherit}
+.bubble-input-row button{background:#085041;color:white;border:none;padding:6px 10px;border-radius:7px;font-size:11px;cursor:pointer;font-family:inherit}
+.bubble-btn{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bubble-label{font-size:10px;padding:5px 10px;border-radius:16px;white-space:nowrap;cursor:pointer}
+
+/* PRICING (hidden) */
+#page-pricing{display:none !important}
+
+/* MOBILE */
+@media(max-width:900px){
   .nav-links{display:none}
-  .hero h1{font-size:24px}
-  .section{padding:1.5rem 1.25rem}
+  .hamburger{display:block}
+}
+@media(max-width:768px){
+  .hero h1{font-size:26px}
+  .section{padding:1.5rem 1rem}
   .about-grid{grid-template-columns:1fr}
   .contact-grid{grid-template-columns:1fr}
-  .contact-bg{padding:1.5rem 1.25rem}
+  .contact-bg{padding:1.5rem 1rem}
   .stats-row{grid-template-columns:repeat(2,1fr)}
-  footer{padding:1.25rem}
-  .chat-area{height:220px}
+  footer{padding:1.25rem 1rem}
+  .legal-content{padding:1.5rem 1rem}
   .banner{flex-direction:column;align-items:flex-start}
+  .chat-area{height:240px}
+  nav{padding:0.625rem 1rem}
+}
+@media(max-width:480px){
+  .hero{padding:2rem 1rem}
+  .hero h1{font-size:22px}
+  .btn-hero,.btn-hero-out{padding:10px 16px;font-size:13px}
+  .grid-3{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <a class="logo-wrap" onclick="showPage('home')">
     <div class="logo-icon">
@@ -193,8 +252,23 @@ footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
     <button class="btn-login" id="btnLogin" onclick="openModal('login')">Log in</button>
     <button class="btn-signup" id="btnSignup" onclick="openModal('signup')">Sign up</button>
     <button class="btn-user" id="btnUser" onclick="handleLogout()">Log out</button>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a id="mnav-home" onclick="showPage('home');closeMobileNav()">🏠 Home</a>
+  <a id="mnav-services" onclick="showPage('services');closeMobileNav()">🌾 Services</a>
+  <a id="mnav-gate" onclick="showPage('gate');closeMobileNav()">📚 GATE/ICAR</a>
+  <a id="mnav-ai" onclick="showPage('ai');closeMobileNav()">🧠 Learn AI</a>
+  <a id="mnav-bot" onclick="showPage('bot');closeMobileNav()">🤖 VidyaBot</a>
+  <a id="mnav-assignment" onclick="showPage('assignment');closeMobileNav()">📝 Assignment Help</a>
+  <a id="mnav-about" onclick="showPage('about');closeMobileNav()">ℹ️ About</a>
+  <a id="mnav-contact" onclick="showPage('contact');closeMobileNav()">📞 Contact</a>
+</div>
 
 <!-- HOME -->
 <div id="page-home" class="page active">
@@ -225,8 +299,8 @@ footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
     <div class="grid-3">
       <div class="card" onclick="showPage('bot')"><div class="card-icon">🤖</div><h3>VidyaBot AI</h3><p>24/7 AI for Food & Agri Engineering. Indian syllabus focused.</p><span class="card-tag">5 free questions</span><span class="card-arrow">Ask now →</span></div>
       <div class="card" onclick="showPage('gate')"><div class="card-icon">📚</div><h3>GATE / ICAR Prep</h3><p>MCQs, previous year papers, formula sheets for XL & AG streams.</p><span class="card-tag">GATE · ICAR-JRF</span><span class="card-arrow">Start prep →</span></div>
-      <div class="card" onclick="showPage('assignment')"><div class="card-icon">📝</div><h3>Assignment Help</h3><p>AI-powered help for calculations, problems & research writing.</p><span class="card-tag">₹20 per assignment</span><span class="card-arrow">Get help →</span></div>
-      <div class="card" onclick="showPage('ai')"><div class="card-icon">🧠</div><h3>Learn AI</h3><p>Apply AI & ML in food processing, precision farming & agri research.</p><span class="card-tag">Coming soon</span><span class="card-arrow">Explore →</span></div>
+      <div class="card" onclick="showPage('assignment')"><div class="card-icon">📝</div><h3>Assignment Help</h3><p>AI-powered help for calculations, problems & research writing.</p><span class="card-tag">3 free answers</span><span class="card-arrow">Get help →</span></div>
+      <div class="card" onclick="showPage('ai')"><div class="card-icon">🧠</div><h3>Learn AI</h3><p>Apply AI & ML in food processing, precision farming & agri research.</p><span class="card-tag card-tag-soon">Coming soon</span><span class="card-arrow">Explore →</span></div>
       <div class="card" onclick="showPage('gate')"><div class="card-icon">🏦</div><h3>Bank & Govt Exams</h3><p>NABARD, FCI, SBI Agriculture Officer — complete preparation.</p><span class="card-tag">NABARD · FCI · SBI</span><span class="card-arrow">View exams →</span></div>
       <div class="card" onclick="showPage('services')"><div class="card-icon">🌾</div><h3>Study Material</h3><p>Notes, formula sheets, e-books for Food & Agri Engineering.</p><span class="card-tag">Free downloads</span><span class="card-arrow">Browse →</span></div>
     </div>
@@ -238,7 +312,7 @@ footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
         <button class="btn-hero" onclick="showPage('gate')">Start now →</button>
       </div>
       <div class="banner banner-dark">
-        <div><h3>Assignment Help by VidyaBot</h3><p>Instant AI-powered answers for your food & agri engineering assignments.</p><div class="banner-tags"><span class="banner-tag">UG · PG · PhD</span><span class="banner-tag">₹20/assignment</span></div></div>
+        <div><h3>Assignment Help by VidyaBot</h3><p>Instant AI-powered answers for your food & agri engineering assignments.</p><div class="banner-tags"><span class="banner-tag">UG · PG · PhD</span><span class="banner-tag">3 free answers</span></div></div>
         <button class="btn-hero" onclick="showPage('assignment')">Get help →</button>
       </div>
     </div>
@@ -252,15 +326,15 @@ footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
     <div class="section-title">Complete learning ecosystem</div>
     <div class="section-sub">From undergraduate to PhD — and professional certification</div>
     <div class="grid-3">
-      <div class="card"><div class="card-icon">🤖</div><h3>VidyaBot AI</h3><p>Expert answers on Food & Agri Engineering — 24/7, Indian syllabus aligned.</p><span class="card-tag">5 free questions</span></div>
-      <div class="card"><div class="card-icon">📚</div><h3>GATE / ICAR Prep</h3><p>MCQs, mock tests, previous year papers for XL and AG streams.</p><span class="card-tag">GATE · ICAR-JRF</span></div>
-      <div class="card"><div class="card-icon">🏦</div><h3>Bank & Govt Exams</h3><p>NABARD, FCI AGM, SBI Agriculture Officer, RBI preparation.</p><span class="card-tag">NABARD · FCI · SBI</span></div>
-      <div class="card"><div class="card-icon">🧠</div><h3>Learn AI</h3><p>AI & ML for food & agri — computer vision, sensors, data analysis.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
-      <div class="card"><div class="card-icon">📝</div><h3>Assignment Help</h3><p>Guided solutions for engineering calculations, problems & lab reports.</p><span class="card-tag">₹20/assignment</span></div>
+      <div class="card" onclick="showPage('bot')"><div class="card-icon">🤖</div><h3>VidyaBot AI</h3><p>Expert answers on Food & Agri Engineering — 24/7, Indian syllabus aligned.</p><span class="card-tag">5 free questions</span></div>
+      <div class="card" onclick="showPage('gate')"><div class="card-icon">📚</div><h3>GATE / ICAR Prep</h3><p>MCQs, mock tests, previous year papers for XL and AG streams.</p><span class="card-tag">GATE · ICAR-JRF</span></div>
+      <div class="card" onclick="showPage('gate')"><div class="card-icon">🏦</div><h3>Bank & Govt Exams</h3><p>NABARD, FCI AGM, SBI Agriculture Officer, RBI preparation.</p><span class="card-tag">NABARD · FCI · SBI</span></div>
+      <div class="card" onclick="showPage('ai')"><div class="card-icon">🧠</div><h3>Learn AI</h3><p>AI & ML for food & agri — computer vision, sensors, data analysis.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card" onclick="showPage('assignment')"><div class="card-icon">📝</div><h3>Assignment Help</h3><p>Guided solutions for engineering calculations, problems & lab reports.</p><span class="card-tag">3 free answers</span></div>
       <div class="card"><div class="card-icon">🔬</div><h3>Research Guidance</h3><p>PhD thesis support, literature review, paper writing & methodology.</p><span class="card-tag">Research scholars</span></div>
       <div class="card"><div class="card-icon">📖</div><h3>Study Material</h3><p>Notes, formula sheets, e-books for Food & Agri Engineering.</p><span class="card-tag">Free downloads</span></div>
       <div class="card"><div class="card-icon">🌾</div><h3>Farmer Advisory</h3><p>AI advisory for post harvest losses, food processing & value addition.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
-      <div class="card"><div class="card-icon">🏛️</div><h3>Institutional Access</h3><p>Custom AI tools for colleges & universities with admin panel.</p><span class="card-tag">College plans</span></div>
+      <div class="card"><div class="card-icon">🏛️</div><h3>Institutional Access</h3><p>Custom AI tools for colleges & universities with admin panel.</p><span class="card-tag">Contact us</span></div>
     </div>
   </div>
 </div>
@@ -299,30 +373,30 @@ footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
     <div class="section-label">Coming soon</div>
     <div class="section-title">What you will learn</div>
     <div class="grid-3">
-      <div class="card"><div class="card-icon">🤖</div><h3>AI basics for engineers</h3><p>What is AI, ML, Deep Learning — explained simply. No coding background needed.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
-      <div class="card"><div class="card-icon">👁️</div><h3>Computer vision in agri</h3><p>Fruit quality detection, crop disease identification, grading systems.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-icon">🤖</div><h3>AI basics for engineers</h3><p>What is AI, ML, Deep Learning — no coding background needed.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-icon">👁️</div><h3>Computer vision in agri</h3><p>Fruit quality detection, crop disease identification, grading.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
       <div class="card"><div class="card-icon">📡</div><h3>Sensor & IoT analysis</h3><p>E-nose, e-tongue, smart sensors — AI modelling for food quality.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
       <div class="card"><div class="card-icon">🌾</div><h3>Precision farming AI</h3><p>Crop monitoring, yield prediction, irrigation AI, drone data.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
       <div class="card"><div class="card-icon">🍱</div><h3>Food quality & safety AI</h3><p>Adulteration detection, shelf life prediction, HACCP automation.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
-      <div class="card"><div class="card-icon">🛠️</div><h3>Build your AI project</h3><p>From idea to working prototype. Ideal for final year & thesis.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-icon">🛠️</div><h3>Build your AI project</h3><p>From idea to working prototype for final year & thesis.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
     </div>
   </div>
 </div>
 
-<!-- VIDYABOT PAGE - compact -->
+<!-- VIDYABOT -->
 <div id="page-bot" class="page">
   <div class="section">
     <div class="section-label">AI assistant</div>
     <div class="section-title">Ask VidyaBot 📚</div>
-    <div class="section-sub">Your AI companion for Food & Agri Engineering — sign in to use. 5 free questions, then ₹5 per 15-min session.</div>
-    <div class="bot-compact">
+    <div class="section-sub">Your AI companion for Food & Agri Engineering — sign in to use. 5 free questions per account.</div>
+    <div class="bot-wrap">
       <div class="bot-top">
         <div class="bot-av">VB</div>
-        <div>
+        <div style="flex:1">
           <div class="bot-name">VidyaBot — Your AI Companion 📚</div>
           <div class="bot-status"><div class="bot-dot"></div>Online — ready to help</div>
         </div>
-        <div style="margin-left:auto;font-size:11px;color:var(--green-light)" id="questionCounter">5 free questions left</div>
+        <div style="font-size:11px;color:var(--gl)" id="questionCounter">5 free questions left</div>
       </div>
       <div class="chat-area" id="chatArea">
         <div class="msg-ai">Namaste! I'm VidyaBot 📚 — ask me anything about Food Engineering, Agricultural Engineering or GATE/ICAR prep. You have 5 free questions!</div>
@@ -330,17 +404,14 @@ footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
       <div class="chat-typing" id="chatTyping">VidyaBot is typing...</div>
       <div class="chat-input-row">
         <input type="text" id="botInput" placeholder="Ask your food engineering or exam question..." onkeydown="if(event.key==='Enter')sendBotMsg()"/>
-        <button class="btn-signup" onclick="sendBotMsg()" style="font-size:12px;padding:8px 14px">Send</button>
+        <button onclick="sendBotMsg()" style="background:var(--gm);color:white;border:none;padding:8px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:500;font-family:'DM Sans',sans-serif;white-space:nowrap">Send</button>
       </div>
     </div>
     <div class="paywall" id="botPaywall">
       <div style="font-size:28px;margin-bottom:0.5rem">🔒</div>
       <h3>Free questions used up!</h3>
-      <p>You've used your 5 free questions. Continue chatting with VidyaBot for just ₹5 per 15-minute session.</p>
-      <div class="price">₹5</div>
-      <div class="price-sub">per 15-minute session • Unlimited questions</div>
-      <button class="btn-pay" onclick="handleBotPayment()">Pay ₹5 & Continue Chatting</button>
-      <p style="font-size:11px;color:var(--text-muted);margin-top:0.75rem">Secure payment via Razorpay</p>
+      <p>You've used your 5 free questions. WhatsApp us to continue or we'll add more options soon!</p>
+      <button class="btn-pay" onclick="window.open('https://wa.me/919581313313?text=Hi AgriVidya! I need more VidyaBot questions.','_blank')">Contact us on WhatsApp</button>
     </div>
   </div>
 </div>
@@ -350,24 +421,25 @@ footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
   <div class="hero" style="padding:2.5rem 1.5rem">
     <div class="hero-badge"><div class="hero-dot"></div>AI-Powered Assignment Help</div>
     <h1>Assignment &<br><em>Thesis Help</em></h1>
-    <p class="hero-sub">Get instant AI-powered help for food engineering calculations, agri problems, lab reports & research writing. ₹20 per assignment.</p>
+    <p class="hero-sub">Get instant AI-powered help for food engineering calculations, agri problems, lab reports & research writing. 3 free answers per account.</p>
   </div>
   <div class="section">
     <div class="section-label">Get help now</div>
     <div class="section-title">Describe your assignment</div>
-    <div class="section-sub">VidyaBot gives you a detailed, exam-quality answer — ₹20 per assignment after 1 free try</div>
-    <div style="background:var(--gray-100);border-radius:12px;border:1px solid var(--green-softest);overflow:hidden;max-width:720px">
-      <div style="background:var(--green-mid);padding:0.875rem 1.25rem;display:flex;align-items:center;gap:10px">
-        <div style="width:30px;height:30px;background:var(--green-bright);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;flex-shrink:0">VB</div>
+    <div class="section-sub">VidyaBot gives you a detailed, exam-quality answer — 3 free answers, then contact us for more</div>
+
+    <div style="background:var(--g1);border-radius:12px;border:1px solid var(--gs);overflow:hidden;max-width:740px">
+      <div style="background:var(--gm);padding:0.875rem 1.25rem;display:flex;align-items:center;gap:10px">
+        <div style="width:30px;height:30px;background:var(--gb);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;flex-shrink:0">VB</div>
         <div>
           <div style="font-size:13px;font-weight:500;color:white">VidyaBot Assignment Helper 📝</div>
-          <div style="font-size:10px;color:var(--green-light)">● Ready to help • 1 free try, then ₹20/assignment</div>
+          <div style="font-size:10px;color:var(--gl)" id="assignCounter">● Ready to help • 3 free answers remaining</div>
         </div>
       </div>
       <div style="padding:1.25rem">
         <div style="margin-bottom:0.875rem">
-          <label style="font-size:12px;font-weight:500;color:var(--text-primary);display:block;margin-bottom:5px">Select Subject</label>
-          <select id="assignSubject" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--green-softest);font-size:12px;color:var(--text-primary);font-family:'DM Sans',sans-serif;background:white;outline:none">
+          <label style="font-size:12px;font-weight:500;color:var(--tp);display:block;margin-bottom:5px">Select Subject</label>
+          <select id="assignSubject" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--gs);font-size:12px;color:var(--tp);font-family:'DM Sans',sans-serif;background:white;outline:none">
             <option value="" disabled selected>Choose your subject...</option>
             <optgroup label="Food Engineering">
               <option>Heat & Mass Transfer in Food Processing</option>
@@ -398,55 +470,55 @@ footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
               <option>ICAR-JRF</option>
               <option>NABARD Agriculture</option>
             </optgroup>
-            <option value="other">Other / General</option>
+            <option>Other / General</option>
           </select>
         </div>
         <div style="margin-bottom:0.875rem">
-          <label style="font-size:12px;font-weight:500;color:var(--text-primary);display:block;margin-bottom:5px">Type of Help</label>
+          <label style="font-size:12px;font-weight:500;color:var(--tp);display:block;margin-bottom:5px">Type of Help</label>
           <div style="display:flex;gap:6px;flex-wrap:wrap">
             <button class="assign-type-btn active" onclick="selectAssignType(this,'Explain the concept')">📖 Explain</button>
-            <button class="assign-type-btn" onclick="selectAssignType(this,'Solve this numerical problem')">🔢 Solve numerical</button>
-            <button class="assign-type-btn" onclick="selectAssignType(this,'Write assignment answer for')">✍️ Write answer</button>
-            <button class="assign-type-btn" onclick="selectAssignType(this,'List key points about')">📋 Key points</button>
-            <button class="assign-type-btn" onclick="selectAssignType(this,'Give formula and derivation for')">📐 Formula</button>
+            <button class="assign-type-btn" onclick="selectAssignType(this,'Solve this numerical problem step by step')">🔢 Solve numerical</button>
+            <button class="assign-type-btn" onclick="selectAssignType(this,'Write a detailed assignment answer for')">✍️ Write answer</button>
+            <button class="assign-type-btn" onclick="selectAssignType(this,'List all important key points about')">📋 Key points</button>
+            <button class="assign-type-btn" onclick="selectAssignType(this,'Give formula, derivation and explanation for')">📐 Formula</button>
           </div>
         </div>
         <div style="margin-bottom:0.875rem">
-          <label style="font-size:12px;font-weight:500;color:var(--text-primary);display:block;margin-bottom:5px">Your Question</label>
-          <textarea id="assignQuestion" placeholder="Type your assignment question here..." style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--green-softest);font-size:12px;color:var(--text-primary);font-family:'DM Sans',sans-serif;outline:none;resize:none;height:90px" onfocus="this.style.borderColor='var(--green-bright)'" onblur="this.style.borderColor='var(--green-softest)'"></textarea>
+          <label style="font-size:12px;font-weight:500;color:var(--tp);display:block;margin-bottom:5px">Your Question</label>
+          <textarea id="assignQuestion" placeholder="Type your assignment question here... e.g. Calculate the drying rate for a food product with initial moisture content 80% (wb) dried to 10% (wb)" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--gs);font-size:12px;color:var(--tp);font-family:'DM Sans',sans-serif;outline:none;resize:none;height:90px" onfocus="this.style.borderColor='var(--gb)'" onblur="this.style.borderColor='var(--gs)'"></textarea>
         </div>
-        <button onclick="submitAssignment()" style="background:var(--green-mid);color:white;border:none;padding:11px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:500;font-family:'DM Sans',sans-serif;width:100%">Get Answer from VidyaBot 📚</button>
+        <button onclick="submitAssignment()" style="background:var(--gm);color:white;border:none;padding:11px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:500;font-family:'DM Sans',sans-serif;width:100%">Get Answer from VidyaBot 📚</button>
       </div>
-      <div id="assignTyping" style="display:none;font-size:11px;color:var(--text-muted);padding:0 1.25rem 0.4rem;font-style:italic;background:var(--gray-100)">VidyaBot is preparing your answer...</div>
-      <div id="assignAnswer" style="display:none;padding:1.25rem;background:white;border-top:1px solid var(--green-softest)">
+      <div id="assignTyping" style="display:none;font-size:11px;color:var(--tm);padding:0 1.25rem 0.4rem;font-style:italic;background:var(--g1)">VidyaBot is preparing your answer...</div>
+      <div id="assignAnswer" style="display:none;padding:1.25rem;background:white;border-top:1px solid var(--gs)">
         <div style="display:flex;align-items:center;gap:7px;margin-bottom:0.875rem">
-          <div style="width:26px;height:26px;background:var(--green-bright);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0">VB</div>
-          <span style="font-size:12px;font-weight:500;color:var(--green-mid)">VidyaBot's Answer</span>
+          <div style="width:26px;height:26px;background:var(--gb);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0">VB</div>
+          <span style="font-size:12px;font-weight:500;color:var(--gm)">VidyaBot's Answer</span>
         </div>
-        <div id="assignAnswerText" style="font-size:13px;color:var(--text-primary);line-height:1.8;white-space:pre-wrap"></div>
-        <div style="margin-top:0.875rem;padding-top:0.875rem;border-top:1px solid var(--green-softest);display:flex;gap:7px;flex-wrap:wrap">
-          <button onclick="copyAssignAnswer()" style="background:var(--green-softest);color:var(--green-mid);border:1px solid var(--green-softest);padding:6px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500">📋 Copy</button>
-          <button onclick="clearAssignment()" style="background:transparent;color:var(--text-muted);border:1px solid var(--green-softest);padding:6px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">Ask another</button>
+        <div id="assignAnswerText" style="font-size:13px;color:var(--tp);line-height:1.8;white-space:pre-wrap"></div>
+        <div style="margin-top:0.875rem;padding-top:0.875rem;border-top:1px solid var(--gs);display:flex;gap:7px;flex-wrap:wrap">
+          <button onclick="copyAssignAnswer()" style="background:var(--gs);color:var(--gm);border:1px solid var(--gs);padding:6px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500">📋 Copy</button>
+          <button onclick="clearAssignment()" style="background:transparent;color:var(--tm);border:1px solid var(--gs);padding:6px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">New question</button>
         </div>
       </div>
     </div>
+
     <div class="paywall" id="assignPaywall">
-      <div style="font-size:28px;margin-bottom:0.5rem">📝</div>
-      <h3>Free try used!</h3>
-      <p>Your 1 free assignment answer is used. Get unlimited answers for just ₹20 per assignment.</p>
-      <div class="price">₹20</div>
-      <div class="price-sub">per assignment • Detailed AI answer</div>
-      <button class="btn-pay" onclick="handleAssignPayment()">Pay ₹20 & Get Answer</button>
-      <p style="font-size:11px;color:var(--text-muted);margin-top:0.75rem">Secure payment via Razorpay</p>
+      <div style="font-size:28px;margin-bottom:0.5rem">📩</div>
+      <h3>Free answers used!</h3>
+      <p>You've used your 3 free assignment answers. WhatsApp us to get more help!</p>
+      <button class="btn-pay" onclick="window.open('https://wa.me/919581313313?text=Hi AgriVidya! I need more assignment help.','_blank')">Contact us on WhatsApp</button>
     </div>
+
     <div style="margin-top:1.5rem">
-      <div style="font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:0.875rem">Popular topics:</div>
+      <div style="font-size:12px;font-weight:500;color:var(--tp);margin-bottom:0.875rem">Popular topics:</div>
       <div style="display:flex;gap:7px;flex-wrap:wrap">
-        <button onclick="quickAssign('Explain the working principle of spray dryer')" style="background:white;border:1px solid var(--green-softest);color:var(--text-secondary);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">Spray dryer</button>
-        <button onclick="quickAssign('Explain HTST pasteurization process and conditions')" style="background:white;border:1px solid var(--green-softest);color:var(--text-secondary);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">HTST pasteurization</button>
-        <button onclick="quickAssign('Explain water activity and its importance in food preservation')" style="background:white;border:1px solid var(--green-softest);color:var(--text-secondary);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">Water activity</button>
-        <button onclick="quickAssign('Explain HACCP principles and food industry application')" style="background:white;border:1px solid var(--green-softest);color:var(--text-secondary);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">HACCP</button>
-        <button onclick="quickAssign('Explain freeze drying process and advantages')" style="background:white;border:1px solid var(--green-softest);color:var(--text-secondary);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">Freeze drying</button>
+        <button onclick="quickAssign('Explain the working principle of spray dryer')" style="background:white;border:1px solid var(--gs);color:var(--ts);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">Spray dryer</button>
+        <button onclick="quickAssign('Explain HTST pasteurization process and conditions')" style="background:white;border:1px solid var(--gs);color:var(--ts);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">HTST pasteurization</button>
+        <button onclick="quickAssign('Explain water activity and its importance in food preservation')" style="background:white;border:1px solid var(--gs);color:var(--ts);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">Water activity</button>
+        <button onclick="quickAssign('Explain HACCP principles and food industry application')" style="background:white;border:1px solid var(--gs);color:var(--ts);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">HACCP</button>
+        <button onclick="quickAssign('Explain freeze drying and advantages over other drying methods')" style="background:white;border:1px solid var(--gs);color:var(--ts);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">Freeze drying</button>
+        <button onclick="quickAssign('Explain different types of irrigation methods used in India')" style="background:white;border:1px solid var(--gs);color:var(--ts);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">Irrigation methods</button>
       </div>
     </div>
   </div>
@@ -457,8 +529,8 @@ footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
   <div class="section">
     <div class="section-label">About AgriVidya</div>
     <div class="section-title">Built by Engineers, for Engineers</div>
-    <p style="font-size:14px;color:var(--text-secondary);line-height:1.9;margin-bottom:1rem;max-width:680px">AgriVidya is India's dedicated AI-powered learning platform for Food Engineering, Agricultural Engineering and allied sciences. We exist because students in these fields deserve the same quality of AI tools that students from top institutions have access to — regardless of where they study.</p>
-    <p style="font-size:14px;color:var(--text-secondary);line-height:1.9;margin-bottom:1.5rem;max-width:680px">A student at ANGRAU, PJTSAU, or any state agricultural university deserves the same depth of learning support as a student at IIT or IARI. That's our mission.</p>
+    <p style="font-size:14px;color:var(--ts);line-height:1.9;margin-bottom:1rem;max-width:680px">AgriVidya is India's dedicated AI-powered learning platform for Food Engineering, Agricultural Engineering and allied sciences. We exist because students in these fields deserve the same quality of AI tools that students from top institutions have — regardless of where they study.</p>
+    <p style="font-size:14px;color:var(--ts);line-height:1.9;margin-bottom:1.5rem;max-width:680px">A student at ANGRAU, PJTSAU, or any state agricultural university deserves the same depth of learning support as a student at IIT or IARI. That's our mission.</p>
     <div class="expertise-tags">
       <span class="exp-tag">Food Engineering</span>
       <span class="exp-tag">Agricultural Engineering</span>
@@ -485,16 +557,16 @@ footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
 <!-- CONTACT -->
 <div id="page-contact" class="page">
   <div class="contact-bg">
-    <div class="section-label" style="color:var(--green-light)">Get in touch</div>
+    <div class="section-label" style="color:var(--gl)">Get in touch</div>
     <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:white;margin-bottom:0.4rem">Let's connect</div>
-    <div style="font-size:13px;color:var(--green-pale);margin-bottom:1.5rem">For student queries, institutional access, collaborations & partnerships</div>
+    <div style="font-size:13px;color:var(--gp);margin-bottom:1.5rem">For student queries, institutional access, collaborations & partnerships</div>
     <div class="contact-grid">
       <div class="contact-card">
         <h4>Contact details</h4>
         <div class="contact-row"><div class="contact-icon">📞</div><div><div class="contact-label">Phone</div><div class="contact-val">+91 95813 13313</div></div></div>
         <div class="contact-row"><div class="contact-icon">✉️</div><div><div class="contact-label">Email</div><div class="contact-val">agrividya@gmail.com</div></div></div>
         <div class="contact-row"><div class="contact-icon">📍</div><div><div class="contact-label">Location</div><div class="contact-val">Bapatla, Andhra Pradesh</div></div></div>
-        <button class="wa-btn" onclick="window.open('https://wa.me/919581313313?text=Hello AgriVidya! I want to know more.','_blank')">
+        <button class="wa-btn" onclick="window.open('https://wa.me/919581313313?text=Hello AgriVidya!','_blank')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.083.535 4.04 1.472 5.747L.057 23.882l6.29-1.648A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.802 9.802 0 01-5.001-1.368l-.359-.213-3.733.978.994-3.63-.234-.373A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182c5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
           Chat on WhatsApp
         </button>
@@ -503,9 +575,7 @@ footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
         <h4>Send a message</h4>
         <div class="form-group"><input type="text" id="cname" placeholder="Your name"/></div>
         <div class="form-group"><input type="email" id="cemail" placeholder="Email address"/></div>
-        <div class="form-group">
-          <select id="ctype"><option value="" disabled selected>Type of enquiry</option><option>Student query</option><option>GATE/ICAR coaching</option><option>Institutional access</option><option>Research collaboration</option><option>Other</option></select>
-        </div>
+        <div class="form-group"><select id="ctype"><option value="" disabled selected>Type of enquiry</option><option>Student query</option><option>GATE/ICAR coaching</option><option>Institutional access</option><option>Research collaboration</option><option>Other</option></select></div>
         <div class="form-group"><textarea id="cmsg" placeholder="Your message..."></textarea></div>
         <button class="btn-submit" onclick="submitContact()">Send message</button>
         <div class="form-alert" id="formAlert">✓ Message sent! We'll reply within 24 hours.</div>
@@ -514,10 +584,13 @@ footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
   </div>
 </div>
 
+<!-- LEGAL -->
 <div id="page-privacy" class="page"><div class="legal-content"><h1>Privacy Policy</h1><div class="legal-date">Last updated: January 2025</div><h2>1. Information we collect</h2><p>AgriVidya collects information you provide when creating an account, using VidyaBot, or contacting us.</p><h2>2. How we use it</h2><ul><li>To provide and improve our services</li><li>To personalise your learning</li><li>To respond to queries</li></ul><h2>3. Data sharing</h2><p>AgriVidya does not sell or share your personal information. No advertisements.</p><h2>4. Contact</h2><p>agrividya@gmail.com | +91 95813 13313</p></div></div>
 <div id="page-terms" class="page"><div class="legal-content"><h1>Terms of Use</h1><div class="legal-date">Last updated: January 2025</div><h2>1. Acceptance</h2><p>By using AgriVidya (agrividya.in), you agree to these Terms.</p><h2>2. Use of services</h2><p>AgriVidya is for educational purposes for food and agricultural engineering students.</p><h2>3. AI content</h2><p>AI responses are for educational guidance only. Verify critical information with your institution.</p><h2>4. Disclaimer</h2><p>Not affiliated with GATE, ICAR, NABARD, or any government body.</p><h2>5. Contact</h2><p>agrividya@gmail.com</p></div></div>
 <div id="page-disclaimer" class="page"><div class="legal-content"><h1>Disclaimer</h1><div class="legal-date">Last updated: January 2025</div><h2>Educational purpose only</h2><p>All content and AI responses are for educational purposes only.</p><h2>No official affiliation</h2><p>Not affiliated with GATE, ICAR, NABARD, FCI, SBI, RBI, ANGRAU, PJTSAU or any government body.</p><h2>Contact</h2><p>agrividya@gmail.com | agrividya.in</p></div></div>
+<div id="page-pricing" class="page"></div>
 
+<!-- FOOTER -->
 <footer>
   <div class="footer-logo">Agri<span>Vidya</span></div>
   <div class="footer-tagline">AI Brain for Agri & Food Engineering | From Soil to Solution</div>
@@ -580,7 +653,7 @@ footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
 
 <!-- COOKIE -->
 <div class="cookie-banner" id="cookieBanner">
-  <p>We use cookies. By continuing, you agree to our <a onclick="showPage('privacy')">Privacy Policy</a>.</p>
+  <p>We use cookies to improve your experience. <a onclick="showPage('privacy')">Privacy Policy</a></p>
   <div class="cookie-btns">
     <button class="btn-cookie-accept" onclick="acceptCookies()">Accept</button>
     <button class="btn-cookie-decline" onclick="declineCookies()">Decline</button>
@@ -588,59 +661,60 @@ footer{background:var(--green-darkest);padding:1.75rem 1.5rem;text-align:center}
 </div>
 
 <!-- BUBBLES -->
-<div id="popupChat" style="position:fixed;bottom:20px;right:14px;z-index:9999;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:flex-end;gap:8px">
-  <div id="popupWindow" style="display:none;flex-direction:column;width:min(290px,88vw);background:white;border-radius:14px;border:1px solid #E1F5EE;box-shadow:0 4px 20px rgba(8,80,65,0.15);overflow:hidden">
-    <div style="background:#085041;padding:10px 12px;display:flex;align-items:center;gap:8px">
-      <div style="width:28px;height:28px;background:#1D9E75;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:white;flex-shrink:0">VB</div>
+<div class="bubble-wrap">
+  <div class="bubble-popup" id="popupWindow">
+    <div class="bubble-header">
+      <div class="bubble-av">VB</div>
       <div style="flex:1"><div style="font-size:12px;font-weight:600;color:white">VidyaBot 📚</div><div style="font-size:9px;color:#9FE1CB">Your AI Companion • Online</div></div>
       <button onclick="togglePopup()" style="background:none;border:none;color:#9FE1CB;font-size:16px;cursor:pointer">✕</button>
     </div>
-    <div id="popupMsgs" style="padding:10px;display:flex;flex-direction:column;gap:7px;max-height:200px;overflow-y:auto;background:#F8FAFA">
-      <div style="background:#E1F5EE;color:#04342C;font-size:11px;padding:7px 9px;border-radius:3px 9px 9px 9px;max-width:88%;line-height:1.5">Namaste! I'm VidyaBot 📚 — ask me about Food Engineering, Agri Engineering or GATE/ICAR!</div>
+    <div class="bubble-msgs" id="popupMsgs">
+      <div style="background:#E1F5EE;color:#04342C;font-size:11px;padding:7px 9px;border-radius:3px 9px 9px 9px;max-width:88%;line-height:1.5">Namaste! I'm VidyaBot 📚 — ask me about Food & Agri Engineering or GATE/ICAR!</div>
     </div>
-    <div style="display:flex;gap:4px;flex-wrap:wrap;padding:6px 10px;background:#F8FAFA">
-      <button onclick="popupQuick('Explain psychrometrics')" style="background:white;border:1px solid #E1F5EE;color:#085041;font-size:9px;padding:3px 7px;border-radius:10px;cursor:pointer;font-family:inherit">Psychrometrics</button>
-      <button onclick="popupQuick('GATE XL syllabus')" style="background:white;border:1px solid #E1F5EE;color:#085041;font-size:9px;padding:3px 7px;border-radius:10px;cursor:pointer;font-family:inherit">GATE XL</button>
-      <button onclick="popupQuick('Food preservation methods')" style="background:white;border:1px solid #E1F5EE;color:#085041;font-size:9px;padding:3px 7px;border-radius:10px;cursor:pointer;font-family:inherit">Preservation</button>
+    <div class="bubble-chips">
+      <button class="bubble-chip" onclick="popupQuick('Explain psychrometrics')">Psychrometrics</button>
+      <button class="bubble-chip" onclick="popupQuick('GATE XL syllabus')">GATE XL</button>
+      <button class="bubble-chip" onclick="popupQuick('Food preservation')">Preservation</button>
     </div>
     <div id="popupTypingEl" style="display:none;font-size:10px;color:#7A9E94;font-style:italic;padding:0 10px 3px;background:#F8FAFA">VidyaBot is typing...</div>
-    <div style="display:flex;gap:5px;padding:8px 10px;border-top:1px solid #E1F5EE;background:white">
-      <input id="popupInput" type="text" placeholder="Ask VidyaBot..." onkeydown="if(event.key==='Enter')sendPopupMsg()" style="flex:1;padding:6px 9px;border-radius:7px;border:1px solid #E1F5EE;font-size:11px;outline:none;font-family:inherit"/>
-      <button onclick="sendPopupMsg()" style="background:#085041;color:white;border:none;padding:6px 10px;border-radius:7px;font-size:11px;cursor:pointer;font-weight:500;font-family:inherit">Send</button>
+    <div class="bubble-input-row">
+      <input id="popupInput" type="text" placeholder="Ask VidyaBot..." onkeydown="if(event.key==='Enter')sendPopupMsg()"/>
+      <button onclick="sendPopupMsg()">Send</button>
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:7px;justify-content:flex-end">
-    <div id="vidyaLabel" style="background:#085041;color:white;font-size:10px;padding:5px 10px;border-radius:16px;white-space:nowrap;box-shadow:0 2px 6px rgba(8,80,65,0.3);cursor:pointer" onclick="togglePopup()">VidyaBot — Your AI Companion</div>
-    <button onclick="togglePopup()" style="width:48px;height:48px;background:#085041;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(8,80,65,0.35);flex-shrink:0">
+    <div class="bubble-label" style="background:#085041;color:white;box-shadow:0 2px 6px rgba(8,80,65,0.3)" onclick="togglePopup()" id="vidyaLabel">VidyaBot — Your AI Companion</div>
+    <button class="bubble-btn" onclick="togglePopup()" style="background:#085041;box-shadow:0 2px 10px rgba(8,80,65,0.35)">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.477 2 2 6.077 2 11c0 2.09.7 4.02 1.87 5.57L3 22l5.47-.88C9.89 21.67 10.93 22 12 22c5.523 0 10-4.077 10-9s-4.477-9-10-9z" fill="white"/><circle cx="8" cy="11" r="1.2" fill="#085041"/><circle cx="12" cy="11" r="1.2" fill="#085041"/><circle cx="16" cy="11" r="1.2" fill="#085041"/></svg>
     </button>
   </div>
   <div style="display:flex;align-items:center;gap:7px;justify-content:flex-end">
-    <div style="background:#25D366;color:white;font-size:10px;padding:5px 10px;border-radius:16px;white-space:nowrap;box-shadow:0 2px 6px rgba(37,211,102,0.3);cursor:pointer" onclick="window.open('https://wa.me/919581313313?text=Hello AgriVidya!','_blank')">Chat on WhatsApp</div>
-    <button onclick="window.open('https://wa.me/919581313313?text=Hello AgriVidya!','_blank')" style="width:48px;height:48px;background:#25D366;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(37,211,102,0.35);flex-shrink:0">
+    <div class="bubble-label" style="background:#25D366;color:white;box-shadow:0 2px 6px rgba(37,211,102,0.3)" onclick="window.open('https://wa.me/919581313313?text=Hello AgriVidya!','_blank')">Chat on WhatsApp</div>
+    <button class="bubble-btn" onclick="window.open('https://wa.me/919581313313?text=Hello AgriVidya!','_blank')" style="background:#25D366;box-shadow:0 2px 10px rgba(37,211,102,0.35)">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.083.535 4.04 1.472 5.747L.057 23.882l6.29-1.648A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.802 9.802 0 01-5.001-1.368l-.359-.213-3.733.978.994-3.63-.234-.373A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182c5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
     </button>
   </div>
 </div>
 
 <script>
-// SUPABASE
 const _supabase = supabase.createClient('https://yrrielpjbbsxdgbwzwzx.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlycmllbHBqYmJzeGRnYnd6d3p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NTY5NDMsImV4cCI6MjA5MDAzMjk0M30.v7jeOcfQU7-LAxWFSftnTHMSDbZmiTRJEN19bB1z5RA');
 
-let currentUser = null;
-let botQuestionsUsed = parseInt(localStorage.getItem('botQ') || '0');
-let assignUsed = parseInt(localStorage.getItem('assignQ') || '0');
-const FREE_BOT_Q = 5;
-const FREE_ASSIGN = 1;
+let currentUser=null;
+let botQ=parseInt(localStorage.getItem('botQ')||'0');
+let assignQ=parseInt(localStorage.getItem('assignQ')||'0');
+const FREE_BOT=5,FREE_ASSIGN=3;
 
 function updateCounter(){
-  const left = Math.max(0, FREE_BOT_Q - botQuestionsUsed);
-  const el = document.getElementById('questionCounter');
-  if(el) el.textContent = left > 0 ? left+' free questions left' : 'Free questions used';
+  const left=Math.max(0,FREE_BOT-botQ);
+  const el=document.getElementById('questionCounter');
+  if(el)el.textContent=left>0?left+' free questions left':'Free questions used';
+  const el2=document.getElementById('assignCounter');
+  const left2=Math.max(0,FREE_ASSIGN-assignQ);
+  if(el2)el2.textContent='● Ready to help • '+left2+' free answers remaining';
 }
 
-function updateNavForUser(user){
-  currentUser = user;
+function updateNav(user){
+  currentUser=user;
   if(user){
     document.getElementById('btnLogin').style.display='none';
     document.getElementById('btnSignup').style.display='none';
@@ -653,148 +727,130 @@ function updateNavForUser(user){
   }
 }
 
-_supabase.auth.getSession().then(({data:{session}})=>{ updateNavForUser(session?.user??null); updateCounter(); });
-_supabase.auth.onAuthStateChange((_e,session)=>{ updateNavForUser(session?.user??null); });
+_supabase.auth.getSession().then(({data:{session}})=>{updateNav(session?.user??null);updateCounter();});
+_supabase.auth.onAuthStateChange((_e,s)=>{updateNav(s?.user??null);});
 
 async function handleLogin(){
-  const email=document.getElementById('loginEmail').value.trim();
-  const password=document.getElementById('loginPassword').value;
-  if(!email||!password){showModalError('login','Please fill email and password');return;}
-  showModalLoading('login',true);
-  const{error}=await _supabase.auth.signInWithPassword({email,password});
-  showModalLoading('login',false);
-  if(error){showModalError('login',error.message);return;}
+  const e=document.getElementById('loginEmail').value.trim();
+  const p=document.getElementById('loginPassword').value;
+  if(!e||!p){showErr('login','Please fill email and password');return;}
+  showLoad('login',true);
+  const{error}=await _supabase.auth.signInWithPassword({email:e,password:p});
+  showLoad('login',false);
+  if(error){showErr('login',error.message);return;}
   document.getElementById('loginSuccess').style.display='block';
   setTimeout(()=>{closeModal();document.getElementById('loginSuccess').style.display='none';},1500);
 }
 
 async function handleSignup(){
-  const name=document.getElementById('signupName').value.trim();
-  const email=document.getElementById('signupEmail').value.trim();
-  const password=document.getElementById('signupPassword').value;
-  const role=document.getElementById('signupRole').value;
-  if(!name||!email||!password){showModalError('signup','Please fill all fields');return;}
-  if(password.length<6){showModalError('signup','Password must be at least 6 characters');return;}
-  showModalLoading('signup',true);
-  const{error}=await _supabase.auth.signUp({email,password,options:{data:{full_name:name,role:role}}});
-  showModalLoading('signup',false);
-  if(error){showModalError('signup',error.message);return;}
+  const n=document.getElementById('signupName').value.trim();
+  const e=document.getElementById('signupEmail').value.trim();
+  const p=document.getElementById('signupPassword').value;
+  const r=document.getElementById('signupRole').value;
+  if(!n||!e||!p){showErr('signup','Please fill all fields');return;}
+  if(p.length<6){showErr('signup','Password min 6 characters');return;}
+  showLoad('signup',true);
+  const{error}=await _supabase.auth.signUp({email:e,password:p,options:{data:{full_name:n,role:r}}});
+  showLoad('signup',false);
+  if(error){showErr('signup',error.message);return;}
   document.getElementById('signupSuccess').style.display='block';
 }
 
 async function handleLogout(){await _supabase.auth.signOut();}
-
-function showModalError(type,msg){const el=document.getElementById(type+'Error');el.textContent=msg;el.style.display='block';setTimeout(()=>{el.style.display='none';},4000);}
-function showModalLoading(type,show){document.getElementById(type+'Loading').style.display=show?'block':'none';}
+function showErr(t,m){const el=document.getElementById(t+'Error');el.textContent=m;el.style.display='block';setTimeout(()=>el.style.display='none',4000);}
+function showLoad(t,s){document.getElementById(t+'Loading').style.display=s?'block':'none';}
 
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const el=document.getElementById('page-'+id);
   if(el){el.classList.add('active');window.scrollTo(0,0);}
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('nav-active'));
-  const navLink=document.getElementById('nav-'+id);
-  if(navLink)navLink.classList.add('nav-active');
+  const nl=document.getElementById('nav-'+id);if(nl)nl.classList.add('nav-active');
+  document.querySelectorAll('.mobile-nav a').forEach(a=>a.classList.remove('nav-active-m'));
+  const ml=document.getElementById('mnav-'+id);if(ml)ml.classList.add('nav-active-m');
 }
+
+let mobileNavOpen=false;
+function toggleMobileNav(){
+  mobileNavOpen=!mobileNavOpen;
+  document.getElementById('mobileNav').style.display=mobileNavOpen?'block':'none';
+}
+function closeMobileNav(){
+  mobileNavOpen=false;
+  document.getElementById('mobileNav').style.display='none';
+}
+
 function openModal(type){
-  if(!currentUser && (type==='bot'||type==='assign')){
-    document.getElementById('modalOverlay').classList.add('open');
-    document.getElementById('modal-login').style.display='block';
-    document.getElementById('modal-signup').style.display='none';
-    return;
-  }
   document.getElementById('modalOverlay').classList.add('open');
   document.getElementById('modal-login').style.display=type==='login'?'block':'none';
   document.getElementById('modal-signup').style.display=type==='signup'?'block':'none';
 }
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+
 function submitContact(){
-  const name=document.getElementById('cname').value;
-  const email=document.getElementById('cemail').value;
-  if(!name||!email){alert('Please fill name and email');return;}
-  const alertEl=document.getElementById('formAlert');
-  alertEl.style.display='block';
-  document.getElementById('cname').value='';
-  document.getElementById('cemail').value='';
-  document.getElementById('cmsg').value='';
-  setTimeout(()=>{alertEl.style.display='none';},4000);
+  const n=document.getElementById('cname').value;
+  const e=document.getElementById('cemail').value;
+  if(!n||!e){alert('Please fill name and email');return;}
+  const a=document.getElementById('formAlert');a.style.display='block';
+  document.getElementById('cname').value='';document.getElementById('cemail').value='';document.getElementById('cmsg').value='';
+  setTimeout(()=>a.style.display='none',4000);
 }
 function acceptCookies(){document.getElementById('cookieBanner').style.display='none';localStorage.setItem('cookies','accepted');}
 function declineCookies(){document.getElementById('cookieBanner').style.display='none';localStorage.setItem('cookies','declined');}
-if(localStorage.getItem('cookies')){document.getElementById('cookieBanner').style.display='none';}
+if(localStorage.getItem('cookies'))document.getElementById('cookieBanner').style.display='none';
 
 function stripMd(t){return t.replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1').replace(/^#{1,6}\s+/gm,'').replace(/^[-*+]\s+/gm,'').trim();}
 
 // BOT
-const botMessages=[];
+const botMsgs=[];
 async function sendBotMsg(){
   if(!currentUser){openModal('login');return;}
-  if(botQuestionsUsed>=FREE_BOT_Q){
-    document.getElementById('botPaywall').style.display='block';
-    document.querySelector('.bot-compact').style.opacity='0.5';
-    document.getElementById('botInput').disabled=true;
-    return;
-  }
-  const input=document.getElementById('botInput');
-  const msg=input.value.trim();
-  if(!msg)return;
-  input.value='';
-  botQuestionsUsed++;
-  localStorage.setItem('botQ',botQuestionsUsed);
-  updateCounter();
-  const chatArea=document.getElementById('chatArea');
-  const u=document.createElement('div');u.className='msg-user';u.textContent=msg;chatArea.appendChild(u);chatArea.scrollTop=chatArea.scrollHeight;
+  if(botQ>=FREE_BOT){document.getElementById('botPaywall').style.display='block';return;}
+  const inp=document.getElementById('botInput');
+  const msg=inp.value.trim();if(!msg)return;inp.value='';
+  botQ++;localStorage.setItem('botQ',botQ);updateCounter();
+  const ca=document.getElementById('chatArea');
+  const u=document.createElement('div');u.className='msg-user';u.textContent=msg;ca.appendChild(u);ca.scrollTop=ca.scrollHeight;
   document.getElementById('chatTyping').style.display='block';
-  botMessages.push({role:'user',content:msg});
+  botMsgs.push({role:'user',content:msg});
   try{
-    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:botMessages,max_tokens:600})});
-    const data=await res.json();
-    if(data.error)throw new Error(data.error);
-    const reply=stripMd(data.content[0].text);
-    botMessages.push({role:'assistant',content:reply});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:botMsgs,max_tokens:600})});
+    const d=await r.json();if(d.error)throw new Error(d.error);
+    const rep=stripMd(d.content[0].text);
+    botMsgs.push({role:'assistant',content:rep});
     document.getElementById('chatTyping').style.display='none';
-    const a=document.createElement('div');a.className='msg-ai';a.textContent=reply;chatArea.appendChild(a);chatArea.scrollTop=chatArea.scrollHeight;
-    if(botQuestionsUsed>=FREE_BOT_Q){
-      document.getElementById('botPaywall').style.display='block';
-      document.querySelector('.bot-compact').style.opacity='0.5';
-      document.getElementById('botInput').disabled=true;
-    }
+    const a=document.createElement('div');a.className='msg-ai';a.textContent=rep;ca.appendChild(a);ca.scrollTop=ca.scrollHeight;
+    if(botQ>=FREE_BOT)document.getElementById('botPaywall').style.display='block';
   }catch(e){
     document.getElementById('chatTyping').style.display='none';
-    const err=document.createElement('div');err.className='msg-ai';err.textContent='VidyaBot temporarily unavailable. WhatsApp: +91 95813 13313';chatArea.appendChild(err);
+    const err=document.createElement('div');err.className='msg-ai';err.textContent='VidyaBot unavailable. WhatsApp: +91 95813 13313';ca.appendChild(err);
   }
 }
 
-function handleBotPayment(){alert('Razorpay payment coming soon! WhatsApp us at +91 95813 13313 to continue.');}
-function handleAssignPayment(){alert('Razorpay payment coming soon! WhatsApp us at +91 95813 13313 for assignment help.');}
-
 // ASSIGNMENT
-let assignTypeSelected='Explain the concept';
-let assignFreeUsed=assignUsed>=FREE_ASSIGN;
-
-function selectAssignType(btn,type){document.querySelectorAll('.assign-type-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');assignTypeSelected=type;}
+let assignType='Explain the concept';
+function selectAssignType(btn,t){document.querySelectorAll('.assign-type-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');assignType=t;}
 function quickAssign(q){document.getElementById('assignQuestion').value=q;submitAssignment();}
 async function submitAssignment(){
   if(!currentUser){openModal('login');return;}
-  if(assignUsed>=FREE_ASSIGN){document.getElementById('assignPaywall').style.display='block';return;}
-  const subject=document.getElementById('assignSubject').value;
-  const question=document.getElementById('assignQuestion').value.trim();
-  if(!question){alert('Please type your question!');return;}
-  assignUsed++;
-  localStorage.setItem('assignQ',assignUsed);
-  const context=subject?'Subject: '+subject+'. ':'';
-  const fullQ=context+assignTypeSelected+': '+question;
+  if(assignQ>=FREE_ASSIGN){document.getElementById('assignPaywall').style.display='block';return;}
+  const subj=document.getElementById('assignSubject').value;
+  const q=document.getElementById('assignQuestion').value.trim();
+  if(!q){alert('Please type your question!');return;}
+  assignQ++;localStorage.setItem('assignQ',assignQ);updateCounter();
+  const ctx=subj?'Subject: '+subj+'. ':'';
+  const full=ctx+assignType+': '+q;
   document.getElementById('assignTyping').style.display='block';
   document.getElementById('assignAnswer').style.display='none';
   try{
-    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:fullQ}],max_tokens:800})});
-    const data=await res.json();
-    if(data.error)throw new Error(data.error);
-    const reply=stripMd(data.content[0].text);
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:full}],max_tokens:800})});
+    const d=await r.json();if(d.error)throw new Error(d.error);
+    const rep=stripMd(d.content[0].text);
     document.getElementById('assignTyping').style.display='none';
-    document.getElementById('assignAnswerText').textContent=reply;
+    document.getElementById('assignAnswerText').textContent=rep;
     document.getElementById('assignAnswer').style.display='block';
     document.getElementById('assignAnswer').scrollIntoView({behavior:'smooth'});
-    if(assignUsed>=FREE_ASSIGN){setTimeout(()=>{document.getElementById('assignPaywall').style.display='block';},2000);}
+    if(assignQ>=FREE_ASSIGN)setTimeout(()=>{document.getElementById('assignPaywall').style.display='block';},1500);
   }catch(e){
     document.getElementById('assignTyping').style.display='none';
     document.getElementById('assignAnswerText').textContent='VidyaBot unavailable. WhatsApp: +91 95813 13313';
@@ -805,36 +861,934 @@ function copyAssignAnswer(){navigator.clipboard.writeText(document.getElementByI
 function clearAssignment(){document.getElementById('assignQuestion').value='';document.getElementById('assignAnswer').style.display='none';}
 
 // POPUP
-const popupBotMessages=[];
+const popupMsgs=[];
 function togglePopup(){
   const w=document.getElementById('popupWindow');
-  const isOpen=w.style.display==='flex';
-  w.style.display=isOpen?'none':'flex';
-  document.getElementById('vidyaLabel').style.display=isOpen?'block':'none';
-  if(!isOpen)document.getElementById('popupInput').focus();
+  const open=w.style.display==='flex';
+  w.style.display=open?'none':'flex';
+  document.getElementById('vidyaLabel').style.display=open?'block':'none';
+  if(!open)document.getElementById('popupInput').focus();
 }
 function popupQuick(q){document.getElementById('popupInput').value=q;sendPopupMsg();}
 async function sendPopupMsg(){
-  const input=document.getElementById('popupInput');
-  const msg=input.value.trim();
-  if(!msg)return;
-  input.value='';
+  const inp=document.getElementById('popupInput');
+  const msg=inp.value.trim();if(!msg)return;inp.value='';
   const msgs=document.getElementById('popupMsgs');
   const u=document.createElement('div');
   u.style.cssText='background:#085041;color:white;font-size:11px;padding:7px 9px;border-radius:9px 3px 9px 9px;max-width:78%;align-self:flex-end;line-height:1.5;margin-left:auto';
   u.textContent=msg;msgs.appendChild(u);msgs.scrollTop=msgs.scrollHeight;
   document.getElementById('popupTypingEl').style.display='block';
-  popupBotMessages.push({role:'user',content:msg});
+  popupMsgs.push({role:'user',content:msg});
   try{
-    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:popupBotMessages,max_tokens:300})});
-    const data=await res.json();
-    if(data.error)throw new Error(data.error);
-    const reply=stripMd(data.content[0].text);
-    popupBotMessages.push({role:'assistant',content:reply});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:popupMsgs,max_tokens:300})});
+    const d=await r.json();if(d.error)throw new Error(d.error);
+    const rep=stripMd(d.content[0].text);
+    popupMsgs.push({role:'assistant',content:rep});
     document.getElementById('popupTypingEl').style.display='none';
     const a=document.createElement('div');
     a.style.cssText='background:#E1F5EE;color:#04342C;font-size:11px;padding:7px 9px;border-radius:3px 9px 9px 9px;max-width:88%;line-height:1.5';
-    a.textContent=reply;msgs.appendChild(a);msgs.scrollTop=msgs.scrollHeight;
+    a.textContent=rep;msgs.appendChild(a);msgs.scrollTop=msgs.scrollHeight;
+  }catch(e){
+    document.getElementById('popupTypingEl').style.display='none';
+    const a=document.createElement('div');
+    a.style.cssText='background:#E1F5EE;color:#04342C;font-size:11px;padding:7px 9px;border-radius:3px 9px 9px 9px;max-width:88%;line-height:1.5';
+    a.textContent='VidyaBot unavailable. WhatsApp: +91 95813 13313';
+    msgs.appendChild(a);msgs.scrollTop=msgs.scrollHeight;
+  }
+}
+document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AgriVidya - India's AI Brain for Agri & Food Engineering.">
+<title>AgriVidya - AI Brain for Agri & Food Engineering</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gd:#021E17;--gda:#04342C;--gm:#085041;--g:#0F6E56;
+  --gb:#1D9E75;--gl:#5DCAA5;--gp:#9FE1CB;--gs:#E1F5EE;
+  --w:#fff;--g1:#F8FAFA;--tp:#0D1F1A;--ts:#3D5E54;--tm:#7A9E94
+}
+body{font-family:'DM Sans',sans-serif;color:var(--tp);background:var(--w);line-height:1.6}
+
+/* ===== NAV ===== */
+nav{display:flex;justify-content:space-between;align-items:center;padding:0.75rem 1.5rem;border-bottom:1px solid var(--gs);background:var(--w);position:sticky;top:0;z-index:200;gap:12px}
+.logo-wrap{display:flex;align-items:center;gap:8px;cursor:pointer;text-decoration:none;flex-shrink:0}
+.logo-icon{width:34px;height:34px;background:var(--gm);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-text{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--gm)}
+.logo-text span{color:var(--gb)}
+.nav-links{display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;flex:1}
+.nav-links a{text-decoration:none;font-size:12px;color:var(--ts);cursor:pointer;font-weight:500;padding:5px 8px;border-radius:6px;white-space:nowrap;transition:all 0.2s}
+.nav-links a:hover{color:var(--gb);background:var(--gs)}
+.nav-links a.nav-active{color:var(--gb);background:var(--gs)}
+.nav-right{display:flex;gap:6px;flex-shrink:0}
+.btn-login{background:transparent;color:var(--gm);border:1.5px solid var(--gm);padding:6px 12px;border-radius:7px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;white-space:nowrap}
+.btn-signup{background:var(--gm);color:white;border:none;padding:6px 12px;border-radius:7px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;white-space:nowrap}
+.btn-user{background:var(--gs);color:var(--gm);border:1.5px solid var(--gm);padding:6px 12px;border-radius:7px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;display:none;white-space:nowrap}
+
+/* Mobile nav */
+.mobile-nav{display:none;background:var(--w);border-top:1px solid var(--gs);padding:0.5rem}
+.mobile-nav a{display:block;padding:10px 1rem;font-size:14px;color:var(--ts);cursor:pointer;font-weight:500;border-radius:8px;margin-bottom:2px}
+.mobile-nav a:hover,.mobile-nav a.nav-active-m{color:var(--gb);background:var(--gs)}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:4px;flex-shrink:0}
+.hamburger span{display:block;width:22px;height:2px;background:var(--gm);margin:5px 0;border-radius:2px;transition:all 0.3s}
+
+/* PAGES */
+.page{display:none}.page.active{display:block}
+
+/* HERO */
+.hero{background:var(--gda);padding:3rem 1.5rem;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--gm);color:var(--gp);font-size:11px;padding:4px 14px;border-radius:20px;margin-bottom:1.25rem;border:1px solid var(--g)}
+.hero-dot{width:5px;height:5px;background:var(--gl);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.hero h1{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:white;line-height:1.2;margin-bottom:0.75rem}
+.hero h1 em{color:var(--gl);font-style:normal}
+.hero-spec{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:0.75rem 0}
+.spec-tag{background:var(--gm);color:var(--gp);font-size:10px;padding:3px 12px;border-radius:20px;border:1px solid var(--g)}
+.hero-sub{font-size:14px;color:var(--gp);margin:0.75rem auto 1.5rem;max-width:480px}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:2rem}
+.btn-hero{background:var(--gb);color:white;border:none;padding:11px 22px;border-radius:9px;font-size:13px;cursor:pointer;font-weight:500;font-family:'DM Sans',sans-serif}
+.btn-hero-out{background:transparent;color:var(--gp);border:1.5px solid var(--g);padding:11px 22px;border-radius:9px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--gm);border-radius:10px;overflow:hidden;max-width:480px;margin:0 auto}
+.stat{background:var(--gda);padding:0.875rem 0.5rem;text-align:center}
+.stat-num{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--gl)}
+.stat-label{font-size:9px;color:var(--gp);margin-top:2px}
+
+/* SECTIONS */
+.section{padding:2rem 1.5rem}
+.section-alt{background:var(--g1)}
+.section-label{font-size:10px;font-weight:500;color:var(--gb);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:0.3rem}
+.section-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:0.4rem}
+.section-sub{font-size:13px;color:var(--ts);margin-bottom:1.5rem}
+
+/* CARDS */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.card{background:var(--w);border:1px solid var(--gs);border-radius:12px;padding:1.25rem;cursor:pointer;transition:all 0.2s}
+.card:hover{border-color:var(--gb);transform:translateY(-2px)}
+.card-icon{width:38px;height:38px;border-radius:8px;background:var(--gs);display:flex;align-items:center;justify-content:center;margin-bottom:0.75rem;font-size:18px}
+.card h3{font-size:14px;font-weight:500;margin-bottom:5px}
+.card p{font-size:12px;color:var(--ts);line-height:1.5}
+.card-tag{display:inline-block;font-size:10px;background:var(--gs);color:var(--gm);padding:2px 8px;border-radius:4px;margin-top:8px;font-weight:500}
+.card-tag-soon{background:#F0F0F0;color:#888}
+.card-arrow{font-size:11px;color:var(--gb);margin-top:8px;display:block;font-weight:500}
+
+/* BANNER */
+.banner-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.banner{border-radius:12px;padding:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.banner-green{background:var(--gm)}
+.banner-dark{background:var(--gda);border:1px solid var(--g)}
+.banner h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:white;margin-bottom:5px}
+.banner p{font-size:12px;color:var(--gp)}
+.banner-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.banner-tag{background:rgba(255,255,255,0.1);color:var(--gp);font-size:10px;padding:2px 8px;border-radius:4px;border:1px solid var(--g)}
+
+/* BOT */
+.bot-wrap{background:var(--g1);border-radius:12px;border:1px solid var(--gs);overflow:hidden;max-width:700px;margin:0 auto}
+.bot-top{background:var(--gm);padding:0.875rem 1.25rem;display:flex;align-items:center;gap:10px}
+.bot-av{width:32px;height:32px;background:var(--gb);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0}
+.bot-name{font-size:13px;font-weight:500;color:white}
+.bot-status{font-size:10px;color:var(--gl);display:flex;align-items:center;gap:4px}
+.bot-dot{width:4px;height:4px;background:var(--gl);border-radius:50%;animation:pulse 2s infinite}
+.chat-area{padding:1rem;display:flex;flex-direction:column;gap:8px;height:300px;overflow-y:auto}
+.msg-ai{background:var(--gs);border-radius:4px 10px 10px 10px;padding:0.6rem 0.875rem;font-size:12px;color:var(--gda);max-width:85%;line-height:1.5}
+.msg-user{background:var(--gm);border-radius:10px 4px 10px 10px;padding:0.6rem 0.875rem;font-size:12px;color:white;max-width:78%;align-self:flex-end}
+.chat-input-row{display:flex;gap:6px;padding:0.75rem 1rem;border-top:1px solid var(--gs);background:var(--w)}
+.chat-input-row input{flex:1;padding:8px 12px;border-radius:8px;border:1px solid var(--gs);font-size:12px;color:var(--tp);font-family:'DM Sans',sans-serif;outline:none}
+.chat-input-row input:focus{border-color:var(--gb)}
+.chat-typing{display:none;font-size:11px;color:var(--tm);padding:0 1rem 0.4rem;font-style:italic;background:var(--g1)}
+
+/* PAYWALL */
+.paywall{background:var(--gs);border:1.5px solid var(--gb);border-radius:12px;padding:1.5rem;text-align:center;margin-top:1rem;display:none}
+.paywall h3{font-family:'Syne',sans-serif;font-size:18px;color:var(--gda);margin-bottom:0.5rem}
+.paywall p{font-size:13px;color:var(--ts);margin-bottom:1rem}
+.btn-pay{background:var(--gb);color:white;border:none;padding:12px 28px;border-radius:9px;font-size:14px;cursor:pointer;font-weight:500;font-family:'DM Sans',sans-serif;width:100%}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.about-point{background:var(--w);border:1px solid var(--gs);border-radius:10px;padding:1rem;display:flex;gap:10px}
+.about-icon{width:32px;height:32px;background:var(--gs);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.about-point h4{font-size:13px;font-weight:500;margin-bottom:3px}
+.about-point p{font-size:11px;color:var(--ts);line-height:1.5}
+.expertise-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:1.25rem}
+.exp-tag{background:var(--gm);color:var(--gp);font-size:11px;padding:5px 12px;border-radius:6px}
+
+/* CONTACT */
+.contact-bg{background:var(--gda);padding:2rem 1.5rem}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.contact-card{background:var(--gm);border-radius:12px;padding:1.25rem;border:1px solid var(--g)}
+.contact-card h4{font-size:11px;color:var(--gl);margin-bottom:0.875rem;font-weight:500;text-transform:uppercase;letter-spacing:1px}
+.contact-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.contact-icon{width:28px;height:28px;background:var(--g);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.contact-label{font-size:9px;color:var(--gl)}
+.contact-val{font-size:12px;color:white}
+.wa-btn{display:flex;align-items:center;gap:8px;background:#25D366;color:white;border:none;padding:9px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:500;width:100%;justify-content:center;margin-top:0.875rem;font-family:'DM Sans',sans-serif}
+.form-group{margin-bottom:8px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--g);font-size:12px;background:var(--g);color:white;font-family:'DM Sans',sans-serif;outline:none}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--gp)}
+.form-group textarea{resize:none;height:70px}
+.form-group select{color:var(--gp)}
+.form-group select option{background:var(--gm);color:white}
+.btn-submit{background:var(--gb);color:white;border:none;padding:9px;border-radius:8px;font-size:12px;cursor:pointer;width:100%;font-weight:500;font-family:'DM Sans',sans-serif}
+.form-alert{background:var(--gs);color:var(--gm);border-radius:7px;padding:8px 12px;font-size:12px;margin-top:7px;display:none;border:1px solid var(--gb)}
+
+/* LEGAL */
+.legal-content{max-width:760px;margin:0 auto;padding:2rem 1.5rem}
+.legal-content h1{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;margin-bottom:0.4rem}
+.legal-content .legal-date{font-size:12px;color:var(--tm);margin-bottom:1.5rem}
+.legal-content h2{font-size:15px;font-weight:500;margin:1.5rem 0 0.5rem;color:var(--gm)}
+.legal-content p{font-size:13px;color:var(--ts);line-height:1.8;margin-bottom:0.875rem}
+.legal-content ul{font-size:13px;color:var(--ts);line-height:1.8;padding-left:1.25rem;margin-bottom:0.875rem}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--w);border-radius:14px;padding:1.75rem;width:100%;max-width:360px;position:relative}
+.modal-close{position:absolute;top:0.875rem;right:0.875rem;background:none;border:none;font-size:17px;cursor:pointer;color:var(--tm)}
+.modal h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:0.2rem}
+.modal>div>p{font-size:12px;color:var(--ts);margin-bottom:1.25rem}
+.modal-input{width:100%;padding:8px 12px;border-radius:8px;border:1px solid #E0E0E0;font-size:12px;color:var(--tp);font-family:'DM Sans',sans-serif;margin-bottom:8px;outline:none}
+.modal-input:focus{border-color:var(--gb)}
+.modal-select{width:100%;padding:8px 12px;border-radius:8px;border:1px solid #E0E0E0;font-size:12px;color:var(--tp);font-family:'DM Sans',sans-serif;margin-bottom:8px;background:white}
+.modal-btn{background:var(--gm);color:white;border:none;padding:10px;border-radius:8px;font-size:13px;cursor:pointer;width:100%;font-weight:500;margin-top:3px;font-family:'DM Sans',sans-serif}
+.modal-switch{font-size:11px;color:var(--ts);text-align:center;margin-top:12px}
+.modal-switch a{color:var(--gb);cursor:pointer;text-decoration:none;font-weight:500}
+.modal-success{background:var(--gs);color:var(--gm);border-radius:7px;padding:10px;font-size:12px;text-align:center;display:none;border:1px solid var(--gb);margin-top:8px}
+.modal-error{background:#FFF0F0;color:#C0392B;border-radius:7px;padding:10px;font-size:12px;text-align:center;display:none;border:1px solid #E74C3C;margin-top:8px}
+.modal-loading{font-size:12px;color:var(--tm);text-align:center;display:none;margin-top:6px}
+
+/* COOKIE */
+.cookie-banner{position:fixed;bottom:0;left:0;right:0;background:var(--gda);color:var(--gp);padding:0.875rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:0.875rem;z-index:999;flex-wrap:wrap;border-top:1px solid var(--g)}
+.cookie-banner p{font-size:11px;line-height:1.5}
+.cookie-banner a{color:var(--gl);text-decoration:none}
+.cookie-btns{display:flex;gap:7px;flex-shrink:0}
+.btn-cookie-accept{background:var(--gb);color:white;border:none;padding:6px 14px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:500}
+.btn-cookie-decline{background:transparent;color:var(--gp);border:1px solid var(--g);padding:6px 14px;border-radius:6px;font-size:11px;cursor:pointer}
+
+/* FOOTER */
+footer{background:var(--gd);padding:1.75rem 1.5rem;text-align:center}
+.footer-logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:white;margin-bottom:3px}
+.footer-logo span{color:var(--gb)}
+.footer-tagline{font-size:10px;color:var(--gp);margin-bottom:1.25rem}
+.footer-links{display:flex;gap:1rem;justify-content:center;margin-bottom:0.875rem;flex-wrap:wrap}
+.footer-links a{font-size:11px;color:var(--gl);text-decoration:none;cursor:pointer}
+.footer-links a:hover{color:white}
+.footer-divider{height:1px;background:var(--gm);margin:0.875rem auto;max-width:360px}
+.footer-copy{font-size:10px;color:var(--g)}
+
+/* ASSIGN */
+.assign-type-btn{background:white;border:1.5px solid var(--gs);color:var(--ts);font-size:11px;padding:5px 10px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.assign-type-btn.active{background:var(--gs);border-color:var(--gb);color:var(--gm);font-weight:500}
+
+/* BUBBLES */
+.bubble-wrap{position:fixed;bottom:20px;right:14px;z-index:9999;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.bubble-popup{display:none;flex-direction:column;width:min(285px,86vw);background:white;border-radius:14px;border:1px solid #E1F5EE;box-shadow:0 4px 20px rgba(8,80,65,0.15);overflow:hidden}
+.bubble-header{background:#085041;padding:10px 12px;display:flex;align-items:center;gap:8px}
+.bubble-av{width:28px;height:28px;background:#1D9E75;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:white;flex-shrink:0}
+.bubble-msgs{padding:10px;display:flex;flex-direction:column;gap:7px;max-height:180px;overflow-y:auto;background:#F8FAFA}
+.bubble-chips{display:flex;gap:4px;flex-wrap:wrap;padding:6px 10px;background:#F8FAFA}
+.bubble-chip{background:white;border:1px solid #E1F5EE;color:#085041;font-size:9px;padding:3px 7px;border-radius:10px;cursor:pointer;font-family:inherit}
+.bubble-input-row{display:flex;gap:5px;padding:8px 10px;border-top:1px solid #E1F5EE;background:white}
+.bubble-input-row input{flex:1;padding:6px 9px;border-radius:7px;border:1px solid #E1F5EE;font-size:11px;outline:none;font-family:inherit}
+.bubble-input-row button{background:#085041;color:white;border:none;padding:6px 10px;border-radius:7px;font-size:11px;cursor:pointer;font-family:inherit}
+.bubble-btn{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bubble-label{font-size:10px;padding:5px 10px;border-radius:16px;white-space:nowrap;cursor:pointer}
+
+/* PRICING (hidden) */
+#page-pricing{display:none !important}
+
+/* MOBILE */
+@media(max-width:900px){
+  .nav-links{display:none}
+  .hamburger{display:block}
+}
+@media(max-width:768px){
+  .hero h1{font-size:26px}
+  .section{padding:1.5rem 1rem}
+  .about-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .contact-bg{padding:1.5rem 1rem}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  footer{padding:1.25rem 1rem}
+  .legal-content{padding:1.5rem 1rem}
+  .banner{flex-direction:column;align-items:flex-start}
+  .chat-area{height:240px}
+  nav{padding:0.625rem 1rem}
+}
+@media(max-width:480px){
+  .hero{padding:2rem 1rem}
+  .hero h1{font-size:22px}
+  .btn-hero,.btn-hero-out{padding:10px 16px;font-size:13px}
+  .grid-3{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo-wrap" onclick="showPage('home')">
+    <div class="logo-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 2 6 4.5 6 8c0 2 0.8 3.8 2 5V16h1v3h6v-3h1v-3c1.2-1.2 2-3 2-5 0-3.5-3-6-6-6z" fill="#5DCAA5"/><circle cx="12" cy="8" r="2.5" fill="#085041"/><path d="M10.5 8l1 1L14 6.5" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="logo-text">Agri<span>Vidya</span></div>
+  </a>
+  <div class="nav-links">
+    <a id="nav-home" onclick="showPage('home')">Home</a>
+    <a id="nav-services" onclick="showPage('services')">Services</a>
+    <a id="nav-gate" onclick="showPage('gate')">GATE/ICAR</a>
+    <a id="nav-ai" onclick="showPage('ai')">Learn AI</a>
+    <a id="nav-bot" onclick="showPage('bot')">VidyaBot</a>
+    <a id="nav-assignment" onclick="showPage('assignment')">Assignment Help</a>
+    <a id="nav-about" onclick="showPage('about')">About</a>
+    <a id="nav-contact" onclick="showPage('contact')">Contact</a>
+  </div>
+  <div class="nav-right">
+    <button class="btn-login" id="btnLogin" onclick="openModal('login')">Log in</button>
+    <button class="btn-signup" id="btnSignup" onclick="openModal('signup')">Sign up</button>
+    <button class="btn-user" id="btnUser" onclick="handleLogout()">Log out</button>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a id="mnav-home" onclick="showPage('home');closeMobileNav()">🏠 Home</a>
+  <a id="mnav-services" onclick="showPage('services');closeMobileNav()">🌾 Services</a>
+  <a id="mnav-gate" onclick="showPage('gate');closeMobileNav()">📚 GATE/ICAR</a>
+  <a id="mnav-ai" onclick="showPage('ai');closeMobileNav()">🧠 Learn AI</a>
+  <a id="mnav-bot" onclick="showPage('bot');closeMobileNav()">🤖 VidyaBot</a>
+  <a id="mnav-assignment" onclick="showPage('assignment');closeMobileNav()">📝 Assignment Help</a>
+  <a id="mnav-about" onclick="showPage('about');closeMobileNav()">ℹ️ About</a>
+  <a id="mnav-contact" onclick="showPage('contact');closeMobileNav()">📞 Contact</a>
+</div>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-badge"><div class="hero-dot"></div>India's AI platform for Agri & Food Engineering</div>
+    <h1>The <em>AI Brain</em> for<br>Agri & Food Engineering</h1>
+    <div class="hero-spec">
+      <span class="spec-tag">Food Engineering</span>
+      <span class="spec-tag">Agricultural Engineering</span>
+      <span class="spec-tag">Agriculture</span>
+    </div>
+    <p class="hero-sub">From Soil to Solution — Grow Smarter. Learn Deeper. Built by Engineers, for Engineers.</p>
+    <div class="hero-btns">
+      <button class="btn-hero" onclick="openModal('signup')">Start Learning Free</button>
+      <button class="btn-hero-out" onclick="showPage('gate')">Explore GATE/ICAR Prep</button>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">AI available</div></div>
+      <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Topics</div></div>
+      <div class="stat"><div class="stat-num">Free</div><div class="stat-label">To start</div></div>
+      <div class="stat"><div class="stat-num">AI</div><div class="stat-label">Powered</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">What we offer</div>
+    <div class="section-title">Everything you need — one platform</div>
+    <div class="section-sub">For Food & Agricultural Engineering students, researchers & professionals across India</div>
+    <div class="grid-3">
+      <div class="card" onclick="showPage('bot')"><div class="card-icon">🤖</div><h3>VidyaBot AI</h3><p>24/7 AI for Food & Agri Engineering. Indian syllabus focused.</p><span class="card-tag">5 free questions</span><span class="card-arrow">Ask now →</span></div>
+      <div class="card" onclick="showPage('gate')"><div class="card-icon">📚</div><h3>GATE / ICAR Prep</h3><p>MCQs, previous year papers, formula sheets for XL & AG streams.</p><span class="card-tag">GATE · ICAR-JRF</span><span class="card-arrow">Start prep →</span></div>
+      <div class="card" onclick="showPage('assignment')"><div class="card-icon">📝</div><h3>Assignment Help</h3><p>AI-powered help for calculations, problems & research writing.</p><span class="card-tag">3 free answers</span><span class="card-arrow">Get help →</span></div>
+      <div class="card" onclick="showPage('ai')"><div class="card-icon">🧠</div><h3>Learn AI</h3><p>Apply AI & ML in food processing, precision farming & agri research.</p><span class="card-tag card-tag-soon">Coming soon</span><span class="card-arrow">Explore →</span></div>
+      <div class="card" onclick="showPage('gate')"><div class="card-icon">🏦</div><h3>Bank & Govt Exams</h3><p>NABARD, FCI, SBI Agriculture Officer — complete preparation.</p><span class="card-tag">NABARD · FCI · SBI</span><span class="card-arrow">View exams →</span></div>
+      <div class="card" onclick="showPage('services')"><div class="card-icon">🌾</div><h3>Study Material</h3><p>Notes, formula sheets, e-books for Food & Agri Engineering.</p><span class="card-tag">Free downloads</span><span class="card-arrow">Browse →</span></div>
+    </div>
+  </div>
+  <div class="section section-alt">
+    <div class="banner-row">
+      <div class="banner banner-green">
+        <div><h3>GATE & ICAR-JRF Coaching</h3><p>AI-powered prep for Food Technology & Agri Engineering</p><div class="banner-tags"><span class="banner-tag">Food Tech (XL)</span><span class="banner-tag">Agri Engg (AG)</span><span class="banner-tag">ICAR-JRF</span></div></div>
+        <button class="btn-hero" onclick="showPage('gate')">Start now →</button>
+      </div>
+      <div class="banner banner-dark">
+        <div><h3>Assignment Help by VidyaBot</h3><p>Instant AI-powered answers for your food & agri engineering assignments.</p><div class="banner-tags"><span class="banner-tag">UG · PG · PhD</span><span class="banner-tag">3 free answers</span></div></div>
+        <button class="btn-hero" onclick="showPage('assignment')">Get help →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div id="page-services" class="page">
+  <div class="section">
+    <div class="section-label">All services</div>
+    <div class="section-title">Complete learning ecosystem</div>
+    <div class="section-sub">From undergraduate to PhD — and professional certification</div>
+    <div class="grid-3">
+      <div class="card" onclick="showPage('bot')"><div class="card-icon">🤖</div><h3>VidyaBot AI</h3><p>Expert answers on Food & Agri Engineering — 24/7, Indian syllabus aligned.</p><span class="card-tag">5 free questions</span></div>
+      <div class="card" onclick="showPage('gate')"><div class="card-icon">📚</div><h3>GATE / ICAR Prep</h3><p>MCQs, mock tests, previous year papers for XL and AG streams.</p><span class="card-tag">GATE · ICAR-JRF</span></div>
+      <div class="card" onclick="showPage('gate')"><div class="card-icon">🏦</div><h3>Bank & Govt Exams</h3><p>NABARD, FCI AGM, SBI Agriculture Officer, RBI preparation.</p><span class="card-tag">NABARD · FCI · SBI</span></div>
+      <div class="card" onclick="showPage('ai')"><div class="card-icon">🧠</div><h3>Learn AI</h3><p>AI & ML for food & agri — computer vision, sensors, data analysis.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card" onclick="showPage('assignment')"><div class="card-icon">📝</div><h3>Assignment Help</h3><p>Guided solutions for engineering calculations, problems & lab reports.</p><span class="card-tag">3 free answers</span></div>
+      <div class="card"><div class="card-icon">🔬</div><h3>Research Guidance</h3><p>PhD thesis support, literature review, paper writing & methodology.</p><span class="card-tag">Research scholars</span></div>
+      <div class="card"><div class="card-icon">📖</div><h3>Study Material</h3><p>Notes, formula sheets, e-books for Food & Agri Engineering.</p><span class="card-tag">Free downloads</span></div>
+      <div class="card"><div class="card-icon">🌾</div><h3>Farmer Advisory</h3><p>AI advisory for post harvest losses, food processing & value addition.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-icon">🏛️</div><h3>Institutional Access</h3><p>Custom AI tools for colleges & universities with admin panel.</p><span class="card-tag">Contact us</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- GATE -->
+<div id="page-gate" class="page">
+  <div class="hero" style="padding:2.5rem 1.5rem">
+    <div class="hero-badge"><div class="hero-dot"></div>GATE & ICAR-JRF Preparation</div>
+    <h1>Crack <em>GATE & ICAR</em><br>with AI-powered prep</h1>
+    <p class="hero-sub">MCQs, previous year papers, formula sheets — for Food Technology & Agricultural Engineering.</p>
+    <div class="hero-btns"><button class="btn-hero" onclick="openModal('signup')">Start free prep</button></div>
+  </div>
+  <div class="section">
+    <div class="section-label">Exam streams</div>
+    <div class="section-title">All exams we cover</div>
+    <div class="grid-2">
+      <div class="card"><div class="card-icon">🍱</div><h3>GATE Food Technology (XL)</h3><p>Food Chemistry, Microbiology, Technology, Engineering — complete coverage.</p><span class="card-tag">XL stream</span></div>
+      <div class="card"><div class="card-icon">⚙️</div><h3>GATE Agricultural Engineering (AG)</h3><p>Farm Machinery, Soil & Water, Processing, Irrigation & Drainage.</p><span class="card-tag">AG stream</span></div>
+      <div class="card"><div class="card-icon">🏫</div><h3>ICAR-JRF / SRF</h3><p>Food Science, Post Harvest Technology, Agricultural Engineering.</p><span class="card-tag">ICAR</span></div>
+      <div class="card"><div class="card-icon">🏦</div><h3>NABARD Grade A</h3><p>Agri Economics, Rural Development, NABARD schemes.</p><span class="card-tag">NABARD</span></div>
+      <div class="card"><div class="card-icon">🌾</div><h3>FCI — Agri Graduate</h3><p>Food grains, storage, procurement, supply chain.</p><span class="card-tag">FCI</span></div>
+      <div class="card"><div class="card-icon">🏛️</div><h3>SBI / RBI Agriculture Officer</h3><p>Banking + agri combined preparation.</p><span class="card-tag">SBI · RBI</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- LEARN AI -->
+<div id="page-ai" class="page">
+  <div class="hero" style="padding:2.5rem 1.5rem">
+    <div class="hero-badge"><div class="hero-dot"></div>Coming Soon</div>
+    <h1>Apply <em>AI & ML</em> in<br>Food & Agri Engineering</h1>
+    <p class="hero-sub">Computer vision for crops, sensor data, food quality AI. Practical, hands-on, industry relevant. Launching soon!</p>
+    <div class="hero-btns"><button class="btn-hero" onclick="openModal('signup')">Get notified when live</button></div>
+  </div>
+  <div class="section">
+    <div class="section-label">Coming soon</div>
+    <div class="section-title">What you will learn</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-icon">🤖</div><h3>AI basics for engineers</h3><p>What is AI, ML, Deep Learning — no coding background needed.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-icon">👁️</div><h3>Computer vision in agri</h3><p>Fruit quality detection, crop disease identification, grading.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-icon">📡</div><h3>Sensor & IoT analysis</h3><p>E-nose, e-tongue, smart sensors — AI modelling for food quality.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-icon">🌾</div><h3>Precision farming AI</h3><p>Crop monitoring, yield prediction, irrigation AI, drone data.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-icon">🍱</div><h3>Food quality & safety AI</h3><p>Adulteration detection, shelf life prediction, HACCP automation.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-icon">🛠️</div><h3>Build your AI project</h3><p>From idea to working prototype for final year & thesis.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- VIDYABOT -->
+<div id="page-bot" class="page">
+  <div class="section">
+    <div class="section-label">AI assistant</div>
+    <div class="section-title">Ask VidyaBot 📚</div>
+    <div class="section-sub">Your AI companion for Food & Agri Engineering — sign in to use. 5 free questions per account.</div>
+    <div class="bot-wrap">
+      <div class="bot-top">
+        <div class="bot-av">VB</div>
+        <div style="flex:1">
+          <div class="bot-name">VidyaBot — Your AI Companion 📚</div>
+          <div class="bot-status"><div class="bot-dot"></div>Online — ready to help</div>
+        </div>
+        <div style="font-size:11px;color:var(--gl)" id="questionCounter">5 free questions left</div>
+      </div>
+      <div class="chat-area" id="chatArea">
+        <div class="msg-ai">Namaste! I'm VidyaBot 📚 — ask me anything about Food Engineering, Agricultural Engineering or GATE/ICAR prep. You have 5 free questions!</div>
+      </div>
+      <div class="chat-typing" id="chatTyping">VidyaBot is typing...</div>
+      <div class="chat-input-row">
+        <input type="text" id="botInput" placeholder="Ask your food engineering or exam question..." onkeydown="if(event.key==='Enter')sendBotMsg()"/>
+        <button onclick="sendBotMsg()" style="background:var(--gm);color:white;border:none;padding:8px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:500;font-family:'DM Sans',sans-serif;white-space:nowrap">Send</button>
+      </div>
+    </div>
+    <div class="paywall" id="botPaywall">
+      <div style="font-size:28px;margin-bottom:0.5rem">🔒</div>
+      <h3>Free questions used up!</h3>
+      <p>You've used your 5 free questions. WhatsApp us to continue or we'll add more options soon!</p>
+      <button class="btn-pay" onclick="window.open('https://wa.me/919581313313?text=Hi AgriVidya! I need more VidyaBot questions.','_blank')">Contact us on WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- ASSIGNMENT HELP -->
+<div id="page-assignment" class="page">
+  <div class="hero" style="padding:2.5rem 1.5rem">
+    <div class="hero-badge"><div class="hero-dot"></div>AI-Powered Assignment Help</div>
+    <h1>Assignment &<br><em>Thesis Help</em></h1>
+    <p class="hero-sub">Get instant AI-powered help for food engineering calculations, agri problems, lab reports & research writing. 3 free answers per account.</p>
+  </div>
+  <div class="section">
+    <div class="section-label">Get help now</div>
+    <div class="section-title">Describe your assignment</div>
+    <div class="section-sub">VidyaBot gives you a detailed, exam-quality answer — 3 free answers, then contact us for more</div>
+
+    <div style="background:var(--g1);border-radius:12px;border:1px solid var(--gs);overflow:hidden;max-width:740px">
+      <div style="background:var(--gm);padding:0.875rem 1.25rem;display:flex;align-items:center;gap:10px">
+        <div style="width:30px;height:30px;background:var(--gb);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;flex-shrink:0">VB</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:white">VidyaBot Assignment Helper 📝</div>
+          <div style="font-size:10px;color:var(--gl)" id="assignCounter">● Ready to help • 3 free answers remaining</div>
+        </div>
+      </div>
+      <div style="padding:1.25rem">
+        <div style="margin-bottom:0.875rem">
+          <label style="font-size:12px;font-weight:500;color:var(--tp);display:block;margin-bottom:5px">Select Subject</label>
+          <select id="assignSubject" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--gs);font-size:12px;color:var(--tp);font-family:'DM Sans',sans-serif;background:white;outline:none">
+            <option value="" disabled selected>Choose your subject...</option>
+            <optgroup label="Food Engineering">
+              <option>Heat & Mass Transfer in Food Processing</option>
+              <option>Food Drying & Evaporation</option>
+              <option>Refrigeration & Cold Chain</option>
+              <option>Fluid Mechanics in Food Industry</option>
+              <option>Psychrometrics</option>
+              <option>Food Packaging Technology</option>
+              <option>Food Process Engineering</option>
+            </optgroup>
+            <optgroup label="Agricultural Engineering">
+              <option>Farm Machinery & Equipment</option>
+              <option>Soil & Water Conservation</option>
+              <option>Irrigation & Drainage Engineering</option>
+              <option>Post Harvest Technology</option>
+              <option>Agricultural Processing & Storage</option>
+            </optgroup>
+            <optgroup label="Food Science & Technology">
+              <option>Food Chemistry</option>
+              <option>Food Microbiology</option>
+              <option>Food Preservation Methods</option>
+              <option>Food Quality & Safety</option>
+              <option>Dairy Technology</option>
+            </optgroup>
+            <optgroup label="Exams">
+              <option>GATE Food Technology (XL)</option>
+              <option>GATE Agricultural Engineering (AG)</option>
+              <option>ICAR-JRF</option>
+              <option>NABARD Agriculture</option>
+            </optgroup>
+            <option>Other / General</option>
+          </select>
+        </div>
+        <div style="margin-bottom:0.875rem">
+          <label style="font-size:12px;font-weight:500;color:var(--tp);display:block;margin-bottom:5px">Type of Help</label>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="assign-type-btn active" onclick="selectAssignType(this,'Explain the concept')">📖 Explain</button>
+            <button class="assign-type-btn" onclick="selectAssignType(this,'Solve this numerical problem step by step')">🔢 Solve numerical</button>
+            <button class="assign-type-btn" onclick="selectAssignType(this,'Write a detailed assignment answer for')">✍️ Write answer</button>
+            <button class="assign-type-btn" onclick="selectAssignType(this,'List all important key points about')">📋 Key points</button>
+            <button class="assign-type-btn" onclick="selectAssignType(this,'Give formula, derivation and explanation for')">📐 Formula</button>
+          </div>
+        </div>
+        <div style="margin-bottom:0.875rem">
+          <label style="font-size:12px;font-weight:500;color:var(--tp);display:block;margin-bottom:5px">Your Question</label>
+          <textarea id="assignQuestion" placeholder="Type your assignment question here... e.g. Calculate the drying rate for a food product with initial moisture content 80% (wb) dried to 10% (wb)" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--gs);font-size:12px;color:var(--tp);font-family:'DM Sans',sans-serif;outline:none;resize:none;height:90px" onfocus="this.style.borderColor='var(--gb)'" onblur="this.style.borderColor='var(--gs)'"></textarea>
+        </div>
+        <button onclick="submitAssignment()" style="background:var(--gm);color:white;border:none;padding:11px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:500;font-family:'DM Sans',sans-serif;width:100%">Get Answer from VidyaBot 📚</button>
+      </div>
+      <div id="assignTyping" style="display:none;font-size:11px;color:var(--tm);padding:0 1.25rem 0.4rem;font-style:italic;background:var(--g1)">VidyaBot is preparing your answer...</div>
+      <div id="assignAnswer" style="display:none;padding:1.25rem;background:white;border-top:1px solid var(--gs)">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:0.875rem">
+          <div style="width:26px;height:26px;background:var(--gb);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0">VB</div>
+          <span style="font-size:12px;font-weight:500;color:var(--gm)">VidyaBot's Answer</span>
+        </div>
+        <div id="assignAnswerText" style="font-size:13px;color:var(--tp);line-height:1.8;white-space:pre-wrap"></div>
+        <div style="margin-top:0.875rem;padding-top:0.875rem;border-top:1px solid var(--gs);display:flex;gap:7px;flex-wrap:wrap">
+          <button onclick="copyAssignAnswer()" style="background:var(--gs);color:var(--gm);border:1px solid var(--gs);padding:6px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500">📋 Copy</button>
+          <button onclick="clearAssignment()" style="background:transparent;color:var(--tm);border:1px solid var(--gs);padding:6px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">New question</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="paywall" id="assignPaywall">
+      <div style="font-size:28px;margin-bottom:0.5rem">📩</div>
+      <h3>Free answers used!</h3>
+      <p>You've used your 3 free assignment answers. WhatsApp us to get more help!</p>
+      <button class="btn-pay" onclick="window.open('https://wa.me/919581313313?text=Hi AgriVidya! I need more assignment help.','_blank')">Contact us on WhatsApp</button>
+    </div>
+
+    <div style="margin-top:1.5rem">
+      <div style="font-size:12px;font-weight:500;color:var(--tp);margin-bottom:0.875rem">Popular topics:</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap">
+        <button onclick="quickAssign('Explain the working principle of spray dryer')" style="background:white;border:1px solid var(--gs);color:var(--ts);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">Spray dryer</button>
+        <button onclick="quickAssign('Explain HTST pasteurization process and conditions')" style="background:white;border:1px solid var(--gs);color:var(--ts);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">HTST pasteurization</button>
+        <button onclick="quickAssign('Explain water activity and its importance in food preservation')" style="background:white;border:1px solid var(--gs);color:var(--ts);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">Water activity</button>
+        <button onclick="quickAssign('Explain HACCP principles and food industry application')" style="background:white;border:1px solid var(--gs);color:var(--ts);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">HACCP</button>
+        <button onclick="quickAssign('Explain freeze drying and advantages over other drying methods')" style="background:white;border:1px solid var(--gs);color:var(--ts);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">Freeze drying</button>
+        <button onclick="quickAssign('Explain different types of irrigation methods used in India')" style="background:white;border:1px solid var(--gs);color:var(--ts);font-size:11px;padding:5px 12px;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif">Irrigation methods</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="page-about" class="page">
+  <div class="section">
+    <div class="section-label">About AgriVidya</div>
+    <div class="section-title">Built by Engineers, for Engineers</div>
+    <p style="font-size:14px;color:var(--ts);line-height:1.9;margin-bottom:1rem;max-width:680px">AgriVidya is India's dedicated AI-powered learning platform for Food Engineering, Agricultural Engineering and allied sciences. We exist because students in these fields deserve the same quality of AI tools that students from top institutions have — regardless of where they study.</p>
+    <p style="font-size:14px;color:var(--ts);line-height:1.9;margin-bottom:1.5rem;max-width:680px">A student at ANGRAU, PJTSAU, or any state agricultural university deserves the same depth of learning support as a student at IIT or IARI. That's our mission.</p>
+    <div class="expertise-tags">
+      <span class="exp-tag">Food Engineering</span>
+      <span class="exp-tag">Agricultural Engineering</span>
+      <span class="exp-tag">Food Technology</span>
+      <span class="exp-tag">Post Harvest Technology</span>
+      <span class="exp-tag">Precision Agriculture</span>
+      <span class="exp-tag">AI & Sensor Systems</span>
+    </div>
+  </div>
+  <div class="section section-alt">
+    <div class="section-label">Why choose us</div>
+    <div class="section-title">Why AgriVidya?</div>
+    <div class="about-grid">
+      <div class="about-point"><div class="about-icon">🎓</div><div><h4>Syllabus aligned</h4><p>Mapped to ANGRAU, PJTSAU, ICAR & central university curricula.</p></div></div>
+      <div class="about-point"><div class="about-icon">🧪</div><div><h4>Subject-specific AI</h4><p>Correct, syllabus-relevant answers — not generic responses.</p></div></div>
+      <div class="about-point"><div class="about-icon">🌐</div><div><h4>Multilingual</h4><p>English, Telugu and Hindi — accessible across India.</p></div></div>
+      <div class="about-point"><div class="about-icon">🔒</div><div><h4>Privacy first</h4><p>Your data is never shared, sold or used for advertising.</p></div></div>
+      <div class="about-point"><div class="about-icon">📱</div><div><h4>Available everywhere</h4><p>Website, WhatsApp & Telegram — any device, any time.</p></div></div>
+      <div class="about-point"><div class="about-icon">♾️</div><div><h4>Always growing</h4><p>New topics, tools and features added regularly.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="page-contact" class="page">
+  <div class="contact-bg">
+    <div class="section-label" style="color:var(--gl)">Get in touch</div>
+    <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:white;margin-bottom:0.4rem">Let's connect</div>
+    <div style="font-size:13px;color:var(--gp);margin-bottom:1.5rem">For student queries, institutional access, collaborations & partnerships</div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h4>Contact details</h4>
+        <div class="contact-row"><div class="contact-icon">📞</div><div><div class="contact-label">Phone</div><div class="contact-val">+91 95813 13313</div></div></div>
+        <div class="contact-row"><div class="contact-icon">✉️</div><div><div class="contact-label">Email</div><div class="contact-val">agrividya@gmail.com</div></div></div>
+        <div class="contact-row"><div class="contact-icon">📍</div><div><div class="contact-label">Location</div><div class="contact-val">Bapatla, Andhra Pradesh</div></div></div>
+        <button class="wa-btn" onclick="window.open('https://wa.me/919581313313?text=Hello AgriVidya!','_blank')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.083.535 4.04 1.472 5.747L.057 23.882l6.29-1.648A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.802 9.802 0 01-5.001-1.368l-.359-.213-3.733.978.994-3.63-.234-.373A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182c5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
+          Chat on WhatsApp
+        </button>
+      </div>
+      <div class="contact-card">
+        <h4>Send a message</h4>
+        <div class="form-group"><input type="text" id="cname" placeholder="Your name"/></div>
+        <div class="form-group"><input type="email" id="cemail" placeholder="Email address"/></div>
+        <div class="form-group"><select id="ctype"><option value="" disabled selected>Type of enquiry</option><option>Student query</option><option>GATE/ICAR coaching</option><option>Institutional access</option><option>Research collaboration</option><option>Other</option></select></div>
+        <div class="form-group"><textarea id="cmsg" placeholder="Your message..."></textarea></div>
+        <button class="btn-submit" onclick="submitContact()">Send message</button>
+        <div class="form-alert" id="formAlert">✓ Message sent! We'll reply within 24 hours.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LEGAL -->
+<div id="page-privacy" class="page"><div class="legal-content"><h1>Privacy Policy</h1><div class="legal-date">Last updated: January 2025</div><h2>1. Information we collect</h2><p>AgriVidya collects information you provide when creating an account, using VidyaBot, or contacting us.</p><h2>2. How we use it</h2><ul><li>To provide and improve our services</li><li>To personalise your learning</li><li>To respond to queries</li></ul><h2>3. Data sharing</h2><p>AgriVidya does not sell or share your personal information. No advertisements.</p><h2>4. Contact</h2><p>agrividya@gmail.com | +91 95813 13313</p></div></div>
+<div id="page-terms" class="page"><div class="legal-content"><h1>Terms of Use</h1><div class="legal-date">Last updated: January 2025</div><h2>1. Acceptance</h2><p>By using AgriVidya (agrividya.in), you agree to these Terms.</p><h2>2. Use of services</h2><p>AgriVidya is for educational purposes for food and agricultural engineering students.</p><h2>3. AI content</h2><p>AI responses are for educational guidance only. Verify critical information with your institution.</p><h2>4. Disclaimer</h2><p>Not affiliated with GATE, ICAR, NABARD, or any government body.</p><h2>5. Contact</h2><p>agrividya@gmail.com</p></div></div>
+<div id="page-disclaimer" class="page"><div class="legal-content"><h1>Disclaimer</h1><div class="legal-date">Last updated: January 2025</div><h2>Educational purpose only</h2><p>All content and AI responses are for educational purposes only.</p><h2>No official affiliation</h2><p>Not affiliated with GATE, ICAR, NABARD, FCI, SBI, RBI, ANGRAU, PJTSAU or any government body.</p><h2>Contact</h2><p>agrividya@gmail.com | agrividya.in</p></div></div>
+<div id="page-pricing" class="page"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Agri<span>Vidya</span></div>
+  <div class="footer-tagline">AI Brain for Agri & Food Engineering | From Soil to Solution</div>
+  <div class="footer-links">
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('services')">Services</a>
+    <a onclick="showPage('gate')">GATE/ICAR</a>
+    <a onclick="showPage('bot')">VidyaBot</a>
+    <a onclick="showPage('assignment')">Assignment Help</a>
+    <a onclick="showPage('about')">About</a>
+    <a onclick="showPage('contact')">Contact</a>
+  </div>
+  <div class="footer-links">
+    <a onclick="showPage('privacy')">Privacy Policy</a>
+    <a onclick="showPage('terms')">Terms of Use</a>
+    <a onclick="showPage('disclaimer')">Disclaimer</a>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-copy">© 2025 AgriVidya. All rights reserved. | agrividya.in | Bapatla, Andhra Pradesh, India</div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-login">
+      <h2>Welcome back</h2>
+      <p>Log in to your AgriVidya account</p>
+      <input class="modal-input" id="loginEmail" type="email" placeholder="Email address"/>
+      <input class="modal-input" id="loginPassword" type="password" placeholder="Password"/>
+      <button class="modal-btn" onclick="handleLogin()">Log in</button>
+      <div class="modal-loading" id="loginLoading">Logging in...</div>
+      <div class="modal-error" id="loginError"></div>
+      <div class="modal-success" id="loginSuccess">✓ Logged in! Welcome back.</div>
+      <div class="modal-switch">No account? <a onclick="openModal('signup')">Sign up free</a></div>
+    </div>
+    <div id="modal-signup" style="display:none">
+      <h2>Join AgriVidya</h2>
+      <p>Free access to AI tools & study material</p>
+      <input class="modal-input" id="signupName" type="text" placeholder="Full name"/>
+      <input class="modal-input" id="signupEmail" type="email" placeholder="Email address"/>
+      <select class="modal-select" id="signupRole">
+        <option value="" disabled selected>I am a...</option>
+        <option>UG Student (Food/Agri Engineering)</option>
+        <option>PG Student</option>
+        <option>PhD / Research Scholar</option>
+        <option>GATE/ICAR Aspirant</option>
+        <option>Faculty / Researcher</option>
+        <option>Farmer / Agri Professional</option>
+      </select>
+      <input class="modal-input" id="signupPassword" type="password" placeholder="Create password (min 6 chars)"/>
+      <button class="modal-btn" onclick="handleSignup()">Create free account</button>
+      <div class="modal-loading" id="signupLoading">Creating account...</div>
+      <div class="modal-error" id="signupError"></div>
+      <div class="modal-success" id="signupSuccess">✓ Account created! Check email to confirm.</div>
+      <div class="modal-switch">Have account? <a onclick="openModal('login')">Log in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- COOKIE -->
+<div class="cookie-banner" id="cookieBanner">
+  <p>We use cookies to improve your experience. <a onclick="showPage('privacy')">Privacy Policy</a></p>
+  <div class="cookie-btns">
+    <button class="btn-cookie-accept" onclick="acceptCookies()">Accept</button>
+    <button class="btn-cookie-decline" onclick="declineCookies()">Decline</button>
+  </div>
+</div>
+
+<!-- BUBBLES -->
+<div class="bubble-wrap">
+  <div class="bubble-popup" id="popupWindow">
+    <div class="bubble-header">
+      <div class="bubble-av">VB</div>
+      <div style="flex:1"><div style="font-size:12px;font-weight:600;color:white">VidyaBot 📚</div><div style="font-size:9px;color:#9FE1CB">Your AI Companion • Online</div></div>
+      <button onclick="togglePopup()" style="background:none;border:none;color:#9FE1CB;font-size:16px;cursor:pointer">✕</button>
+    </div>
+    <div class="bubble-msgs" id="popupMsgs">
+      <div style="background:#E1F5EE;color:#04342C;font-size:11px;padding:7px 9px;border-radius:3px 9px 9px 9px;max-width:88%;line-height:1.5">Namaste! I'm VidyaBot 📚 — ask me about Food & Agri Engineering or GATE/ICAR!</div>
+    </div>
+    <div class="bubble-chips">
+      <button class="bubble-chip" onclick="popupQuick('Explain psychrometrics')">Psychrometrics</button>
+      <button class="bubble-chip" onclick="popupQuick('GATE XL syllabus')">GATE XL</button>
+      <button class="bubble-chip" onclick="popupQuick('Food preservation')">Preservation</button>
+    </div>
+    <div id="popupTypingEl" style="display:none;font-size:10px;color:#7A9E94;font-style:italic;padding:0 10px 3px;background:#F8FAFA">VidyaBot is typing...</div>
+    <div class="bubble-input-row">
+      <input id="popupInput" type="text" placeholder="Ask VidyaBot..." onkeydown="if(event.key==='Enter')sendPopupMsg()"/>
+      <button onclick="sendPopupMsg()">Send</button>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:7px;justify-content:flex-end">
+    <div class="bubble-label" style="background:#085041;color:white;box-shadow:0 2px 6px rgba(8,80,65,0.3)" onclick="togglePopup()" id="vidyaLabel">VidyaBot — Your AI Companion</div>
+    <button class="bubble-btn" onclick="togglePopup()" style="background:#085041;box-shadow:0 2px 10px rgba(8,80,65,0.35)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.477 2 2 6.077 2 11c0 2.09.7 4.02 1.87 5.57L3 22l5.47-.88C9.89 21.67 10.93 22 12 22c5.523 0 10-4.077 10-9s-4.477-9-10-9z" fill="white"/><circle cx="8" cy="11" r="1.2" fill="#085041"/><circle cx="12" cy="11" r="1.2" fill="#085041"/><circle cx="16" cy="11" r="1.2" fill="#085041"/></svg>
+    </button>
+  </div>
+  <div style="display:flex;align-items:center;gap:7px;justify-content:flex-end">
+    <div class="bubble-label" style="background:#25D366;color:white;box-shadow:0 2px 6px rgba(37,211,102,0.3)" onclick="window.open('https://wa.me/919581313313?text=Hello AgriVidya!','_blank')">Chat on WhatsApp</div>
+    <button class="bubble-btn" onclick="window.open('https://wa.me/919581313313?text=Hello AgriVidya!','_blank')" style="background:#25D366;box-shadow:0 2px 10px rgba(37,211,102,0.35)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.083.535 4.04 1.472 5.747L.057 23.882l6.29-1.648A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.802 9.802 0 01-5.001-1.368l-.359-.213-3.733.978.994-3.63-.234-.373A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182c5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+const _supabase = supabase.createClient('https://yrrielpjbbsxdgbwzwzx.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlycmllbHBqYmJzeGRnYnd6d3p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NTY5NDMsImV4cCI6MjA5MDAzMjk0M30.v7jeOcfQU7-LAxWFSftnTHMSDbZmiTRJEN19bB1z5RA');
+
+let currentUser=null;
+let botQ=parseInt(localStorage.getItem('botQ')||'0');
+let assignQ=parseInt(localStorage.getItem('assignQ')||'0');
+const FREE_BOT=5,FREE_ASSIGN=3;
+
+function updateCounter(){
+  const left=Math.max(0,FREE_BOT-botQ);
+  const el=document.getElementById('questionCounter');
+  if(el)el.textContent=left>0?left+' free questions left':'Free questions used';
+  const el2=document.getElementById('assignCounter');
+  const left2=Math.max(0,FREE_ASSIGN-assignQ);
+  if(el2)el2.textContent='● Ready to help • '+left2+' free answers remaining';
+}
+
+function updateNav(user){
+  currentUser=user;
+  if(user){
+    document.getElementById('btnLogin').style.display='none';
+    document.getElementById('btnSignup').style.display='none';
+    document.getElementById('btnUser').style.display='block';
+    document.getElementById('btnUser').textContent=user.email.split('@')[0]+' • Log out';
+  } else {
+    document.getElementById('btnLogin').style.display='block';
+    document.getElementById('btnSignup').style.display='block';
+    document.getElementById('btnUser').style.display='none';
+  }
+}
+
+_supabase.auth.getSession().then(({data:{session}})=>{updateNav(session?.user??null);updateCounter();});
+_supabase.auth.onAuthStateChange((_e,s)=>{updateNav(s?.user??null);});
+
+async function handleLogin(){
+  const e=document.getElementById('loginEmail').value.trim();
+  const p=document.getElementById('loginPassword').value;
+  if(!e||!p){showErr('login','Please fill email and password');return;}
+  showLoad('login',true);
+  const{error}=await _supabase.auth.signInWithPassword({email:e,password:p});
+  showLoad('login',false);
+  if(error){showErr('login',error.message);return;}
+  document.getElementById('loginSuccess').style.display='block';
+  setTimeout(()=>{closeModal();document.getElementById('loginSuccess').style.display='none';},1500);
+}
+
+async function handleSignup(){
+  const n=document.getElementById('signupName').value.trim();
+  const e=document.getElementById('signupEmail').value.trim();
+  const p=document.getElementById('signupPassword').value;
+  const r=document.getElementById('signupRole').value;
+  if(!n||!e||!p){showErr('signup','Please fill all fields');return;}
+  if(p.length<6){showErr('signup','Password min 6 characters');return;}
+  showLoad('signup',true);
+  const{error}=await _supabase.auth.signUp({email:e,password:p,options:{data:{full_name:n,role:r}}});
+  showLoad('signup',false);
+  if(error){showErr('signup',error.message);return;}
+  document.getElementById('signupSuccess').style.display='block';
+}
+
+async function handleLogout(){await _supabase.auth.signOut();}
+function showErr(t,m){const el=document.getElementById(t+'Error');el.textContent=m;el.style.display='block';setTimeout(()=>el.style.display='none',4000);}
+function showLoad(t,s){document.getElementById(t+'Loading').style.display=s?'block':'none';}
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el=document.getElementById('page-'+id);
+  if(el){el.classList.add('active');window.scrollTo(0,0);}
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('nav-active'));
+  const nl=document.getElementById('nav-'+id);if(nl)nl.classList.add('nav-active');
+  document.querySelectorAll('.mobile-nav a').forEach(a=>a.classList.remove('nav-active-m'));
+  const ml=document.getElementById('mnav-'+id);if(ml)ml.classList.add('nav-active-m');
+}
+
+let mobileNavOpen=false;
+function toggleMobileNav(){
+  mobileNavOpen=!mobileNavOpen;
+  document.getElementById('mobileNav').style.display=mobileNavOpen?'block':'none';
+}
+function closeMobileNav(){
+  mobileNavOpen=false;
+  document.getElementById('mobileNav').style.display='none';
+}
+
+function openModal(type){
+  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('modal-login').style.display=type==='login'?'block':'none';
+  document.getElementById('modal-signup').style.display=type==='signup'?'block':'none';
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+
+function submitContact(){
+  const n=document.getElementById('cname').value;
+  const e=document.getElementById('cemail').value;
+  if(!n||!e){alert('Please fill name and email');return;}
+  const a=document.getElementById('formAlert');a.style.display='block';
+  document.getElementById('cname').value='';document.getElementById('cemail').value='';document.getElementById('cmsg').value='';
+  setTimeout(()=>a.style.display='none',4000);
+}
+function acceptCookies(){document.getElementById('cookieBanner').style.display='none';localStorage.setItem('cookies','accepted');}
+function declineCookies(){document.getElementById('cookieBanner').style.display='none';localStorage.setItem('cookies','declined');}
+if(localStorage.getItem('cookies'))document.getElementById('cookieBanner').style.display='none';
+
+function stripMd(t){return t.replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1').replace(/^#{1,6}\s+/gm,'').replace(/^[-*+]\s+/gm,'').trim();}
+
+// BOT
+const botMsgs=[];
+async function sendBotMsg(){
+  if(!currentUser){openModal('login');return;}
+  if(botQ>=FREE_BOT){document.getElementById('botPaywall').style.display='block';return;}
+  const inp=document.getElementById('botInput');
+  const msg=inp.value.trim();if(!msg)return;inp.value='';
+  botQ++;localStorage.setItem('botQ',botQ);updateCounter();
+  const ca=document.getElementById('chatArea');
+  const u=document.createElement('div');u.className='msg-user';u.textContent=msg;ca.appendChild(u);ca.scrollTop=ca.scrollHeight;
+  document.getElementById('chatTyping').style.display='block';
+  botMsgs.push({role:'user',content:msg});
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:botMsgs,max_tokens:600})});
+    const d=await r.json();if(d.error)throw new Error(d.error);
+    const rep=stripMd(d.content[0].text);
+    botMsgs.push({role:'assistant',content:rep});
+    document.getElementById('chatTyping').style.display='none';
+    const a=document.createElement('div');a.className='msg-ai';a.textContent=rep;ca.appendChild(a);ca.scrollTop=ca.scrollHeight;
+    if(botQ>=FREE_BOT)document.getElementById('botPaywall').style.display='block';
+  }catch(e){
+    document.getElementById('chatTyping').style.display='none';
+    const err=document.createElement('div');err.className='msg-ai';err.textContent='VidyaBot unavailable. WhatsApp: +91 95813 13313';ca.appendChild(err);
+  }
+}
+
+// ASSIGNMENT
+let assignType='Explain the concept';
+function selectAssignType(btn,t){document.querySelectorAll('.assign-type-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');assignType=t;}
+function quickAssign(q){document.getElementById('assignQuestion').value=q;submitAssignment();}
+async function submitAssignment(){
+  if(!currentUser){openModal('login');return;}
+  if(assignQ>=FREE_ASSIGN){document.getElementById('assignPaywall').style.display='block';return;}
+  const subj=document.getElementById('assignSubject').value;
+  const q=document.getElementById('assignQuestion').value.trim();
+  if(!q){alert('Please type your question!');return;}
+  assignQ++;localStorage.setItem('assignQ',assignQ);updateCounter();
+  const ctx=subj?'Subject: '+subj+'. ':'';
+  const full=ctx+assignType+': '+q;
+  document.getElementById('assignTyping').style.display='block';
+  document.getElementById('assignAnswer').style.display='none';
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:full}],max_tokens:800})});
+    const d=await r.json();if(d.error)throw new Error(d.error);
+    const rep=stripMd(d.content[0].text);
+    document.getElementById('assignTyping').style.display='none';
+    document.getElementById('assignAnswerText').textContent=rep;
+    document.getElementById('assignAnswer').style.display='block';
+    document.getElementById('assignAnswer').scrollIntoView({behavior:'smooth'});
+    if(assignQ>=FREE_ASSIGN)setTimeout(()=>{document.getElementById('assignPaywall').style.display='block';},1500);
+  }catch(e){
+    document.getElementById('assignTyping').style.display='none';
+    document.getElementById('assignAnswerText').textContent='VidyaBot unavailable. WhatsApp: +91 95813 13313';
+    document.getElementById('assignAnswer').style.display='block';
+  }
+}
+function copyAssignAnswer(){navigator.clipboard.writeText(document.getElementById('assignAnswerText').textContent).then(()=>alert('Copied!'));}
+function clearAssignment(){document.getElementById('assignQuestion').value='';document.getElementById('assignAnswer').style.display='none';}
+
+// POPUP
+const popupMsgs=[];
+function togglePopup(){
+  const w=document.getElementById('popupWindow');
+  const open=w.style.display==='flex';
+  w.style.display=open?'none':'flex';
+  document.getElementById('vidyaLabel').style.display=open?'block':'none';
+  if(!open)document.getElementById('popupInput').focus();
+}
+function popupQuick(q){document.getElementById('popupInput').value=q;sendPopupMsg();}
+async function sendPopupMsg(){
+  const inp=document.getElementById('popupInput');
+  const msg=inp.value.trim();if(!msg)return;inp.value='';
+  const msgs=document.getElementById('popupMsgs');
+  const u=document.createElement('div');
+  u.style.cssText='background:#085041;color:white;font-size:11px;padding:7px 9px;border-radius:9px 3px 9px 9px;max-width:78%;align-self:flex-end;line-height:1.5;margin-left:auto';
+  u.textContent=msg;msgs.appendChild(u);msgs.scrollTop=msgs.scrollHeight;
+  document.getElementById('popupTypingEl').style.display='block';
+  popupMsgs.push({role:'user',content:msg});
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:popupMsgs,max_tokens:300})});
+    const d=await r.json();if(d.error)throw new Error(d.error);
+    const rep=stripMd(d.content[0].text);
+    popupMsgs.push({role:'assistant',content:rep});
+    document.getElementById('popupTypingEl').style.display='none';
+    const a=document.createElement('div');
+    a.style.cssText='background:#E1F5EE;color:#04342C;font-size:11px;padding:7px 9px;border-radius:3px 9px 9px 9px;max-width:88%;line-height:1.5';
+    a.textContent=rep;msgs.appendChild(a);msgs.scrollTop=msgs.scrollHeight;
   }catch(e){
     document.getElementById('popupTypingEl').style.display='none';
     const a=document.createElement('div');
