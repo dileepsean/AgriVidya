@@ -646,8 +646,10 @@ function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const el = document.getElementById('page-' + id);
   if (el) { el.classList.add('active'); window.scrollTo(0, 0); }
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('nav-active'));
+  const navLink = document.getElementById('nav-' + id);
+  if (navLink) navLink.classList.add('nav-active');
 }
-
 function openModal(type) {
   document.getElementById('modalOverlay').classList.add('open');
   document.getElementById('modal-login').style.display = type === 'login' ? 'block' : 'none';
