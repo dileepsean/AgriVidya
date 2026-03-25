@@ -707,12 +707,10 @@ async function sendBotMsg() {
   try {
     const response = await fetch('/api/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': CLAUDE_API_KEY, 'anthropic-version': '2023-06-01' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 600,
-        system: 'You are AgriVidya AI — an expert assistant for Food Engineering, Agricultural Engineering, Food Technology and Food Science students in India. You are trained on Indian university syllabi (ANGRAU, PJTSAU, ICAR, central universities). Answer questions in a clear, exam-focused, syllabus-aligned way. For GATE/ICAR questions, provide formula-based answers where relevant. Keep answers concise and practical for students. If asked about topics outside food/agri engineering, politely redirect to your expertise area.',
-        messages: botMessages
+        messages: botMessages,
+        max_tokens: 600
       })
     });
     const data = await response.json();
