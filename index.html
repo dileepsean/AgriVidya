@@ -632,8 +632,8 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
         <div class="card-icon">📘</div>
         <h3>Karnataka AO/AAO Paper 1 — Complete Material</h3>
         <p>8 units, 200+ MCQs with trap explanations, full syllabus coverage with the negative-marking strategy. Instant digital access.</p>
-        <div style="margin:14px 0;font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gm)">₹149 <span style="font-size:13px;color:var(--tm);text-decoration:line-through;font-weight:400">₹499</span></div>
-        <button class="btn-pay" style="width:auto;padding:11px 26px" onclick="buyMaterial('paper1')">Buy Now &mdash; ₹149 &rarr;</button>
+        <div style="margin:14px 0;font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gm)">₹249 <span style="font-size:13px;color:var(--tm);text-decoration:line-through;font-weight:400">₹499</span></div>
+        <button class="btn-pay" style="width:auto;padding:11px 26px" onclick="buyMaterial('paper1')">Buy Now &mdash; ₹249 &rarr;</button>
         <div style="margin-top:10px"><a onclick="getSample()" style="font-size:12px;color:var(--gb);cursor:pointer">Get the free sample (PDF) →</a></div>
       </div>
     </div>
@@ -1024,7 +1024,7 @@ function getSample(){ if(typeof currentUser!=='undefined' && currentUser){ windo
 async function buyMaterial(id){
   if(typeof currentUser==='undefined' || !currentUser){ alert('Please create a free account first (email + WhatsApp), then buy.'); openModal('signup'); return; }
   try{
-    var r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:14900,book_id:id,user_id:currentUser.id})});
+    var r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:24900,book_id:id,user_id:currentUser.id})});
     var o=await r.json(); if(o.error||!o.order_id) throw 0;
     var rzp=new Razorpay({key:o.key_id,amount:o.amount,currency:o.currency,order_id:o.order_id,name:'AgriVidya',description:'AAO Paper 1 Study Material',prefill:{email:currentUser.email},theme:{color:'#085041'},
       handler:async function(resp){
@@ -1081,5 +1081,5 @@ async function buyMaterial(id){
 })();
 </script>
 </body>
-<!-- redeploy-1 -->
+<!-- redeploy-2 price-149-live -->
 </html>
