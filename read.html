@@ -63,7 +63,7 @@ canvas{display:block;width:100%;height:auto;pointer-events:none}
 const SUPA_URL='https://yrrielpjbbsxdgbwzwzx.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlycmllbHBqYmJzeGRnYnd6d3p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NTY5NDMsImV4cCI6MjA5MDAzMjk0M30.v7jeOcfQU7-LAxWFSftnTHMSDbZmiTRJEN19bB1z5RA';
 const BOOK_ID='paper1', BUCKET='books';
-const SKIP=new Set([3,4]);
+const SKIP=new Set([1,2,3,4]);
 const ORDER=[]; for(let n=1;n<=352;n++){ if(!SKIP.has(n)) ORDER.push(n); }
 const TOTAL=ORDER.length;
 function pad(n){ return 'paper1/p1-'+String(n).padStart(3,'0')+'.jpg'; }
