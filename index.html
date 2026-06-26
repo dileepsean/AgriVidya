@@ -227,6 +227,94 @@ footer{background:var(--gd);padding:1.75rem 1.5rem;text-align:center}
   .btn-hero,.btn-hero-out{padding:10px 16px;font-size:13px}
   .grid-3{grid-template-columns:1fr 1fr}
 }
+
+/* ============================================================
+   ===============  AGRIVIDYA PREMIUM LAYER v2  ===============
+   ============================================================ */
+
+/* --- Smooth global polish --- */
+html{scroll-behavior:smooth}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:var(--gb);color:#fff}
+
+/* --- Glass nav with scroll elevation --- */
+nav{backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);background:rgba(255,255,255,0.82);transition:box-shadow .35s ease,background .35s ease}
+nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(255,255,255,0.94)}
+.logo-icon{box-shadow:0 4px 14px -4px rgba(8,80,65,0.55);transition:transform .3s ease}
+.logo-wrap:hover .logo-icon{transform:rotate(-8deg) scale(1.05)}
+
+/* --- HERO: layered gradient mesh + particle canvas --- */
+.hero{position:relative;overflow:hidden;background:
+  radial-gradient(1100px 460px at 78% -8%,rgba(29,158,117,0.42),transparent 60%),
+  radial-gradient(820px 420px at 12% 112%,rgba(93,202,165,0.26),transparent 60%),
+  linear-gradient(160deg,#021E17 0%,#04342C 55%,#053a30 100%)}
+.hero>*{position:relative;z-index:2}
+#heroFx{position:absolute;inset:0;z-index:1;width:100%;height:100%;display:block;opacity:.9}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(60% 50% at 50% 40%,transparent 40%,rgba(2,30,23,0.55) 100%)}
+.hero-badge{background:rgba(15,110,86,0.55);backdrop-filter:blur(6px);border-color:rgba(93,202,165,0.4);box-shadow:0 4px 18px -8px rgba(0,0,0,0.5)}
+.hero h1{font-size:40px;letter-spacing:-1px;text-shadow:0 6px 40px rgba(29,158,117,0.35)}
+.hero h1 em{background:linear-gradient(120deg,#5DCAA5,#9FE1CB 60%,#1D9E75);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.hero-sub{font-size:15px;opacity:.95}
+.spec-tag{background:rgba(15,110,86,0.5);backdrop-filter:blur(4px)}
+
+/* --- Premium gradient buttons w/ glow + sheen --- */
+.btn-hero,.btn-signup,.modal-btn,.btn-pay,.btn-submit{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#1D9E75 0%,#0F6E56 100%);
+  box-shadow:0 10px 26px -10px rgba(29,158,117,0.7);
+  transition:transform .22s ease,box-shadow .22s ease,filter .22s ease}
+.btn-hero:hover,.btn-signup:hover,.modal-btn:hover,.btn-pay:hover,.btn-submit:hover{
+  transform:translateY(-2px);filter:brightness(1.07);
+  box-shadow:0 16px 34px -10px rgba(29,158,117,0.85)}
+.btn-hero:active,.btn-signup:active,.modal-btn:active,.btn-pay:active{transform:translateY(0)}
+.btn-hero::after,.btn-pay::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+  background:linear-gradient(110deg,transparent,rgba(255,255,255,0.35),transparent);transform:skewX(-20deg);transition:left .6s ease}
+.btn-hero:hover::after,.btn-pay:hover::after{left:140%}
+.btn-hero-out{transition:all .22s ease;backdrop-filter:blur(4px)}
+.btn-hero-out:hover{background:rgba(93,202,165,0.16);border-color:var(--gl);color:#fff;transform:translateY(-2px)}
+.btn-login:hover,.btn-signup:hover{filter:brightness(1.03)}
+
+/* --- Stat numbers glow --- */
+.stats-row{box-shadow:0 18px 40px -22px rgba(0,0,0,0.6);border:1px solid rgba(93,202,165,0.18)}
+.stat-num{background:linear-gradient(120deg,#5DCAA5,#9FE1CB);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+/* --- Premium cards --- */
+.card{position:relative;background:linear-gradient(180deg,#fff,#fbfdfc);box-shadow:0 6px 22px -16px rgba(13,31,26,0.45);transition:transform .26s ease,box-shadow .26s ease,border-color .26s ease}
+.card:hover{transform:translateY(-5px);box-shadow:0 22px 44px -22px rgba(15,110,86,0.5);border-color:var(--gb)}
+.card-icon{background:linear-gradient(135deg,var(--gs),#d4efe5);box-shadow:inset 0 0 0 1px rgba(29,158,117,0.12);transition:transform .26s ease}
+.card:hover .card-icon{transform:scale(1.08) rotate(-4deg)}
+
+/* --- Section titles accent --- */
+.section-title{letter-spacing:-.3px}
+.section-label{position:relative;display:inline-block;padding-left:22px}
+.section-label::before{content:"";position:absolute;left:0;top:50%;width:16px;height:2px;background:linear-gradient(90deg,var(--gb),transparent);transform:translateY(-50%)}
+
+/* --- E-Books store card: hero treatment --- */
+#page-ebooks .grid-2 .card{border:1px solid rgba(29,158,117,0.25);box-shadow:0 24px 60px -30px rgba(15,110,86,0.55);background:
+  radial-gradient(420px 180px at 100% 0,rgba(93,202,165,0.14),transparent 60%),linear-gradient(180deg,#fff,#fbfdfc)}
+#page-ebooks .grid-2 .card .card-icon{width:48px;height:48px;font-size:24px}
+#page-ebooks .grid-2 .card h3{font-family:'Syne',sans-serif;font-size:17px}
+
+/* --- Banners glow --- */
+.banner-green{background:linear-gradient(135deg,#0F6E56,#085041);box-shadow:0 18px 44px -24px rgba(15,110,86,0.7)}
+.banner-dark{background:linear-gradient(160deg,#04342C,#021E17)}
+
+/* --- Scroll reveal --- */
+.av-reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.av-reveal.av-in{opacity:1;transform:none}
+
+/* --- Bot/contact subtle premium --- */
+.bot-wrap{box-shadow:0 24px 60px -34px rgba(15,110,86,0.5)}
+.contact-card{background:linear-gradient(160deg,#0F6E56,#085041)}
+
+@media(max-width:768px){.hero h1{font-size:30px}}
+@media(max-width:480px){.hero h1{font-size:25px}}
+@media(prefers-reduced-motion:reduce){
+  .av-reveal{opacity:1;transform:none;transition:none}
+  #heroFx{display:none}
+  *{scroll-behavior:auto!important}
+}
 </style>
 </head>
 <body>
@@ -276,6 +364,7 @@ footer{background:var(--gd);padding:1.75rem 1.5rem;text-align:center}
 <!-- HOME -->
 <div id="page-home" class="page active">
   <div class="hero">
+    <canvas id="heroFx"></canvas>
     <div class="hero-badge"><div class="hero-dot"></div>India's AI platform for Agri & Food Engineering</div>
     <h1>The <em>AI Brain</em> for<br>Agri & Food Engineering</h1>
     <div class="hero-spec">
@@ -948,6 +1037,48 @@ async function buyMaterial(id){
     rzp.open();
   }catch(e){ alert('Could not start payment. Try again or WhatsApp +91 9492982424.'); }
 }
+</script>
+<script>
+/* ===== AgriVidya premium motion (self-contained) ===== */
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 1) Nav elevation on scroll */
+  var navEl=document.querySelector('nav');
+  function onScroll(){ if(navEl){ navEl.classList.toggle('av-scrolled', window.scrollY>12); } }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  /* 2) Scroll-reveal: auto-tag content blocks */
+  try{
+    var sel='.section .card, .banner, .about-point, .stats-row, .section-title, .section-label, .section-sub, .bot-wrap, .contact-card';
+    var nodes=Array.prototype.slice.call(document.querySelectorAll(sel));
+    if(!reduce && 'IntersectionObserver' in window){
+      nodes.forEach(function(n,i){ n.classList.add('av-reveal'); n.style.transitionDelay=Math.min(i%6*60,300)+'ms'; });
+      var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('av-in'); io.unobserve(e.target);} }); },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+      nodes.forEach(function(n){ io.observe(n); });
+    }
+  }catch(e){}
+
+  /* 3) Hero particle network */
+  var cv=document.getElementById('heroFx');
+  if(cv && !reduce){
+    var ctx=cv.getContext('2d'), W=0,H=0,pts=[],raf,DPR=Math.min(window.devicePixelRatio||1,2);
+    function size(){ var h=cv.parentElement; W=h.clientWidth; H=h.clientHeight; cv.width=W*DPR; cv.height=H*DPR; ctx.setTransform(DPR,0,0,DPR,0,0); build(); }
+    function build(){ var n=Math.max(26,Math.min(60,Math.floor(W/22))); pts=[]; for(var i=0;i<n;i++){ pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*0.35,vy:(Math.random()-.5)*0.35,r:Math.random()*1.8+0.8}); } }
+    function step(){
+      ctx.clearRect(0,0,W,H);
+      for(var i=0;i<pts.length;i++){ var p=pts[i]; p.x+=p.vx; p.y+=p.vy;
+        if(p.x<0||p.x>W)p.vx*=-1; if(p.y<0||p.y>H)p.vy*=-1; }
+      for(var a=0;a<pts.length;a++){ for(var b=a+1;b<pts.length;b++){ var dx=pts[a].x-pts[b].x,dy=pts[a].y-pts[b].y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<118){ ctx.strokeStyle='rgba(93,202,165,'+(1-d/118)*0.28+')'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(pts[a].x,pts[a].y); ctx.lineTo(pts[b].x,pts[b].y); ctx.stroke(); } } }
+      for(var k=0;k<pts.length;k++){ var q=pts[k]; ctx.beginPath(); ctx.arc(q.x,q.y,q.r,0,6.283); ctx.fillStyle='rgba(159,225,203,0.85)'; ctx.fill(); }
+      raf=requestAnimationFrame(step);
+    }
+    var ro=window.ResizeObserver?new ResizeObserver(size):null;
+    if(ro){ ro.observe(cv.parentElement); } else { window.addEventListener('resize',size); }
+    size(); step();
+  }
+})();
 </script>
 </body>
 <!-- redeploy-1 -->
