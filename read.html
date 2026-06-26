@@ -7,6 +7,7 @@
 <link rel="icon" type="image/png" href="/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
 :root{--bg:#021E17;--bg2:#04342C;--bar:#085041;--ln:#0F6E56;--ac:#1D9E75;--ac2:#5DCAA5;--mint:#9FE1CB;--txt:#E1F5EE}
@@ -102,7 +103,7 @@ const ORDER=[]; for(let n=1;n<=C.total;n++){ if(!SKIP.has(n)) ORDER.push(n); }
 const TOTAL=ORDER.length;
 function pad(n){ return C.prefix+String(n).padStart(3,'0')+'.jpg'; }
 const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
-let mode='login', user=null, pos=0, myTok=Math.random().toString(36).slice(2), saveT=null;
+let mode='login', user=null, pos=0, myTok=Math.random().toString(36).slice(2), saveT=null, hasBot=false;
 function tog(){ mode=(mode==='login')?'signup':'login'; document.getElementById('gT').textContent=(mode==='login')?'Log in to read':'Create account'; document.getElementById('go').textContent=(mode==='login')?'Log in':'Sign up'; document.getElementById('sw').textContent=(mode==='login')?'New here? Create account':'Have an account? Log in'; }
 function showEr(m){ var e=document.getElementById('er'); e.textContent=m; e.style.display='block'; }
 async function doAuth(){
@@ -123,6 +124,8 @@ async function start(u){
     var er=document.getElementById('er'); er.textContent='This account has not purchased this material. Buy it on the E-Books page.'; er.style.display='block';
     document.getElementById('go').style.display='none'; document.getElementById('sw').style.display='none'; return;
   }
+  var rb=await sb.from('book_access').select('active').eq('user_id',u.id).eq('book_id','bot').maybeSingle();
+  hasBot = !!(rb.data && rb.data.active!==false);
   await sb.from('user_sessions').upsert({user_id:u.id,session_token:myTok,updated_at:new Date().toISOString()});
   setInterval(chkSession,8000);
   var r2=await sb.from('reading_progress').select('last_page').eq('user_id',u.id).eq('book_id',BOOK_ID).maybeSingle();
@@ -155,12 +158,35 @@ function saveProgress(pageNum){ clearTimeout(saveT); saveT=setTimeout(function()
 function next(){ if(pos<TOTAL-1){ pos++; render(); window.scrollTo(0,0); } }
 function prev(){ if(pos>0){ pos--; render(); window.scrollTo(0,0); } }
 function jumpTo(v){ v=parseInt(v); if(v>=1 && v<=TOTAL){ pos=v-1; render(); window.scrollTo(0,0); } }
-function askAI(){ document.getElementById('aiBox').style.display='block'; document.getElementById('aiQ').focus(); }
+function askAI(){
+  if(!hasBot){ unlockBot(); return; }
+  document.getElementById('aiBox').style.display='block'; document.getElementById('aiQ').focus();
+}
+function unlockBot(){
+  if(!confirm('Unlock the AO/AAO AI Tutor for ₹100 (one-time)?\n\nAsk doubts about your AO/AAO syllabus and get instant answers while you read.')) return;
+  buyBot();
+}
+async function buyBot(){
+  try{
+    var r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:10000,book_id:'bot',user_id:user.id})});
+    var o=await r.json(); if(o.error||!o.order_id) throw 0;
+    var rzp=new Razorpay({key:o.key_id,amount:o.amount,currency:o.currency,order_id:o.order_id,name:'AgriVidya',description:'AO/AAO AI Tutor (add-on)',prefill:{email:user.email},theme:{color:'#085041'},
+      handler:async function(resp){
+        var v=await fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({razorpay_order_id:resp.razorpay_order_id,razorpay_payment_id:resp.razorpay_payment_id,razorpay_signature:resp.razorpay_signature,user_id:user.id,book_id:'bot'})});
+        var vd=await v.json();
+        if(vd.success){ hasBot=true; alert('AI Tutor unlocked! Tap "Ask AI" to start.'); document.getElementById('aiBox').style.display='block'; document.getElementById('aiQ').focus(); }
+        else { alert('Payment received but unlock failed. WhatsApp +91 9492982424 with your payment id.'); }
+      }});
+    rzp.on('payment.failed',function(){ alert('Payment failed or cancelled. Please try again.'); });
+    rzp.open();
+  }catch(e){ alert('Could not start payment. Try again or WhatsApp +91 9492982424.'); }
+}
 async function sendAI(){
   var q=document.getElementById('aiQ').value.trim(); if(!q) return;
   var a=document.getElementById('aiA'); a.textContent='Thinking...';
+  var sys='You are VidyaBot, a tutor ONLY for the Karnataka KPSC AO/AAO (Agricultural Officer / Assistant Agricultural Officer) examination. Answer ONLY questions related to the AO/AAO exam syllabus and the study material the student is reading (current affairs, general science, Karnataka history & geography, polity, rural development & schemes, reasoning, science & technology, environment, agriculture, and food/agri engineering for this exam). If the question is NOT related to the AO/AAO exam, reply exactly: "I can only help with AO/AAO exam questions. Please ask something from your syllabus." Keep answers clear and exam-focused. Student question: ';
   try{
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:'Agri/Food engineering exam study help. '+q}],max_tokens:500})});
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:sys+q}],max_tokens:500})});
     var d=await r.json(); if(d.error) throw 0;
     a.textContent=(d.content && d.content[0] ? d.content[0].text : '').replace(/[*#]/g,'');
   }catch(e){ a.textContent='AI is busy right now. Try again shortly.'; }
