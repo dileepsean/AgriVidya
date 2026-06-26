@@ -359,6 +359,56 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
   .feat-h{font-size:30px}
   .steps{grid-template-columns:1fr}
 }
+
+/* ===== PHOTO HERO (Indian agriculture) ===== */
+#page-home .hero{background:#021E17;min-height:88vh;display:flex;flex-direction:column;justify-content:center}
+.hero-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;animation:kenburns 24s ease-in-out infinite alternate}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(165deg,rgba(2,30,23,.82),rgba(4,52,44,.7) 50%,rgba(2,24,19,.9))}
+@keyframes kenburns{from{transform:scale(1.06)}to{transform:scale(1.2)}}
+#page-home .hero .hero-badge{margin-top:0}
+.trust-strip{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin-top:26px;opacity:.9}
+.trust-strip .ti{display:flex;align-items:center;gap:8px;color:var(--gp);font-size:12.5px;font-weight:500}
+.trust-strip .ti svg{flex-shrink:0}
+
+/* ===== IMAGE CARDS ===== */
+.card-photo{width:100%;height:130px;object-fit:cover;border-radius:10px;margin-bottom:14px;display:block;background:var(--gs)}
+.card{overflow:hidden}
+
+/* ===== IMAGE BAND (text + photo) ===== */
+.imgband{padding:0}
+.imgband-grid{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;min-height:380px}
+.imgband-photo{background-size:cover;background-position:center;min-height:300px}
+.imgband-copy{background:linear-gradient(160deg,#04342C,#021E17);color:#fff;padding:3rem 2.5rem;display:flex;flex-direction:column;justify-content:center}
+.imgband-copy .lab{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gl);margin-bottom:10px}
+.imgband-copy h3{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;line-height:1.15;letter-spacing:-.5px;margin-bottom:14px}
+.imgband-copy p{font-size:14.5px;color:var(--gp);line-height:1.75;margin-bottom:14px;max-width:480px}
+.imgband-copy .pts{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.imgband-copy .pts .p{display:flex;align-items:center;gap:10px;font-size:14px;color:#E1F5EE;font-weight:500}
+.imgband-copy .pts .dot{width:7px;height:7px;border-radius:50%;background:var(--gl);flex-shrink:0}
+
+/* ===== TESTIMONIALS ===== */
+.tst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.tst{background:#fff;border:1px solid var(--gs);border-radius:14px;padding:1.4rem;box-shadow:0 10px 30px -22px rgba(13,31,26,.4)}
+.tst .stars{color:#F5B731;font-size:14px;margin-bottom:10px;letter-spacing:2px}
+.tst p{font-size:13.5px;color:var(--tp);line-height:1.7;margin-bottom:14px}
+.tst .who{display:flex;align-items:center;gap:10px}
+.tst .av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gb),var(--gm));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;font-family:'Syne',sans-serif;flex-shrink:0}
+.tst .nm{font-size:13px;font-weight:600;color:var(--tp)}
+.tst .rl{font-size:11px;color:var(--tm)}
+
+/* ===== CTA BAND ===== */
+.ctaband{position:relative;overflow:hidden;text-align:center;padding:3.5rem 1.5rem;background-size:cover;background-position:center}
+.ctaband::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(8,80,65,.92),rgba(2,30,23,.92))}
+.ctaband>*{position:relative;z-index:2}
+.ctaband h2{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:#fff;letter-spacing:-.6px;margin-bottom:10px}
+.ctaband p{font-size:15px;color:var(--gp);margin-bottom:22px;max-width:520px;margin-left:auto;margin-right:auto}
+
+@media(max-width:820px){
+  .imgband-grid{grid-template-columns:1fr}
+  .imgband-photo{min-height:220px}
+  .tst-grid{grid-template-columns:1fr}
+  #page-home .hero{min-height:auto;padding-top:2.5rem;padding-bottom:2.5rem}
+}
 </style>
 </head>
 <body>
@@ -408,6 +458,7 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
 <!-- HOME -->
 <div id="page-home" class="page active">
   <div class="hero">
+    <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1600&q=80')"></div>
     <canvas id="heroFx"></canvas>
     <div class="hero-badge"><div class="hero-dot"></div>India's AI platform for Agri & Food Engineering</div>
     <h1>The <em>AI Brain</em> for<br>Agri & Food Engineering</h1>
@@ -426,6 +477,11 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
       <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Topics</div></div>
       <div class="stat"><div class="stat-num">Free</div><div class="stat-label">To start</div></div>
       <div class="stat"><div class="stat-num">AI</div><div class="stat-label">Powered</div></div>
+    </div>
+    <div class="trust-strip">
+      <div class="ti"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#5DCAA5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Built for Indian agri students</div>
+      <div class="ti"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#5DCAA5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Secure online access</div>
+      <div class="ti"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#5DCAA5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Instant after payment</div>
     </div>
   </div>
 
@@ -486,12 +542,12 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
     <div class="section-title">Everything you need — one platform</div>
     <div class="section-sub">For Food & Agricultural Engineering students, researchers & professionals across India</div>
     <div class="grid-3">
-      <div class="card" onclick="showPage('bot')"><div class="card-icon">🤖</div><h3>VidyaBot AI</h3><p>24/7 AI for Food & Agri Engineering. Indian syllabus focused.</p><span class="card-tag">5 free questions</span><span class="card-arrow">Ask now →</span></div>
-      <div class="card" onclick="showPage('gate')"><div class="card-icon">📚</div><h3>GATE / ICAR Prep</h3><p>MCQs, previous year papers, formula sheets for XL & AG streams.</p><span class="card-tag">GATE · ICAR-JRF</span><span class="card-arrow">Start prep →</span></div>
-      <div class="card" onclick="showPage('assignment')"><div class="card-icon">📝</div><h3>Assignment Help</h3><p>AI-powered help for calculations, problems & research writing.</p><span class="card-tag">3 free answers</span><span class="card-arrow">Get help →</span></div>
-      <div class="card" onclick="showPage('ai')"><div class="card-icon">🧠</div><h3>Learn AI</h3><p>Apply AI & ML in food processing, precision farming & agri research.</p><span class="card-tag card-tag-soon">Coming soon</span><span class="card-arrow">Explore →</span></div>
-      <div class="card" onclick="showPage('gate')"><div class="card-icon">🏦</div><h3>Bank & Govt Exams</h3><p>NABARD, FCI, SBI Agriculture Officer — complete preparation.</p><span class="card-tag">NABARD · FCI · SBI</span><span class="card-arrow">View exams →</span></div>
-      <div class="card" onclick="showPage('services')"><div class="card-icon">🌾</div><h3>Study Material</h3><p>Notes, formula sheets, e-books for Food & Agri Engineering.</p><span class="card-tag">Free downloads</span><span class="card-arrow">Browse →</span></div>
+      <div class="card" onclick="showPage('bot')"><img class="card-photo" src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=500&q=70" alt="" loading="lazy"><div class="card-icon">🤖</div><h3>VidyaBot AI</h3><p>24/7 AI for Food & Agri Engineering. Indian syllabus focused.</p><span class="card-tag">5 free questions</span><span class="card-arrow">Ask now →</span></div>
+      <div class="card" onclick="showPage('gate')"><img class="card-photo" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=500&q=70" alt="" loading="lazy"><div class="card-icon">📚</div><h3>GATE / ICAR Prep</h3><p>MCQs, previous year papers, formula sheets for XL & AG streams.</p><span class="card-tag">GATE · ICAR-JRF</span><span class="card-arrow">Start prep →</span></div>
+      <div class="card" onclick="showPage('assignment')"><img class="card-photo" src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=500&q=70" alt="" loading="lazy"><div class="card-icon">📝</div><h3>Assignment Help</h3><p>AI-powered help for calculations, problems & research writing.</p><span class="card-tag">3 free answers</span><span class="card-arrow">Get help →</span></div>
+      <div class="card" onclick="showPage('ai')"><img class="card-photo" src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=500&q=70" alt="" loading="lazy"><div class="card-icon">🧠</div><h3>Learn AI</h3><p>Apply AI & ML in food processing, precision farming & agri research.</p><span class="card-tag card-tag-soon">Coming soon</span><span class="card-arrow">Explore →</span></div>
+      <div class="card" onclick="showPage('gate')"><img class="card-photo" src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&q=70" alt="" loading="lazy"><div class="card-icon">🏦</div><h3>Bank & Govt Exams</h3><p>NABARD, FCI, SBI Agriculture Officer — complete preparation.</p><span class="card-tag">NABARD · FCI · SBI</span><span class="card-arrow">View exams →</span></div>
+      <div class="card" onclick="showPage('services')"><img class="card-photo" src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=500&q=70" alt="" loading="lazy"><div class="card-icon">🌾</div><h3>Study Material</h3><p>Notes, formula sheets, e-books for Food & Agri Engineering.</p><span class="card-tag">Free downloads</span><span class="card-arrow">Browse →</span></div>
     </div>
   </div>
   <div class="section section-alt">
@@ -504,6 +560,45 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
         <div><h3>Assignment Help by VidyaBot</h3><p>Instant AI-powered answers for your food & agri engineering assignments.</p><div class="banner-tags"><span class="banner-tag">UG · PG · PhD</span><span class="banner-tag">3 free answers</span></div></div>
         <button class="btn-hero" onclick="showPage('assignment')">Get help →</button>
       </div>
+    </div>
+  </div>
+
+  <!-- IMAGE BAND -->
+  <div class="imgband">
+    <div class="imgband-grid">
+      <div class="imgband-photo" style="background-image:url('https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=900&q=80')"></div>
+      <div class="imgband-copy">
+        <div class="lab">Why AgriVidya</div>
+        <h3>From the soil of India — to your screen.</h3>
+        <p>A student at a state agricultural university deserves the same depth of learning support as one at IIT or IARI. AgriVidya brings exam-ready material and 24/7 AI guidance to every Indian agri &amp; food engineering aspirant.</p>
+        <div class="pts">
+          <div class="p"><span class="dot"></span>Made for the Indian syllabus &amp; Indian exams</div>
+          <div class="p"><span class="dot"></span>Secure, online-only — your material can't be leaked</div>
+          <div class="p"><span class="dot"></span>Instant access, resume reading on any device</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="section">
+    <div class="section-label">Loved by aspirants</div>
+    <div class="section-title">What students say</div>
+    <div class="section-sub">Real talk from agri &amp; food engineering aspirants preparing across India</div>
+    <div class="tst-grid">
+      <div class="tst"><div class="stars">★★★★★</div><p>"The SAFE/RISKY/SKIP tags changed how I attempt the paper. I stopped losing marks on negative marking."</p><div class="who"><div class="av">RK</div><div><div class="nm">Ravi K.</div><div class="rl">AAO aspirant, Karnataka</div></div></div></div>
+      <div class="tst"><div class="stars">★★★★★</div><p>"Finally material that's built for our syllabus. The trap explanations are gold — I understand why options are wrong."</p><div class="who"><div class="av">SP</div><div><div class="nm">Sahana P.</div><div class="rl">B.Sc Agriculture</div></div></div></div>
+      <div class="tst"><div class="stars">★★★★★</div><p>"VidyaBot answers my doubts at midnight. Reading online without worrying about losing the PDF is so convenient."</p><div class="who"><div class="av">MN</div><div><div class="nm">Manoj N.</div><div class="rl">Agri Engineering</div></div></div></div>
+    </div>
+  </div>
+
+  <!-- CTA BAND -->
+  <div class="ctaband" style="background-image:url('https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1400&q=80')">
+    <h2>Start preparing the smart way</h2>
+    <p>Create a free account, see a sample, and unlock the complete AO/AAO Paper 1 material — instantly.</p>
+    <div class="hero-btns" style="margin-bottom:0">
+      <button class="btn-hero" onclick="showPage('ebooks')">View E-Books &rarr;</button>
+      <button class="btn-hero-out" onclick="openModal('signup')">Create free account</button>
     </div>
   </div>
 </div>
