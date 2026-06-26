@@ -7,9 +7,15 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
   try {
     let b = req.body; if (typeof b === 'string') b = JSON.parse(b || '{}'); if (!b) b = {};
+    // TEMP diagnostic: returns only the NAMES of relevant env vars (no values)
+    if (b.debug === 'envcheck') {
+      res.status(200).json({ keys: Object.keys(process.env).filter(k => /razor|supabase|service|key|secret/i.test(k)) });
+      return;
+    }
     const amount = Math.round(Number(b.amount));
     if (!amount || amount < 100) { res.status(400).json({ error: 'Invalid amount' }); return; }
-    const id = process.env.RAZORPAY_KEY_ID, secret = process.env.RAZORPAY_KEY_SECRET;
+    const id = process.env.RAZORPAY_KEY_ID || process.env.RAZORPAY_ID || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || process.env.KEY_ID;
+    const secret = process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_SECRET || process.env.KEY_SECRET;
     if (!id || !secret) { res.status(401).json({ error: 'Razorpay keys not configured' }); return; }
     const auth = 'Basic ' + Buffer.from(id + ':' + secret).toString('base64');
     const rr = await fetch('https://api.razorpay.com/v1/orders', {
