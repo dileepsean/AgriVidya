@@ -1024,7 +1024,7 @@ function getSample(){ if(typeof currentUser!=='undefined' && currentUser){ windo
 async function buyMaterial(id){
   if(typeof currentUser==='undefined' || !currentUser){ alert('Please create a free account first (email + WhatsApp), then buy.'); openModal('signup'); return; }
   try{
-    var r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:100,book_id:id,user_id:currentUser.id})});
+    var r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:14900,book_id:id,user_id:currentUser.id})});
     var o=await r.json(); if(o.error||!o.order_id) throw 0;
     var rzp=new Razorpay({key:o.key_id,amount:o.amount,currency:o.currency,order_id:o.order_id,name:'AgriVidya',description:'AAO Paper 1 Study Material',prefill:{email:currentUser.email},theme:{color:'#085041'},
       handler:async function(resp){
