@@ -368,7 +368,9 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
 }
 
 /* ===== PHOTO HERO (Indian agriculture) ===== */
-#page-home .hero{background:#021E17;min-height:88vh;display:flex;flex-direction:column;justify-content:center}
+#page-home .hero{background:#021E17;min-height:84vh;display:flex;flex-direction:column;justify-content:center;align-items:center}
+#page-home .hero>*{max-width:760px}
+#page-home .hero .hero-badge{margin:0 auto 1.25rem;width:auto}
 .hero-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;animation:kenburns 24s ease-in-out infinite alternate}
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,30,23,.42) 0%,rgba(2,30,23,.3) 38%,rgba(2,22,18,.74) 100%)}
 @keyframes kenburns{from{transform:scale(1.06)}to{transform:scale(1.2)}}
