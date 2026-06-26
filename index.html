@@ -368,15 +368,23 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
 }
 
 /* ===== PHOTO HERO (Indian agriculture) ===== */
-#page-home .hero{background:#021E17;min-height:80vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
-#page-home .hero .hero-badge{margin:0 auto 1.1rem}
-#page-home .hero h1,#page-home .hero .hero-sub{max-width:680px}
+#page-home .hero{background:#021E17;min-height:82vh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;text-align:left;padding:4rem clamp(1.5rem,7vw,5.5rem)}
+#page-home .hero .hero-badge{margin:0 0 1.2rem}
+#page-home .hero h1{max-width:720px;font-size:clamp(34px,5.2vw,60px);line-height:1.04}
+#page-home .hero .hero-sub{max-width:540px;margin:.9rem 0 1.6rem}
+#page-home .hero .hero-spec{justify-content:flex-start;margin-left:0;margin-right:0}
+#page-home .hero .hero-btns{justify-content:flex-start}
+#page-home .hero .stats-row{margin:0;max-width:520px}
+#page-home .hero .trust-strip{justify-content:flex-start}
+@media(max-width:620px){#page-home .hero{padding:3rem 1.4rem}}
 .hero-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;animation:kenburns 24s ease-in-out infinite alternate}
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,30,23,.42) 0%,rgba(2,30,23,.3) 38%,rgba(2,22,18,.74) 100%)}
 #page-home .hero .hc{position:absolute;inset:0;z-index:0;overflow:hidden}
 .hc .s{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.5s ease;transform:scale(1.05);animation:kenburns 18s ease-in-out infinite alternate}
 .hc .s.on{opacity:1}
-.hc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,30,23,.42) 0%,rgba(2,30,23,.3) 38%,rgba(2,22,18,.74) 100%)}
+.hc .s{background-position:70% center}
+.hc::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(2,24,19,.92) 0%,rgba(2,26,20,.78) 38%,rgba(2,26,20,.38) 70%,rgba(2,26,20,.25) 100%),linear-gradient(180deg,transparent 55%,rgba(2,22,18,.55) 100%)}
+@media(max-width:620px){.hc::after{background:linear-gradient(180deg,rgba(2,24,19,.7) 0%,rgba(2,24,19,.55) 40%,rgba(2,22,18,.82) 100%)}}
 @media(prefers-reduced-motion:reduce){.hc .s{animation:none}}
 @keyframes kenburns{from{transform:scale(1.06)}to{transform:scale(1.2)}}
 #page-home .hero .hero-badge{margin-top:0}

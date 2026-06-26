@@ -27,14 +27,21 @@ nav .logo{height:36px;width:auto;display:block}
 .btn-lg{padding:13px 24px;font-size:15px}
 .hide{display:none!important}
 /* hero */
-.hero{position:relative;overflow:hidden;background:radial-gradient(900px 420px at 80% -10%,rgba(29,158,117,.4),transparent 60%),linear-gradient(160deg,#021E17,#04342C 60%,#053a30);color:#fff;text-align:center;padding:4.5rem 1.3rem 4rem}
+.hero{position:relative;overflow:hidden;background:#021E17;color:#fff;text-align:left;min-height:78vh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:5rem clamp(1.3rem,7vw,5.5rem)}
+.hero h1{margin:0 0 16px!important}
+.hero p{margin:0 0 26px!important}
+.hero-cta{justify-content:flex-start}
+.trust{justify-content:flex-start}
+@media(max-width:620px){.hero{padding:3.4rem 1.4rem;min-height:auto}}
 .hero canvas{position:absolute;inset:0;z-index:1;opacity:.85}
 .hero>*{position:relative;z-index:2}
 .hero .hc{position:absolute;inset:0;z-index:0;overflow:hidden}
 .hc .s{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.5s ease;transform:scale(1.05);animation:hckb 16s ease-in-out infinite alternate}
 .hc .s.on{opacity:1}
 @keyframes hckb{from{transform:scale(1.05)}to{transform:scale(1.16)}}
-.hc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,30,23,.6),rgba(2,30,23,.48) 42%,rgba(2,22,18,.8))}
+.hc .s{background-position:70% center}
+.hc::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(2,24,19,.92) 0%,rgba(2,26,20,.78) 38%,rgba(2,26,20,.38) 70%,rgba(2,26,20,.25) 100%),linear-gradient(180deg,transparent 55%,rgba(2,22,18,.55) 100%)}
+@media(max-width:620px){.hc::after{background:linear-gradient(180deg,rgba(2,24,19,.7) 0%,rgba(2,24,19,.55) 40%,rgba(2,22,18,.82) 100%)}}
 @media(prefers-reduced-motion:reduce){.hc .s{animation:none}}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(15,110,86,.5);border:1px solid rgba(93,202,165,.4);color:var(--gp);font-size:12.5px;font-weight:600;padding:7px 16px;border-radius:30px;margin-bottom:18px;backdrop-filter:blur(4px)}
 .eyebrow .d{width:7px;height:7px;border-radius:50%;background:var(--gl);animation:p 2s infinite}
