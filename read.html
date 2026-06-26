@@ -40,7 +40,6 @@ canvas{display:block;width:100%;height:auto;pointer-events:none}
 </head>
 <body oncontextmenu="return false" ondragstart="return false">
 
-<!-- LOGIN GATE -->
 <div class="gate" id="gate">
   <h2 id="gT">Log in to read</h2>
   <p>Your material is online-only and tied to your account.</p>
@@ -51,7 +50,6 @@ canvas{display:block;width:100%;height:auto;pointer-events:none}
   <div class="sw" id="sw" onclick="tog()">New here? Create account</div>
 </div>
 
-<!-- READER -->
 <div id="reader" class="hide">
   <div class="bar">
     <span class="nm">AgriVidya Reader</span>
@@ -78,11 +76,15 @@ canvas{display:block;width:100%;height:auto;pointer-events:none}
 <script>
 const SUPA_URL='https://yrrielpjbbsxdgbwzwzx.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlycmllbHBqYmJzeGRnYnd6d3p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NTY5NDMsImV4cCI6MjA5MDAzMjk0M30.v7jeOcfQU7-LAxWFSftnTHMSDbZmiTRJEN19bB1z5RA';
-const BOOK_ID='paper1', TOTAL=352, BUCKET='books';
-const path=n=>'paper1/p1-'+String(n).padStart(3,'0')+'.jpg';
+const BOOK_ID='paper1', BUCKET='books';
+// Skip Dedication (3) and Preface (4)
+const SKIP=new Set([3,4]);
+const ORDER=[]; for(let n=1;n<=352;n++){ if(!SKIP.has(n)) ORDER.push(n); }
+const TOTAL=ORDER.length;
+const pad=n=>'paper1/p1-'+String(n).padStart(3,'0')+'.jpg';
 
 const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
-let mode='login',user=null,idx=1,myTok=Math.random().toString(36).slice(2),saveT=null;
+let mode='login',user=null,pos=0,myTok=Math.random().toString(36).slice(2),saveT=null;
 
 function tog(){mode=mode==='login'?'signup':'login';gT.textContent=mode==='login'?'Log in to read':'Create account';go.textContent=mode==='login'?'Log in':'Sign up';sw.textContent=mode==='login'?'New here? Create account':'Have an account? Log in';}
 function showEr(m){er.textContent=m;er.style.display='block';}
@@ -90,7 +92,7 @@ async function doAuth(){
   er.style.display='none';const e=em.value.trim(),p=pw.value;if(!e||!p)return showEr('Enter email and password');
   const fn=mode==='login'?sb.auth.signInWithPassword({email:e,password:p}):sb.auth.signUp({email:e,password:p});
   const {data,error}=await fn;if(error)return showEr(error.message);
-  if(mode==='signup'&&!data.session)return showEr('Account made. Confirm via email, then log in.');
+  if(mode==='signup'&&!data.session)return showEr('Account made. Now log in.');
   start(data.user);
 }
 async function logout(){await sb.auth.signOut();location.reload();}
@@ -99,7 +101,4 @@ async function start(u){
   user=u;
   const {data:acc}=await sb.from('book_access').select('active').eq('user_id',u.id).eq('book_id',BOOK_ID).maybeSingle();
   if(!acc||acc.active===false){gT.textContent='No access yet';er.textContent='This account has not purchased this material. Buy it on the E-Books page.';er.style.display='block';go.style.display='none';sw.style.display='none';return;}
-  await sb.from('user_sessions').upsert({user_id:u.id,session_token:myTok,updated_at:new Date().toISOString()});
-  setInterval(chkSession,8000);
-  // resume
-  co
+  await sb.from('user_sessions').upsert({user_id:u.id,session_
