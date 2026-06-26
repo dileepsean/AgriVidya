@@ -315,6 +315,50 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
   #heroFx{display:none}
   *{scroll-behavior:auto!important}
 }
+
+/* ===== CLEAN FEATURED OFFER (Framer-style) ===== */
+.feat{padding:3.5rem 1.5rem;background:linear-gradient(180deg,#fff,#F4FAF7)}
+.feat-wrap{max-width:1080px;margin:0 auto}
+.feat-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--gm);background:var(--gs);border:1px solid rgba(29,158,117,.25);padding:6px 14px;border-radius:30px;margin-bottom:18px}
+.feat-eyebrow .d{width:6px;height:6px;border-radius:50%;background:var(--gb);animation:pulse 2s infinite}
+.feat-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:38px;align-items:center}
+.feat-h{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;line-height:1.1;letter-spacing:-1px;color:var(--tp);margin-bottom:14px}
+.feat-h em{font-style:normal;color:var(--gb)}
+.feat-p{font-size:15px;color:var(--ts);line-height:1.7;margin-bottom:22px;max-width:520px}
+.feat-bul{display:flex;flex-direction:column;gap:12px;margin-bottom:26px}
+.feat-bul .b{display:flex;align-items:flex-start;gap:12px;font-size:14.5px;color:var(--tp);font-weight:500}
+.feat-bul .ic{width:26px;height:26px;border-radius:8px;background:var(--gs);color:var(--gm);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;font-weight:700}
+.feat-price{display:flex;align-items:baseline;gap:12px;margin-bottom:20px}
+.feat-price .now{font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:var(--gm)}
+.feat-price .was{font-size:18px;color:var(--tm);text-decoration:line-through}
+.feat-price .off{font-size:12px;font-weight:700;color:#fff;background:var(--gb);padding:3px 10px;border-radius:20px}
+.feat-cta{display:flex;gap:12px;flex-wrap:wrap}
+.feat-cta .ghost{background:#fff;border:1.5px solid var(--gs);color:var(--gm);padding:13px 22px;border-radius:11px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.feat-cta .ghost:hover{border-color:var(--gb);background:var(--gs)}
+/* book visual */
+.book-card{position:relative;background:linear-gradient(150deg,#04342C,#021E17);border-radius:20px;padding:34px;color:#fff;overflow:hidden;box-shadow:0 30px 70px -28px rgba(8,80,65,.7);border:1px solid rgba(93,202,165,.18)}
+.book-card .net{position:absolute;inset:0;opacity:.4;background-image:radial-gradient(rgba(159,225,203,.45) 1px,transparent 1.3px);background-size:26px 26px}
+.book-card .in{position:relative;z-index:2}
+.book-card .tag{display:inline-block;font-size:11px;font-weight:600;color:var(--mint);background:rgba(15,110,86,.5);border:1px solid rgba(93,202,165,.3);padding:5px 12px;border-radius:20px;margin-bottom:18px}
+.book-card h4{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;line-height:1.2;margin-bottom:14px}
+.book-card .meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.book-card .m{background:rgba(255,255,255,.06);border:1px solid rgba(93,202,165,.15);border-radius:12px;padding:12px}
+.book-card .m .n{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--gl)}
+.book-card .m .l{font-size:11px;color:var(--mint);margin-top:2px}
+
+/* ===== HOW IT WORKS ===== */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+.step{background:#fff;border:1px solid var(--gs);border-radius:14px;padding:1.5rem;position:relative;transition:transform .26s ease,box-shadow .26s ease}
+.step:hover{transform:translateY(-4px);box-shadow:0 20px 40px -22px rgba(15,110,86,.45)}
+.step .num{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--gb),var(--gm));color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:0 8px 18px -8px rgba(29,158,117,.7)}
+.step h4{font-size:15px;font-weight:600;margin-bottom:6px}
+.step p{font-size:13px;color:var(--ts);line-height:1.6}
+
+@media(max-width:820px){
+  .feat-grid{grid-template-columns:1fr;gap:26px}
+  .feat-h{font-size:30px}
+  .steps{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -384,6 +428,59 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
       <div class="stat"><div class="stat-num">AI</div><div class="stat-label">Powered</div></div>
     </div>
   </div>
+
+  <!-- FEATURED AO/AAO OFFER -->
+  <div class="feat">
+    <div class="feat-wrap">
+      <div class="feat-grid">
+        <div class="feat-copy">
+          <div class="feat-eyebrow"><span class="d"></span>Karnataka KPSC · AO / AAO 2026</div>
+          <h2 class="feat-h">Clear AO/AAO with the <em>negative-marking strategy</em> no one teaches.</h2>
+          <p class="feat-p">Most aspirants don't fail because they studied less — they lose marks they already earned. Our Paper 1 material tells you exactly which questions to attempt and which to skip.</p>
+          <div class="feat-bul">
+            <div class="b"><span class="ic">&#10003;</span>All 8 units — full syllabus coverage</div>
+            <div class="b"><span class="ic">&#10003;</span>200+ MCQs with trap explanations</div>
+            <div class="b"><span class="ic">&#10003;</span>SAFE / RISKY / SKIP tag on every topic</div>
+            <div class="b"><span class="ic">&#10003;</span>Instant online access — read on any device</div>
+          </div>
+          <div class="feat-price"><span class="now">&#8377;249</span><span class="was">&#8377;499</span><span class="off">50% OFF · launch</span></div>
+          <div class="feat-cta">
+            <button class="btn-pay" style="width:auto;padding:13px 26px" onclick="buyMaterial('paper1')">Buy Now &mdash; &#8377;249 &rarr;</button>
+            <button class="ghost" onclick="getSample()">Get free sample (PDF)</button>
+          </div>
+        </div>
+        <div class="feat-visual">
+          <div class="book-card">
+            <div class="net"></div>
+            <div class="in">
+              <span class="tag">Complete Paper 1 Material</span>
+              <h4>Karnataka AO / AAO<br>Paper 1 — Complete Material</h4>
+              <p style="font-size:13px;color:#9FE1CB;line-height:1.6">8 units · full syllabus · negative-marking strategy · instant digital access.</p>
+              <div class="meta">
+                <div class="m"><div class="n">8</div><div class="l">Units covered</div></div>
+                <div class="m"><div class="n">200+</div><div class="l">MCQs + traps</div></div>
+                <div class="m"><div class="n">348</div><div class="l">Pages</div></div>
+                <div class="m"><div class="n">&#8377;249</div><div class="l">Launch price</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section section-alt">
+    <div class="section-label">How it works</div>
+    <div class="section-title">From sign-up to studying — in under a minute</div>
+    <div class="section-sub">Secure, online-only access. No downloads to lose, no PDFs to leak.</div>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h4>Create a free account</h4><p>Sign up with your email and WhatsApp number. See a free sample before you buy.</p></div>
+      <div class="step"><div class="num">2</div><h4>Pay securely</h4><p>Pay &#8377;249 via UPI or card through Razorpay. Access is granted instantly — automatically.</p></div>
+      <div class="step"><div class="num">3</div><h4>Read online, anytime</h4><p>Open your material in the secure reader. Resume where you left off, on any device.</p></div>
+    </div>
+  </div>
+
   <div class="section">
     <div class="section-label">What we offer</div>
     <div class="section-title">Everything you need — one platform</div>
@@ -635,6 +732,14 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
         <div style="margin:14px 0;font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gm)">₹249 <span style="font-size:13px;color:var(--tm);text-decoration:line-through;font-weight:400">₹499</span></div>
         <button class="btn-pay" style="width:auto;padding:11px 26px" onclick="buyMaterial('paper1')">Buy Now &mdash; ₹249 &rarr;</button>
         <div style="margin-top:10px"><a onclick="getSample()" style="font-size:12px;color:var(--gb);cursor:pointer">Get the free sample (PDF) →</a></div>
+      </div>
+      <div class="card" style="cursor:default">
+        <div class="card-icon">📝</div>
+        <h3>Karnataka AO/AAO — Mock Test Series</h3>
+        <p>Full-length mock tests built on the exact exam pattern, with negative marking and detailed solutions. Practise like the real exam, track your score.</p>
+        <div style="margin:14px 0;font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gm)">Launching soon</div>
+        <button class="btn-pay" style="width:auto;padding:11px 26px;background:linear-gradient(135deg,#1D9E75,#0F6E56)" onclick="if(typeof currentUser!=='undefined'&&currentUser){alert('You are on the list! We will message you on WhatsApp the moment the mock series goes live.');}else{alert('Create a free account (email + WhatsApp) and we will notify you when mocks launch.');openModal('signup');}">Notify me on WhatsApp</button>
+        <div style="margin-top:10px"><span style="font-size:12px;color:var(--tm)">Be first in line for the launch offer.</span></div>
       </div>
     </div>
   </div>
