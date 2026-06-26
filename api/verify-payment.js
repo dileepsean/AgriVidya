@@ -16,10 +16,13 @@ export default async function handler(req, res) {
     const SUPA_URL = process.env.SUPABASE_URL || 'https://yrrielpjbbsxdgbwzwzx.supabase.co';
     const SERVICE = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (user_id && SERVICE) {
+      // combo grants both papers; otherwise grant the single book purchased
+      const books = (book_id === 'combo') ? ['paper1', 'paper2'] : [book_id || 'paper1'];
+      const rows = books.map(bk => ({ user_id: user_id, book_id: bk, active: true }));
       await fetch(SUPA_URL + '/rest/v1/book_access', {
         method: 'POST',
         headers: { 'apikey': SERVICE, 'Authorization': 'Bearer ' + SERVICE, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' },
-        body: JSON.stringify({ user_id: user_id, book_id: book_id || 'paper1', active: true })
+        body: JSON.stringify(rows)
       });
     }
     res.status(200).json({ success: true });
