@@ -544,7 +544,7 @@ footer{background:var(--gd);padding:1.75rem 1.5rem;text-align:center}
         <p>8 units, 200+ MCQs with trap explanations, full syllabus coverage with the negative-marking strategy. Instant digital access.</p>
         <div style="margin:14px 0;font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gm)">₹149 <span style="font-size:13px;color:var(--tm);text-decoration:line-through;font-weight:400">₹499</span></div>
         <form style="margin:0"><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_T6DM03akUdq1ti" async></script></form>
-        <div style="margin-top:10px"><a href="/AgriVidya_AAO_Paper1_FREE_SAMPLE.pdf" target="_blank" style="font-size:12px;color:var(--gb);cursor:pointer">Get the free sample (PDF) →</a></div>
+        <div style="margin-top:10px"><a onclick="getSample()" style="font-size:12px;color:var(--gb);cursor:pointer">Get the free sample (PDF) →</a></div>
       </div>
     </div>
   </div>
@@ -658,6 +658,7 @@ footer{background:var(--gd);padding:1.75rem 1.5rem;text-align:center}
       <p>Free access to AI tools & study material</p>
       <input class="modal-input" id="signupName" type="text" placeholder="Full name"/>
       <input class="modal-input" id="signupEmail" type="email" placeholder="Email address"/>
+      <input class="modal-input" id="signupWhatsapp" type="tel" placeholder="WhatsApp number (10 digits)"/>
       <select class="modal-select" id="signupRole">
         <option value="" disabled selected>I am a...</option>
         <option>UG Student</option>
@@ -773,10 +774,12 @@ async function handleSignup(){
   const e=document.getElementById('signupEmail').value.trim();
   const p=document.getElementById('signupPassword').value;
   const r=document.getElementById('signupRole').value;
-  if(!n||!e||!p){showErr('signup','Please fill all fields');return;}
+  const w=document.getElementById('signupWhatsapp').value.trim();
+  if(!n||!e||!p||!w){showErr('signup','Please fill all fields incl. WhatsApp');return;}
+  if(!/^[6-9]\d{9}$/.test(w)){showErr('signup','Enter a valid 10-digit WhatsApp number');return;}
   if(p.length<6){showErr('signup','Password min 6 characters');return;}
   showLoad('signup',true);
-  const{error}=await _supabase.auth.signUp({email:e,password:p,options:{data:{full_name:n,role:r}}});
+  const{error}=await _supabase.auth.signUp({email:e,password:p,options:{data:{full_name:n,role:r,whatsapp:w}}});
   showLoad('signup',false);
   if(error){showErr('signup',error.message);return;}
   document.getElementById('signupSuccess').style.display='block';
@@ -923,6 +926,9 @@ async function sendPopupMsg(){
   }
 }
 document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+</script>
+<script>
+function getSample(){ if(typeof currentUser!=='undefined' && currentUser){ window.open('/AgriVidya_AAO_Paper1_FREE_SAMPLE.pdf','_blank'); } else { alert('Create a free account (email + WhatsApp) to view the sample.'); openModal('signup'); } }
 </script>
 </body>
 </html><!DOCTYPE html>
