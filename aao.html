@@ -168,9 +168,12 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
         <h3>AO/AAO Paper 1 — Complete Material</h3>
         <div class="desc">The full General Studies paper with the negative-marking strategy no other book teaches.</div>
         <ul>
-          <li>All 8 units · full syllabus</li>
+          <li>All 8 units · 100% syllabus coverage</li>
           <li>200+ MCQs with trap explanations</li>
           <li>SAFE / RISKY / SKIP tag on every topic</li>
+          <li>Mind maps + 10-point rapid revision per unit</li>
+          <li>Exam-day time &amp; attempt strategy</li>
+          <li>Instant access · read on mobile or laptop</li>
         </ul>
         <div class="price"><span class="n">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
         <button class="btn btn-solid act" onclick="buyMaterial('paper1',24900,'AAO Paper 1 Study Material')">Buy Now — ₹249 →</button>
@@ -183,13 +186,15 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
         <h3>AO/AAO Paper 2 — Complete Material</h3>
         <div class="desc">Agriculture &amp; allied subjects in depth — the full Paper 2 syllabus with MCQs and concept notes.</div>
         <ul>
-          <li>Complete Paper 2 syllabus coverage</li>
+          <li>617 pages · complete Paper 2 syllabus</li>
           <li>Topic-wise MCQs &amp; concept notes</li>
-          <li>Same secure online reader</li>
+          <li>Diagrams, tables &amp; solved examples</li>
+          <li>Food + Agri engineering subjects in depth</li>
+          <li>Instant access · same secure reader</li>
         </ul>
         <div class="price"><span class="n">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
-        <button class="btn btn-solid act" onclick="buyMaterial('paper2',100,'AAO Paper 2 Study Material (TEST)')">Buy Now — ₹249 →</button>
-        <div class="sub">617-page complete technical companion.</div>
+        <button class="btn btn-solid act" onclick="buyMaterial('paper2',24900,'AAO Paper 2 Study Material')">Buy Now — ₹249 →</button>
+        <div class="samp" onclick="getSampleP2()">Get the free sample (PDF) →</div>
       </div>
 
       <!-- MOCK TEST -->
@@ -198,9 +203,10 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
         <h3>AO/AAO Online Mock Tests</h3>
         <div class="desc">Full-length, timed mock tests on the real exam pattern — with negative marking, instant score &amp; solutions.</div>
         <ul>
-          <li>Real exam pattern &amp; timer</li>
+          <li>Real exam pattern &amp; live timer</li>
           <li>Auto-scoring with negative marking</li>
-          <li>Detailed solutions &amp; analysis</li>
+          <li>All-India style performance ranking</li>
+          <li>Detailed solutions &amp; weak-area analysis</li>
         </ul>
         <div class="price"><span class="soon">Launching soon</span></div>
         <button class="btn btn-solid act" onclick="notifyMe('Mock Tests')">Notify me on WhatsApp</button>
@@ -315,6 +321,10 @@ async function logoutUser(){ await sb.auth.signOut(); setLogged(null); }
 
 function getSample(){
   if(currentUser){ window.open('/AgriVidya_AAO_Paper1_FREE_SAMPLE.pdf','_blank'); }
+  else { alert('Create a free account (email + WhatsApp) to view the sample.'); openAuth('signup'); }
+}
+function getSampleP2(){
+  if(currentUser){ window.open('/AgriVidya_AAO_Paper2_FREE_SAMPLE.pdf','_blank'); }
   else { alert('Create a free account (email + WhatsApp) to view the sample.'); openAuth('signup'); }
 }
 function notifyMe(what){
