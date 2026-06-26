@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>AgriVidya Reader</title>
 <link rel="icon" type="image/png" href="/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:'DM Sans',system-ui,sans-serif;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
 :root{--bg:#021E17;--bg2:#04342C;--bar:#085041;--ln:#0F6E56;--ac:#1D9E75;--ac2:#5DCAA5;--mint:#9FE1CB;--txt:#E1F5EE}
 body{background:radial-gradient(900px 500px at 80% -10%,rgba(29,158,117,.25),transparent 60%),var(--bg);color:var(--txt);min-height:100vh}
 body.light{--bg:#EAF3EF;--txt:#0D1F1A}
 .bar{background:linear-gradient(135deg,#0F6E56,#085041);padding:10px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20;box-shadow:0 4px 20px -8px rgba(0,0,0,.5)}
 .bar .brand{display:flex;align-items:center;gap:8px}
 .bar .logo{width:28px;height:28px;border-radius:7px;background:var(--ac);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 10px -3px rgba(0,0,0,.5)}
-.bar .nm{font-family:'Syne',sans-serif;font-weight:800;color:#fff;font-size:15px;letter-spacing:-.3px}
+.bar .nm{font-family:'Sora',sans-serif;font-weight:800;color:#fff;font-size:15px;letter-spacing:-.3px}
 .bar .sp{flex:1}
 .bar button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(159,225,203,.25);border-radius:9px;padding:7px 13px;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;backdrop-filter:blur(4px)}
 .bar button:hover{background:rgba(255,255,255,.22);transform:translateY(-1px)}
@@ -32,7 +32,7 @@ canvas{display:block;width:100%;height:auto;pointer-events:none}
 .nav input{width:62px;text-align:center;border-radius:9px;border:1px solid var(--ln);padding:7px;background:#fff;color:#0D1F1A;font-weight:600;font-size:14px}
 .gate{max-width:360px;margin:8vh auto;background:linear-gradient(160deg,rgba(15,110,86,.55),rgba(8,80,65,.85));border:1px solid var(--ln);border-radius:18px;padding:28px;backdrop-filter:blur(10px);box-shadow:0 30px 70px -30px rgba(0,0,0,.7)}
 .gate .glogo{width:46px;height:46px;border-radius:12px;background:var(--ac);display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:0 8px 20px -6px rgba(29,158,117,.7)}
-.gate h2{font-family:'Syne',sans-serif;color:#fff;font-size:21px;margin-bottom:4px;letter-spacing:-.3px}
+.gate h2{font-family:'Sora',sans-serif;color:#fff;font-size:21px;margin-bottom:4px;letter-spacing:-.3px}
 .gate p{font-size:12.5px;color:var(--mint);margin-bottom:16px;line-height:1.5}
 .gate input{width:100%;padding:11px 13px;margin-bottom:9px;border-radius:10px;border:1px solid var(--ln);background:rgba(255,255,255,.08);color:#fff;font-size:13px;outline:none;transition:border .2s}
 .gate input:focus{border-color:var(--ac2)}
