@@ -373,6 +373,11 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
 #page-home .hero h1,#page-home .hero .hero-sub{max-width:680px}
 .hero-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;animation:kenburns 24s ease-in-out infinite alternate}
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,30,23,.42) 0%,rgba(2,30,23,.3) 38%,rgba(2,22,18,.74) 100%)}
+#page-home .hero .hc{position:absolute;inset:0;z-index:0;overflow:hidden}
+.hc .s{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.5s ease;transform:scale(1.05);animation:kenburns 18s ease-in-out infinite alternate}
+.hc .s.on{opacity:1}
+.hc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,30,23,.42) 0%,rgba(2,30,23,.3) 38%,rgba(2,22,18,.74) 100%)}
+@media(prefers-reduced-motion:reduce){.hc .s{animation:none}}
 @keyframes kenburns{from{transform:scale(1.06)}to{transform:scale(1.2)}}
 #page-home .hero .hero-badge{margin-top:0}
 .trust-strip{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin-top:26px;opacity:.9}
@@ -491,7 +496,14 @@ body{font-family:'Plus Jakarta Sans','DM Sans',system-ui,sans-serif}
 <!-- HOME -->
 <div id="page-home" class="page active">
   <div class="hero">
-    <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1600&q=80')"></div>
+    <div class="hc" id="hc">
+      <div class="s on" style="background-image:url('/av-hero-1.jpg')"></div>
+      <div class="s" style="background-image:url('/av-hero-3.jpg')"></div>
+      <div class="s" style="background-image:url('/av-hero-6.jpg')"></div>
+      <div class="s" style="background-image:url('/av-hero-4.jpg')"></div>
+      <div class="s" style="background-image:url('/av-hero-2.jpg')"></div>
+      <div class="s" style="background-image:url('/av-hero-5.jpg')"></div>
+    </div>
     <canvas id="heroFx"></canvas>
     <div class="hero-badge"><div class="hero-dot"></div>India's AI platform for Agri & Food Engineering</div>
     <h1>The <em>AI Brain</em> for<br>Agri & Food Engineering</h1>
@@ -1283,6 +1295,11 @@ async function buyMaterial(id){
 /* ===== AgriVidya premium motion (self-contained) ===== */
 (function(){
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 0) Hero carousel crossfade */
+  (function(){ var s=document.querySelectorAll('#hc .s'); if(s.length<2) return; var i=0;
+    setInterval(function(){ s[i].classList.remove('on'); i=(i+1)%s.length; s[i].classList.add('on'); }, 5000);
+  })();
 
   /* 1) Nav elevation on scroll */
   var navEl=document.querySelector('nav');

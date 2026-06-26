@@ -30,6 +30,12 @@ nav .logo{height:36px;width:auto;display:block}
 .hero{position:relative;overflow:hidden;background:radial-gradient(900px 420px at 80% -10%,rgba(29,158,117,.4),transparent 60%),linear-gradient(160deg,#021E17,#04342C 60%,#053a30);color:#fff;text-align:center;padding:4.5rem 1.3rem 4rem}
 .hero canvas{position:absolute;inset:0;z-index:1;opacity:.85}
 .hero>*{position:relative;z-index:2}
+.hero .hc{position:absolute;inset:0;z-index:0;overflow:hidden}
+.hc .s{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.5s ease;transform:scale(1.05);animation:hckb 16s ease-in-out infinite alternate}
+.hc .s.on{opacity:1}
+@keyframes hckb{from{transform:scale(1.05)}to{transform:scale(1.16)}}
+.hc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,30,23,.6),rgba(2,30,23,.48) 42%,rgba(2,22,18,.8))}
+@media(prefers-reduced-motion:reduce){.hc .s{animation:none}}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(15,110,86,.5);border:1px solid rgba(93,202,165,.4);color:var(--gp);font-size:12.5px;font-weight:600;padding:7px 16px;border-radius:30px;margin-bottom:18px;backdrop-filter:blur(4px)}
 .eyebrow .d{width:7px;height:7px;border-radius:50%;background:var(--gl);animation:p 2s infinite}
 @keyframes p{0%,100%{opacity:1}50%{opacity:.4}}
@@ -115,6 +121,14 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
 </nav>
 
 <header class="hero">
+  <div class="hc" id="hc">
+    <div class="s on" style="background-image:url('/av-hero-1.jpg')"></div>
+    <div class="s" style="background-image:url('/av-hero-3.jpg')"></div>
+    <div class="s" style="background-image:url('/av-hero-6.jpg')"></div>
+    <div class="s" style="background-image:url('/av-hero-4.jpg')"></div>
+    <div class="s" style="background-image:url('/av-hero-2.jpg')"></div>
+    <div class="s" style="background-image:url('/av-hero-5.jpg')"></div>
+  </div>
   <canvas id="fx"></canvas>
   <div class="eyebrow"><span class="d"></span>Karnataka KPSC · AO / AAO 2026</div>
   <h1 class="disp">Everything to clear <em>AO / AAO</em> — in one place.</h1>
@@ -317,6 +331,10 @@ async function buyMaterial(id,amount,desc){
   }catch(e){ alert('Could not start payment. Try again or WhatsApp +91 9492982424.'); }
 }
 
+/* hero carousel crossfade */
+(function(){ var s=document.querySelectorAll('#hc .s'); if(s.length<2) return; var i=0;
+  setInterval(function(){ s[i].classList.remove('on'); i=(i+1)%s.length; s[i].classList.add('on'); }, 5000);
+})();
 /* reveal on scroll */
 (function(){
   if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
