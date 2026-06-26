@@ -3,20 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AgriVidya — Reader</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<title>AgriVidya Reader</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:'DM Sans',system-ui,sans-serif;-webkit-user-select:none;user-select:none}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,'DM Sans',sans-serif;-webkit-user-select:none;user-select:none}
 :root{--bg:#021E17;--bar:#085041;--ln:#0F6E56;--ac:#1D9E75;--mint:#9FE1CB;--txt:#E1F5EE}
 body{background:var(--bg);color:var(--txt)}
 body.light{--bg:#EAF3EF;--txt:#0D1F1A}
 .bar{background:var(--bar);padding:9px 14px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20}
-.bar .nm{font-family:'Syne',sans-serif;font-weight:800;color:#fff;font-size:15px}
-.bar .sp{flex:1}
+.bar .nm{font-weight:800;color:#fff;font-size:15px}.bar .sp{flex:1}
 .bar button{background:rgba(255,255,255,.1);color:#fff;border:1px solid var(--ln);border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer}
-.prog{height:5px;background:rgba(255,255,255,.12)}
-.prog>i{display:block;height:100%;background:var(--ac);width:0;transition:width .3s}
+.prog{height:5px;background:rgba(255,255,255,.12)}.prog>i{display:block;height:100%;background:var(--ac);width:0;transition:width .3s}
 .meta{text-align:center;font-size:12px;color:var(--mint);padding:6px}
 .wrap{max-width:840px;margin:0 auto;padding:10px 12px 90px}
 .pg{position:relative;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.4)}
@@ -32,14 +29,12 @@ canvas{display:block;width:100%;height:auto;pointer-events:none}
 .gate .sw{font-size:12px;color:var(--mint);text-align:center;margin-top:10px;cursor:pointer}
 .ai{position:fixed;bottom:64px;right:14px;left:14px;max-width:540px;margin:0 auto;background:#04342C;border:1px solid var(--ln);border-radius:12px;padding:12px;z-index:30;display:none}
 .ai textarea{width:100%;height:54px;border-radius:8px;border:1px solid var(--ln);background:rgba(255,255,255,.06);color:#fff;padding:8px;font-size:13px;resize:none;outline:none}
-.ai .row{display:flex;gap:8px;margin-top:8px}
-.ai button{background:var(--ac);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer}
+.ai .row{display:flex;gap:8px;margin-top:8px}.ai button{background:var(--ac);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer}
 .ai .ans{font-size:13px;color:var(--mint);margin-top:10px;max-height:160px;overflow:auto;line-height:1.6;white-space:pre-wrap}
 .hide{display:none}
 </style>
 </head>
 <body oncontextmenu="return false" ondragstart="return false">
-
 <div class="gate" id="gate">
   <h2 id="gT">Log in to read</h2>
   <p>Your material is online-only and tied to your account.</p>
@@ -49,56 +44,95 @@ canvas{display:block;width:100%;height:auto;pointer-events:none}
   <div class="er" id="er"></div>
   <div class="sw" id="sw" onclick="tog()">New here? Create account</div>
 </div>
-
 <div id="reader" class="hide">
-  <div class="bar">
-    <span class="nm">AgriVidya Reader</span>
-    <span class="sp"></span>
-    <button onclick="askAI()">✨ Ask AI</button>
-    <button onclick="document.body.classList.toggle('light')">🌓</button>
-    <button onclick="logout()">Exit</button>
-  </div>
+  <div class="bar"><span class="nm">AgriVidya Reader</span><span class="sp"></span>
+    <button onclick="askAI()">Ask AI</button>
+    <button onclick="document.body.classList.toggle('light')">Theme</button>
+    <button onclick="logout()">Exit</button></div>
   <div class="prog"><i id="bar"></i></div>
-  <div class="meta" id="meta">Loading…</div>
+  <div class="meta" id="meta">Loading...</div>
   <div class="wrap"><div class="pg"><canvas id="cv"></canvas></div></div>
-  <div class="nav">
-    <button onclick="prev()">‹ Prev</button>
+  <div class="nav"><button onclick="prev()">Prev</button>
     <input id="jump" type="number" min="1" onchange="jumpTo(this.value)">
-    <button onclick="next()">Next ›</button>
-  </div>
-  <div class="ai" id="aiBox">
-    <textarea id="aiQ" placeholder="Ask about what you're reading… e.g. Explain photoperiodism simply"></textarea>
+    <button onclick="next()">Next</button></div>
+  <div class="ai" id="aiBox"><textarea id="aiQ" placeholder="Ask about what you are reading..."></textarea>
     <div class="row"><button onclick="sendAI()">Ask</button><button onclick="document.getElementById('aiBox').style.display='none'" style="background:#0F6E56">Close</button></div>
-    <div class="ans" id="aiA"></div>
-  </div>
+    <div class="ans" id="aiA"></div></div>
 </div>
-
 <script>
 const SUPA_URL='https://yrrielpjbbsxdgbwzwzx.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlycmllbHBqYmJzeGRnYnd6d3p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NTY5NDMsImV4cCI6MjA5MDAzMjk0M30.v7jeOcfQU7-LAxWFSftnTHMSDbZmiTRJEN19bB1z5RA';
 const BOOK_ID='paper1', BUCKET='books';
-// Skip Dedication (3) and Preface (4)
 const SKIP=new Set([3,4]);
 const ORDER=[]; for(let n=1;n<=352;n++){ if(!SKIP.has(n)) ORDER.push(n); }
 const TOTAL=ORDER.length;
-const pad=n=>'paper1/p1-'+String(n).padStart(3,'0')+'.jpg';
-
+function pad(n){ return 'paper1/p1-'+String(n).padStart(3,'0')+'.jpg'; }
 const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
-let mode='login',user=null,pos=0,myTok=Math.random().toString(36).slice(2),saveT=null;
-
-function tog(){mode=mode==='login'?'signup':'login';gT.textContent=mode==='login'?'Log in to read':'Create account';go.textContent=mode==='login'?'Log in':'Sign up';sw.textContent=mode==='login'?'New here? Create account':'Have an account? Log in';}
-function showEr(m){er.textContent=m;er.style.display='block';}
+let mode='login', user=null, pos=0, myTok=Math.random().toString(36).slice(2), saveT=null;
+function tog(){ mode=(mode==='login')?'signup':'login'; document.getElementById('gT').textContent=(mode==='login')?'Log in to read':'Create account'; document.getElementById('go').textContent=(mode==='login')?'Log in':'Sign up'; document.getElementById('sw').textContent=(mode==='login')?'New here? Create account':'Have an account? Log in'; }
+function showEr(m){ var e=document.getElementById('er'); e.textContent=m; e.style.display='block'; }
 async function doAuth(){
-  er.style.display='none';const e=em.value.trim(),p=pw.value;if(!e||!p)return showEr('Enter email and password');
-  const fn=mode==='login'?sb.auth.signInWithPassword({email:e,password:p}):sb.auth.signUp({email:e,password:p});
-  const {data,error}=await fn;if(error)return showEr(error.message);
-  if(mode==='signup'&&!data.session)return showEr('Account made. Now log in.');
-  start(data.user);
+  document.getElementById('er').style.display='none';
+  var e=document.getElementById('em').value.trim(), p=document.getElementById('pw').value;
+  if(!e||!p){ showEr('Enter email and password'); return; }
+  var res=(mode==='login')?await sb.auth.signInWithPassword({email:e,password:p}):await sb.auth.signUp({email:e,password:p});
+  if(res.error){ showEr(res.error.message); return; }
+  if(mode==='signup' && !res.data.session){ showEr('Account made. Confirm via email, then log in.'); return; }
+  start(res.data.user);
 }
-async function logout(){await sb.auth.signOut();location.reload();}
-
+async function logout(){ await sb.auth.signOut(); location.reload(); }
 async function start(u){
   user=u;
-  const {data:acc}=await sb.from('book_access').select('active').eq('user_id',u.id).eq('book_id',BOOK_ID).maybeSingle();
-  if(!acc||acc.active===false){gT.textContent='No access yet';er.textContent='This account has not purchased this material. Buy it on the E-Books page.';er.style.display='block';go.style.display='none';sw.style.display='none';return;}
-  await sb.from('user_sessions').upsert({user_id:u.id,session_
+  var r1=await sb.from('book_access').select('active').eq('user_id',u.id).eq('book_id',BOOK_ID).maybeSingle();
+  if(!r1.data || r1.data.active===false){
+    document.getElementById('gT').textContent='No access yet';
+    var er=document.getElementById('er'); er.textContent='This account has not purchased this material. Buy it on the E-Books page.'; er.style.display='block';
+    document.getElementById('go').style.display='none'; document.getElementById('sw').style.display='none'; return;
+  }
+  await sb.from('user_sessions').upsert({user_id:u.id,session_token:myTok,updated_at:new Date().toISOString()});
+  setInterval(chkSession,8000);
+  var r2=await sb.from('reading_progress').select('last_page').eq('user_id',u.id).eq('book_id',BOOK_ID).maybeSingle();
+  if(r2.data && r2.data.last_page){ var i=ORDER.indexOf(r2.data.last_page); pos=(i>=0)?i:0; } else { pos=0; }
+  document.getElementById('gate').classList.add('hide');
+  document.getElementById('reader').classList.remove('hide');
+  document.getElementById('jump').max=TOTAL; render();
+}
+async function chkSession(){ var r=await sb.from('user_sessions').select('session_token').eq('user_id',user.id).maybeSingle(); if(r.data && r.data.session_token!==myTok){ alert('Opened on another device - logged out.'); logout(); } }
+var cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+async function render(){
+  var pageNum=ORDER[pos];
+  document.getElementById('meta').textContent='Loading...';
+  var s=await sb.storage.from(BUCKET).createSignedUrl(pad(pageNum),120);
+  if(s.error || !s.data){ document.getElementById('meta').textContent='Page unavailable.'; return; }
+  var im=new Image(); im.crossOrigin='anonymous';
+  im.onload=function(){
+    cv.width=im.width; cv.height=im.height; ctx.drawImage(im,0,0);
+    ctx.save(); ctx.globalAlpha=.14; ctx.fillStyle='#0F6E56'; ctx.font=Math.round(im.width/26)+'px sans-serif'; ctx.rotate(-.4);
+    for(var y=0;y<im.height*1.5;y+=240){ for(var x=-200;x<im.width;x+=540){ ctx.fillText(user.email,x,y); } }
+    ctx.restore();
+    var pct=Math.round((pos+1)/TOTAL*100);
+    document.getElementById('bar').style.width=pct+'%';
+    document.getElementById('meta').textContent='Page '+(pos+1)+' / '+TOTAL+'  -  '+pct+'% done  -  '+(TOTAL-pos-1)+' pages left';
+    document.getElementById('jump').value=pos+1; saveProgress(pageNum);
+  };
+  im.src=s.data.signedUrl;
+}
+function saveProgress(pageNum){ clearTimeout(saveT); saveT=setTimeout(function(){ sb.from('reading_progress').upsert({user_id:user.id,book_id:BOOK_ID,last_page:pageNum,updated_at:new Date().toISOString()}); },700); }
+function next(){ if(pos<TOTAL-1){ pos++; render(); window.scrollTo(0,0); } }
+function prev(){ if(pos>0){ pos--; render(); window.scrollTo(0,0); } }
+function jumpTo(v){ v=parseInt(v); if(v>=1 && v<=TOTAL){ pos=v-1; render(); window.scrollTo(0,0); } }
+function askAI(){ document.getElementById('aiBox').style.display='block'; document.getElementById('aiQ').focus(); }
+async function sendAI(){
+  var q=document.getElementById('aiQ').value.trim(); if(!q) return;
+  var a=document.getElementById('aiA'); a.textContent='Thinking...';
+  try{
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:'Agri/Food engineering exam study help. '+q}],max_tokens:500})});
+    var d=await r.json(); if(d.error) throw 0;
+    a.textContent=(d.content && d.content[0] ? d.content[0].text : '').replace(/[*#]/g,'');
+  }catch(e){ a.textContent='AI is busy right now. Try again shortly.'; }
+}
+document.addEventListener('keydown',function(e){ if((e.ctrlKey||e.metaKey) && ['s','p','u'].indexOf(e.key.toLowerCase())>=0){ e.preventDefault(); } if(e.key==='ArrowRight') next(); if(e.key==='ArrowLeft') prev(); });
+sb.auth.getSession().then(function(o){ if(o.data.session) start(o.data.session.user); });
+</script>
+</body>
+</html>
