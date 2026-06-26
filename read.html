@@ -92,7 +92,7 @@ const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 const BUCKET='books';
 const CFG={
   paper1:{total:352, skip:[1,2,3,4], prefix:'paper1/p1-'},
-  paper2:{total:617, skip:[1,2],     prefix:'paper2/p2-'}
+  paper2:{total:617, skip:[1,2,3,4], prefix:'paper2/p2-'}
 };
 const _p=new URLSearchParams(location.search).get('b');
 const BOOK_ID=(_p==='paper2')?'paper2':'paper1';
