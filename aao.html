@@ -166,9 +166,9 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
           <li>Topic-wise MCQs &amp; concept notes</li>
           <li>Same secure online reader</li>
         </ul>
-        <div class="price"><span class="soon">Launching soon</span></div>
-        <button class="btn btn-solid act" onclick="notifyMe('Paper 2')">Notify me on WhatsApp</button>
-        <div class="sub">Releasing soon — be first in line.</div>
+        <div class="price"><span class="n">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
+        <button class="btn btn-solid act" onclick="buyMaterial('paper2',24900,'AAO Paper 2 Study Material')">Buy Now — ₹249 →</button>
+        <div class="sub">617-page complete technical companion.</div>
       </div>
 
       <!-- MOCK TEST -->
@@ -186,6 +186,18 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
         <div class="sub">Interactive test engine — coming this month.</div>
       </div>
 
+    </div>
+
+    <div class="rv" style="margin-top:22px;background:linear-gradient(135deg,#0F6E56,#04342C);border-radius:18px;padding:1.8rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;box-shadow:0 22px 50px -28px rgba(15,110,86,.7)">
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--gl);margin-bottom:6px">Best value · both papers</div>
+        <div class="disp" style="color:#fff;font-size:22px;font-weight:800;line-height:1.2">Paper 1 + Paper 2 Combo</div>
+        <div style="color:var(--gp);font-size:13px;margin-top:4px">The complete AO/AAO library — both books, one secure account.</div>
+      </div>
+      <div style="text-align:right;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+        <div><span class="disp" style="color:#fff;font-size:32px;font-weight:800">₹500</span> <span style="color:var(--gl);text-decoration:line-through;font-size:16px">₹998</span></div>
+        <button class="btn btn-solid btn-lg" onclick="buyMaterial('combo',50000,'AO/AAO Paper 1 + Paper 2 Combo')">Get both — ₹500 →</button>
+      </div>
     </div>
   </div>
 </section>
@@ -297,7 +309,7 @@ async function buyMaterial(id,amount,desc){
       handler:async function(resp){
         const v=await fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({razorpay_order_id:resp.razorpay_order_id,razorpay_payment_id:resp.razorpay_payment_id,razorpay_signature:resp.razorpay_signature,user_id:currentUser.id,book_id:id})});
         const vd=await v.json();
-        if(vd.success){ alert('Payment successful! Opening your material...'); window.location.href='/read.html'; }
+        if(vd.success){ alert('Payment successful! Opening your material...'); window.location.href = (id==='paper2') ? '/read.html?b=paper2' : '/read.html'; }
         else { alert('Payment received but verification failed. WhatsApp +91 9492982424 with your payment id.'); }
       }});
     rzp.on('payment.failed',function(){ alert('Payment failed or cancelled. Please try again.'); });

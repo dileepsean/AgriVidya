@@ -89,11 +89,18 @@ canvas{display:block;width:100%;height:auto;pointer-events:none}
 <script>
 const SUPA_URL='https://yrrielpjbbsxdgbwzwzx.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlycmllbHBqYmJzeGRnYnd6d3p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NTY5NDMsImV4cCI6MjA5MDAzMjk0M30.v7jeOcfQU7-LAxWFSftnTHMSDbZmiTRJEN19bB1z5RA';
-const BOOK_ID='paper1', BUCKET='books';
-const SKIP=new Set([1,2,3,4]);
-const ORDER=[]; for(let n=1;n<=352;n++){ if(!SKIP.has(n)) ORDER.push(n); }
+const BUCKET='books';
+const CFG={
+  paper1:{total:352, skip:[1,2,3,4], prefix:'paper1/p1-'},
+  paper2:{total:617, skip:[1,2],     prefix:'paper2/p2-'}
+};
+const _p=new URLSearchParams(location.search).get('b');
+const BOOK_ID=(_p==='paper2')?'paper2':'paper1';
+const C=CFG[BOOK_ID];
+const SKIP=new Set(C.skip);
+const ORDER=[]; for(let n=1;n<=C.total;n++){ if(!SKIP.has(n)) ORDER.push(n); }
 const TOTAL=ORDER.length;
-function pad(n){ return 'paper1/p1-'+String(n).padStart(3,'0')+'.jpg'; }
+function pad(n){ return C.prefix+String(n).padStart(3,'0')+'.jpg'; }
 const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
 let mode='login', user=null, pos=0, myTok=Math.random().toString(36).slice(2), saveT=null;
 function tog(){ mode=(mode==='login')?'signup':'login'; document.getElementById('gT').textContent=(mode==='login')?'Log in to read':'Create account'; document.getElementById('go').textContent=(mode==='login')?'Log in':'Sign up'; document.getElementById('sw').textContent=(mode==='login')?'New here? Create account':'Have an account? Log in'; }
