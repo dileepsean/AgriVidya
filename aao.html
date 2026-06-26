@@ -66,6 +66,11 @@ nav .logo{height:36px;width:auto;display:block}
 .prod.feat{border:1.5px solid var(--gb);box-shadow:0 24px 50px -28px rgba(15,110,86,.45)}
 .prod .ribbon{position:absolute;top:14px;right:-30px;background:var(--gb);color:#fff;font-size:10.5px;font-weight:700;padding:4px 34px;transform:rotate(40deg)}
 .prod .ic{width:54px;height:54px;border-radius:15px;background:linear-gradient(140deg,var(--gb),var(--g));display:flex;align-items:center;justify-content:center;font-size:25px;margin-bottom:16px;box-shadow:0 14px 26px -10px rgba(29,158,117,.6)}
+.prod-media{position:relative;border-radius:12px;overflow:hidden;margin-bottom:16px;aspect-ratio:3/2;background:var(--gs)}
+.prod-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .55s cubic-bezier(.2,.7,.2,1)}
+.prod:hover .prod-media img{transform:scale(1.06)}
+.prod-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(2,30,23,.42))}
+.prod-media .ic{position:absolute;left:11px;bottom:11px;margin:0;width:44px;height:44px;font-size:21px;z-index:2}
 .prod h3{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;margin-bottom:8px;line-height:1.2}
 .prod .desc{font-size:13px;color:var(--ts);line-height:1.6;margin-bottom:14px}
 .prod ul{list-style:none;margin-bottom:16px}
@@ -164,7 +169,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
       <!-- PAPER 1 -->
       <div class="prod feat rv">
         <div class="ribbon">LIVE</div>
-        <div class="ic">📘</div>
+        <div class="prod-media"><img src="/av-prod-1.jpg" alt="" loading="lazy"><div class="ic">📘</div></div>
         <h3>AO/AAO Paper 1 — Complete Material</h3>
         <div class="desc">The full General Studies paper with the negative-marking strategy no other book teaches.</div>
         <ul>
@@ -182,7 +187,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
 
       <!-- PAPER 2 -->
       <div class="prod rv">
-        <div class="ic">📗</div>
+        <div class="prod-media"><img src="/av-prod-2.jpg" alt="" loading="lazy"><div class="ic">📗</div></div>
         <h3>AO/AAO Paper 2 — Complete Material</h3>
         <div class="desc">Agriculture &amp; allied subjects in depth — the full Paper 2 syllabus with MCQs and concept notes.</div>
         <ul>
