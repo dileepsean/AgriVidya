@@ -1,4 +1,3 @@
-// Vercel serverless — creates a Razorpay order (no npm deps; uses global fetch + Buffer)
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -7,22 +6,23 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
   try {
     let b = req.body; if (typeof b === 'string') b = JSON.parse(b || '{}'); if (!b) b = {};
-    // TEMP diagnostic: returns only the NAMES of relevant env vars (no values)
+    const id = process.env.RAZORPAY_KEY_ID, secret = process.env.RAZORPAY_KEY_SECRET;
     if (b.debug === 'envcheck') {
-      res.status(200).json({ keys: Object.keys(process.env).filter(k => /razor|supabase|service|key|secret/i.test(k)) });
+      let rzp = 'no keys';
+      if (id && secret) {
+        const auth = 'Basic ' + Buffer.from(id + ':' + secret).toString('base64');
+        const rr = await fetch('https://api.razorpay.com/v1/orders', { method: 'POST', headers: { 'Authorization': auth, 'Content-Type': 'application/json' }, body: JSON.stringify({ amount: 100, currency: 'INR', receipt: 't' }) });
+        const d = await rr.json();
+        rzp = { status: rr.status, idPrefix: id.slice(0, 9), secretLen: secret.length, err: d.error ? d.error.description : (d.id ? 'OK' : JSON.stringify(d).slice(0, 150)) };
+      }
+      res.status(200).json({ keys: Object.keys(process.env).filter(k => /razor|supabase|service/i.test(k)), rzp });
       return;
     }
     const amount = Math.round(Number(b.amount));
     if (!amount || amount < 100) { res.status(400).json({ error: 'Invalid amount' }); return; }
-    const id = process.env.RAZORPAY_KEY_ID || process.env.RAZORPAY_ID || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || process.env.KEY_ID;
-    const secret = process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_SECRET || process.env.KEY_SECRET;
     if (!id || !secret) { res.status(401).json({ error: 'Razorpay keys not configured' }); return; }
     const auth = 'Basic ' + Buffer.from(id + ':' + secret).toString('base64');
-    const rr = await fetch('https://api.razorpay.com/v1/orders', {
-      method: 'POST',
-      headers: { 'Authorization': auth, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount: amount, currency: 'INR', receipt: 'rcpt_' + Date.now(), notes: { book_id: b.book_id || 'paper1', user_id: b.user_id || '' } })
-    });
+    const rr = await fetch('https://api.razorpay.com/v1/orders', { method: 'POST', headers: { 'Authorization': auth, 'Content-Type': 'application/json' }, body: JSON.stringify({ amount: amount, currency: 'INR', receipt: 'rcpt_' + Date.now(), notes: { book_id: b.book_id || 'paper1', user_id: b.user_id || '' } }) });
     const order = await rr.json();
     if (!rr.ok || !order.id) { res.status(500).json({ error: 'Order creation failed' }); return; }
     res.status(200).json({ order_id: order.id, amount: order.amount, currency: order.currency, key_id: id });
