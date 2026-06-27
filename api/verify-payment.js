@@ -1,4 +1,5 @@
-// Vercel serverless — verifies Razorpay signature, then grants book access in Supabase
+// Vercel serverless — verifies Razorpay signature, auto-creates the buyer's account
+// from the email/phone collected at checkout, grants access, returns a one-tap login link.
 import crypto from 'crypto';
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -8,23 +9,53 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
   try {
     let b = req.body; if (typeof b === 'string') b = JSON.parse(b || '{}'); if (!b) b = {};
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, user_id, book_id } = b;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, book_id } = b;
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) { res.status(400).json({ error: 'Missing fields' }); return; }
-    const secret = process.env.RAZORPAY_KEY_SECRET;
+    const secret = process.env.RAZORPAY_KEY_SECRET, keyid = process.env.RAZORPAY_KEY_ID;
     const expected = crypto.createHmac('sha256', secret).update(razorpay_order_id + '|' + razorpay_payment_id).digest('hex');
     if (expected !== razorpay_signature) { res.status(400).json({ error: 'Signature mismatch' }); return; }
-    const SUPA_URL = process.env.SUPABASE_URL || 'https://yrrielpjbbsxdgbwzwzx.supabase.co';
+
+    const SUPA = process.env.SUPABASE_URL || 'https://yrrielpjbbsxdgbwzwzx.supabase.co';
     const SERVICE = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (user_id && SERVICE) {
-      // combo grants both papers; otherwise grant the single book purchased
+    const H = { 'apikey': SERVICE, 'Authorization': 'Bearer ' + SERVICE, 'Content-Type': 'application/json' };
+
+    // 1) get the buyer's email + phone from the Razorpay payment
+    let email = '', contact = '';
+    try {
+      const auth = 'Basic ' + Buffer.from(keyid + ':' + secret).toString('base64');
+      const pay = await fetch('https://api.razorpay.com/v1/payments/' + razorpay_payment_id, { headers: { 'Authorization': auth } }).then(r => r.json());
+      email = (pay.email || '').toLowerCase().trim(); contact = pay.contact || '';
+    } catch (e) {}
+
+    let userId = b.user_id || null, login_link = null;
+    const redirect = (book_id === 'paper2') ? 'https://www.agrividya.in/read.html?b=paper2' : 'https://www.agrividya.in/read.html';
+
+    // 2) ensure an account exists for this email and get a one-tap login link
+    if (email && SERVICE) {
+      try {
+        const gl = await fetch(SUPA + '/auth/v1/admin/generate_link', {
+          method: 'POST', headers: H,
+          body: JSON.stringify({ type: 'magiclink', email: email, options: { redirect_to: redirect, data: { whatsapp: contact } } })
+        }).then(r => r.json());
+        login_link = gl.action_link || (gl.properties && gl.properties.action_link) || null;
+        userId = (gl.user && gl.user.id) || gl.id || userId;
+        // make sure whatsapp is saved on the account
+        if (userId && contact) {
+          await fetch(SUPA + '/auth/v1/admin/users/' + userId, { method: 'PUT', headers: H, body: JSON.stringify({ user_metadata: { whatsapp: contact }, email_confirm: true }) });
+        }
+      } catch (e) {}
+    }
+
+    // 3) grant access (combo => both papers)
+    if (userId && SERVICE) {
       const books = (book_id === 'combo') ? ['paper1', 'paper2'] : [book_id || 'paper1'];
-      const rows = books.map(bk => ({ user_id: user_id, book_id: bk, active: true }));
-      await fetch(SUPA_URL + '/rest/v1/book_access', {
+      await fetch(SUPA + '/rest/v1/book_access', {
         method: 'POST',
-        headers: { 'apikey': SERVICE, 'Authorization': 'Bearer ' + SERVICE, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' },
-        body: JSON.stringify(rows)
+        headers: { ...H, 'Prefer': 'resolution=merge-duplicates' },
+        body: JSON.stringify(books.map(bk => ({ user_id: userId, book_id: bk, active: true })))
       });
     }
-    res.status(200).json({ success: true });
+
+    res.status(200).json({ success: true, login_link: login_link });
   } catch (e) { res.status(500).json({ error: 'Verification failed' }); }
 }
