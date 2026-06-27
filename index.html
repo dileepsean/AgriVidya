@@ -475,6 +475,7 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
   </a>
   <div class="nav-links">
     <a id="nav-home" onclick="showPage('home')">Home</a>
+    <a id="nav-courses" href="/read.html" class="hide" style="color:var(--gb);font-weight:700">📚 My Courses</a>
     <a href="/aao.html" style="color:var(--gb);font-weight:700">AO/AAO Exam</a>
     <a id="nav-ebooks" onclick="showPage('ebooks')">E-Books</a>
     <a id="nav-bot" onclick="showPage('bot')">VidyaBot</a>
@@ -495,6 +496,7 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
 <!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobileNav">
   <a id="mnav-home" onclick="showPage('home');closeMobileNav()">Home</a>
+  <a id="mnav-courses" href="/read.html" class="hide" style="color:var(--gb);font-weight:700">📚 My Courses</a>
   <a href="/aao.html" style="color:var(--gb);font-weight:700">AO/AAO Exam</a>
   <a id="mnav-ebooks" onclick="showPage('ebooks');closeMobileNav()">E-Books</a>
   <a id="mnav-bot" onclick="showPage('bot');closeMobileNav()">VidyaBot</a>
@@ -1108,6 +1110,8 @@ function updateNav(user){
     document.getElementById('btnSignup').style.display='block';
     document.getElementById('btnUser').style.display='none';
     var lib=document.getElementById('myLib'); if(lib) lib.style.display='none';
+    var nc=document.getElementById('nav-courses'); if(nc) nc.classList.add('hide');
+    var mnc=document.getElementById('mnav-courses'); if(mnc) mnc.classList.add('hide');
   }
 }
 async function loadLibrary(user){
@@ -1115,6 +1119,9 @@ async function loadLibrary(user){
   try{
     const {data}=await _supabase.from('book_access').select('book_id,active').eq('user_id',user.id);
     const owned=(data||[]).filter(r=>r.active!==false).map(r=>r.book_id);
+    const hasCourse=owned.includes('paper1')||owned.includes('paper2');
+    var nc=document.getElementById('nav-courses'); if(nc) nc.classList.toggle('hide',!hasCourse);
+    var mnc=document.getElementById('mnav-courses'); if(mnc) mnc.classList.toggle('hide',!hasCourse);
     const B='style="background:#fff;color:#0E3A2C;font-weight:700;padding:9px 16px;border-radius:10px;text-decoration:none;font-size:14px;font-family:inherit"';
     let btns='';
     if(owned.includes('paper1')) btns+='<a href="/read.html" '+B+'>📘 Continue Paper 1 →</a>';
@@ -1298,7 +1305,7 @@ async function sendPopupMsg(){
 document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
 </script>
 <script>
-function getSample(){ if(typeof currentUser!=='undefined' && currentUser){ window.open('/AgriVidya_AAO_Paper1_FREE_SAMPLE.pdf','_blank'); } else { alert('Create a free account (email + WhatsApp) to view the sample.'); openModal('signup'); } }
+function getSample(){ window.open('/AgriVidya_AAO_Paper1_FREE_SAMPLE.pdf','_blank'); }
 </script>
 <script>
 async function buyMaterial(id){

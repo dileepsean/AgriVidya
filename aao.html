@@ -131,6 +131,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
 <nav>
   <a href="/"><img src="/av-logo.png" alt="AgriVidya" class="logo"></a>
   <div class="nav-r">
+    <a class="btn btn-solid hide" id="navCourses" href="/read.html" style="text-decoration:none">📚 My Courses</a>
     <button class="btn btn-ghost" id="navLogin" onclick="openAuth('login')">Log in</button>
     <button class="btn btn-solid" id="navSignup" onclick="openAuth('signup')">Sign up</button>
     <button class="btn btn-ghost hide" id="navLogout" onclick="logoutUser()">Log out</button>
@@ -324,12 +325,13 @@ function setLogged(u){ currentUser=u;
   document.getElementById('navLogin').classList.toggle('hide',!!u);
   document.getElementById('navSignup').classList.toggle('hide',!!u);
   document.getElementById('navLogout').classList.toggle('hide',!u);
-  if(u) loadLibrary(u); else document.getElementById('myLib').style.display='none';
+  if(u) loadLibrary(u); else { document.getElementById('myLib').style.display='none'; document.getElementById('navCourses').classList.add('hide'); }
 }
 async function loadLibrary(u){
   try{
     const {data}=await sb.from('book_access').select('book_id,active').eq('user_id',u.id);
     const owned=(data||[]).filter(r=>r.active!==false).map(r=>r.book_id);
+    document.getElementById('navCourses').classList.toggle('hide', !(owned.includes('paper1')||owned.includes('paper2')));
     let btns='';
     if(owned.includes('paper1')) btns+='<a class="lib-btn" href="/read.html">📘 Continue Paper 1 →</a>';
     if(owned.includes('paper2')) btns+='<a class="lib-btn" href="/read.html?b=paper2">📗 Continue Paper 2 →</a>';
@@ -369,14 +371,8 @@ async function doAuth(){
 }
 async function logoutUser(){ await sb.auth.signOut(); setLogged(null); }
 
-function getSample(){
-  if(currentUser){ window.open('/AgriVidya_AAO_Paper1_FREE_SAMPLE.pdf','_blank'); }
-  else { alert('Create a free account (email + WhatsApp) to view the sample.'); openAuth('signup'); }
-}
-function getSampleP2(){
-  if(currentUser){ window.open('/AgriVidya_AAO_Paper2_FREE_SAMPLE.pdf','_blank'); }
-  else { alert('Create a free account (email + WhatsApp) to view the sample.'); openAuth('signup'); }
-}
+function getSample(){ window.open('/AgriVidya_AAO_Paper1_FREE_SAMPLE.pdf','_blank'); }
+function getSampleP2(){ window.open('/AgriVidya_AAO_Paper2_FREE_SAMPLE.pdf','_blank'); }
 function notifyMe(what){
   if(currentUser){ alert('You\'re on the list! We\'ll message you on WhatsApp the moment '+what+' goes live.'); }
   else { alert('Create a free account (email + WhatsApp) and we\'ll notify you when '+what+' launches.'); openAuth('signup'); }

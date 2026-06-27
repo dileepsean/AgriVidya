@@ -235,7 +235,7 @@ function jumpTo(v){ v=parseInt(v); if(v>=1 && v<=TOTAL){ pos=v-1; render(); wind
 
 /* ===== AO/AAO AI tutor (₹100 add-on) ===== */
 function askAI(){ if(!hasBot){ unlockBot(); return; } document.getElementById('aiBox').style.display='block'; document.getElementById('aiQ').focus(); }
-function unlockBot(){ if(!confirm('We would genuinely love to give the AI Tutor for free. 🙏\n\nBut every answer is powered by a paid AI that charges us for each question asked. So we ask a small one-time ₹100 — only to cover that cost, nothing more. It is not about profit; it simply helps us keep this running for aspirants like you.\n\nUnlock the AO/AAO AI Tutor and ask away?')) return; buyBot(); }
+function unlockBot(){ if(!confirm('We would genuinely love to give the AI Tutor for free. 🙏\n\nBut every answer is powered by a paid AI that charges us for each question. So we ask a small one-time ₹100 — only to cover that cost, not for profit. It stays unlocked right up to your exam (26 July), so ask as much as you need.\n\nUnlock the AO/AAO AI Tutor?')) return; buyBot(); }
 async function buyBot(){
   try{
     var r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:10000,book_id:'bot',user_id:user.id})});
