@@ -890,10 +890,10 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
       <div class="card" style="cursor:default">
         <div class="card-icon">📗</div>
         <h3>Karnataka AO/AAO Paper 2 — Complete Material</h3>
-        <p>Agriculture &amp; allied subjects in depth — full Paper 2 syllabus with MCQs, concept notes and exam strategy. Online-only secure access.</p>
-        <div style="margin:14px 0;font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gm)">Launching soon</div>
-        <button class="btn-pay" style="width:auto;padding:11px 26px;background:linear-gradient(135deg,#1D9E75,#0F6E56)" onclick="if(typeof currentUser!=='undefined'&&currentUser){alert('You are on the list! We will message you on WhatsApp the moment Paper 2 goes live.');}else{alert('Create a free account (email + WhatsApp) and we will notify you when Paper 2 launches.');openModal('signup');}">Notify me on WhatsApp</button>
-        <div style="margin-top:10px"><span style="font-size:12px;color:var(--tm)">Releasing soon — be first in line.</span></div>
+        <p>617 pages — Agriculture &amp; allied subjects in depth, full Paper 2 syllabus with MCQs, concept notes and exam strategy. Online-only secure access.</p>
+        <div style="margin:14px 0;font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gm)">₹249 <span style="font-size:13px;color:var(--tm);text-decoration:line-through;font-weight:400">₹499</span></div>
+        <button class="btn-pay" style="width:auto;padding:11px 26px" onclick="buyMaterial('paper2',24900,'AAO Paper 2 Study Material')">Buy Now &mdash; ₹249 &rarr;</button>
+        <div style="margin-top:10px"><a onclick="window.open('/AgriVidya_AAO_Paper2_FREE_SAMPLE.pdf','_blank')" style="font-size:12px;color:var(--gb);cursor:pointer">Get the free sample (PDF) →</a></div>
       </div>
       <div class="card" style="cursor:default">
         <div class="card-icon">📝</div>
@@ -1308,18 +1308,23 @@ document.getElementById('modalOverlay').addEventListener('click',function(e){if(
 function getSample(){ window.open('/AgriVidya_AAO_Paper1_FREE_SAMPLE.pdf','_blank'); }
 </script>
 <script>
-async function buyMaterial(id){
-  if(typeof currentUser==='undefined' || !currentUser){ alert('Please create a free account first (email + WhatsApp), then buy.'); openModal('signup'); return; }
+async function buyMaterial(id,amount,desc){
+  amount=amount||24900; desc=desc||'AAO Study Material';
   try{
-    var r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:24900,book_id:id,user_id:currentUser.id})});
+    var body={amount:amount,book_id:id}; if(typeof currentUser!=='undefined'&&currentUser) body.user_id=currentUser.id;
+    var r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     var o=await r.json(); if(o.error||!o.order_id) throw 0;
-    var rzp=new Razorpay({key:o.key_id,amount:o.amount,currency:o.currency,order_id:o.order_id,name:'AgriVidya',description:'AAO Paper 1 Study Material',prefill:{email:currentUser.email},theme:{color:'#085041'},
+    var opts={key:o.key_id,amount:o.amount,currency:o.currency,order_id:o.order_id,name:'AgriVidya',description:desc,theme:{color:'#085041'},
       handler:async function(resp){
-        var v=await fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({razorpay_order_id:resp.razorpay_order_id,razorpay_payment_id:resp.razorpay_payment_id,razorpay_signature:resp.razorpay_signature,user_id:currentUser.id,book_id:id})});
+        var vb={razorpay_order_id:resp.razorpay_order_id,razorpay_payment_id:resp.razorpay_payment_id,razorpay_signature:resp.razorpay_signature,book_id:id};
+        if(typeof currentUser!=='undefined'&&currentUser) vb.user_id=currentUser.id;
+        var v=await fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(vb)});
         var vd=await v.json();
-        if(vd.success){ alert('Payment successful! Opening your material...'); window.location.href='/read.html'; }
+        if(vd.success){ alert('Payment successful! Opening your material...'); if(vd.login_link){ window.location.href=vd.login_link; } else { window.location.href=(id==='paper2')?'/read.html?b=paper2':'/read.html'; } }
         else { alert('Payment received but verification failed. WhatsApp +91 9492982424 with your payment id.'); }
-      }});
+      }};
+    if(typeof currentUser!=='undefined'&&currentUser) opts.prefill={email:currentUser.email};
+    var rzp=new Razorpay(opts);
     rzp.on('payment.failed',function(){ alert('Payment failed or cancelled. Please try again.'); });
     rzp.open();
   }catch(e){ alert('Could not start payment. Try again or WhatsApp +91 9492982424.'); }
