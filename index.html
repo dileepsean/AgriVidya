@@ -1308,6 +1308,13 @@ document.getElementById('modalOverlay').addEventListener('click',function(e){if(
 function getSample(){ window.open('/AgriVidya_AAO_Paper1_FREE_SAMPLE.pdf','_blank'); }
 </script>
 <script>
+function paidSuccess(url){
+  var d=document.createElement('div');
+  d.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(2,30,23,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;color:#fff';
+  d.innerHTML='<div style="font-size:56px">✅</div><div style="font-weight:800;font-size:26px;margin:14px 0 6px">Payment successful!</div><div style="color:#9FE1CB;max-width:380px;margin-bottom:24px;font-size:15px">Your material is ready. Tap below to open it. It is also saved under <b>My Courses</b> on the site.</div><a href="'+url+'" style="background:linear-gradient(135deg,#1D9E75,#0F6E56);color:#fff;font-weight:800;padding:17px 32px;border-radius:14px;text-decoration:none;font-size:17px">Open my material →</a><div style="color:#7FBfa9;font-size:12px;margin-top:18px">Opening automatically…</div>';
+  document.body.appendChild(d);
+  setTimeout(function(){ try{ window.location.href=url; }catch(e){} }, 1400);
+}
 async function buyMaterial(id,amount,desc){
   amount=amount||24900; desc=desc||'AAO Study Material';
   try{
@@ -1320,7 +1327,7 @@ async function buyMaterial(id,amount,desc){
         if(typeof currentUser!=='undefined'&&currentUser) vb.user_id=currentUser.id;
         var v=await fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(vb)});
         var vd=await v.json();
-        if(vd.success){ alert('Payment successful! Opening your material...'); if(vd.login_link){ window.location.href=vd.login_link; } else { window.location.href=(id==='paper2')?'/read.html?b=paper2':'/read.html'; } }
+        if(vd.success){ paidSuccess(vd.login_link || ((id==='paper2')?'/read.html?b=paper2':'/read.html')); }
         else { alert('Payment received but verification failed. WhatsApp +91 9492982424 with your payment id.'); }
       }};
     if(typeof currentUser!=='undefined'&&currentUser) opts.prefill={email:currentUser.email};
