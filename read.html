@@ -80,7 +80,8 @@ canvas{display:block;width:100%;height:auto;pointer-events:none;transform-origin
     <button onclick="zoomBtn(-1)" title="Zoom out">－</button>
     <button onclick="toggleFull()" title="Fullscreen">⛶</button>
     <button onclick="document.body.classList.toggle('light')">◐</button>
-    <button onclick="logout()">Exit</button>
+    <button onclick="location.href='/aao.html'" title="Back to site">🏠 Home</button>
+    <button onclick="logout()" title="Log out">Log out</button>
   </div>
   <div class="prog"><i id="bar"></i></div>
   <div class="meta" id="meta">Loading...</div>
@@ -234,7 +235,7 @@ function jumpTo(v){ v=parseInt(v); if(v>=1 && v<=TOTAL){ pos=v-1; render(); wind
 
 /* ===== AO/AAO AI tutor (₹100 add-on) ===== */
 function askAI(){ if(!hasBot){ unlockBot(); return; } document.getElementById('aiBox').style.display='block'; document.getElementById('aiQ').focus(); }
-function unlockBot(){ if(!confirm('Unlock the AO/AAO AI Tutor for ₹100 (one-time)?\n\nAsk doubts about your AO/AAO syllabus and get instant answers while you read.')) return; buyBot(); }
+function unlockBot(){ if(!confirm('We would genuinely love to give the AI Tutor for free. 🙏\n\nBut every answer is powered by a paid AI that charges us for each question asked. So we ask a small one-time ₹100 — only to cover that cost, nothing more. It is not about profit; it simply helps us keep this running for aspirants like you.\n\nUnlock the AO/AAO AI Tutor and ask away?')) return; buyBot(); }
 async function buyBot(){
   try{
     var r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:10000,book_id:'bot',user_id:user.id})});
