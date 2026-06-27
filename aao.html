@@ -26,6 +26,11 @@ nav .logo{height:36px;width:auto;display:block}
 .btn-solid:hover{transform:translateY(-2px);filter:brightness(1.06)}
 .btn-lg{padding:13px 24px;font-size:15px}
 .hide{display:none!important}
+#myLib{display:none;background:linear-gradient(135deg,#0F6E56,#04342C);color:#fff;padding:13px 1.3rem;position:sticky;top:64px;z-index:150}
+.lib-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center}
+.lib-in .lt{font-weight:700;font-size:14px}
+.lib-btn{background:#fff;color:#0E3A2C;font-family:'Sora',sans-serif;font-weight:700;padding:10px 18px;border-radius:11px;text-decoration:none;font-size:14px;box-shadow:0 6px 16px -8px rgba(0,0,0,.4)}
+.lib-btn:hover{filter:brightness(.95)}
 /* hero */
 .hero{position:relative;overflow:hidden;background:#021E17;color:#fff;text-align:left;min-height:78vh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:5rem clamp(1.3rem,7vw,5.5rem)}
 .hero h1{margin:0 0 16px!important}
@@ -131,6 +136,8 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
     <button class="btn btn-ghost hide" id="navLogout" onclick="logoutUser()">Log out</button>
   </div>
 </nav>
+
+<div id="myLib"></div>
 
 <header class="hero">
   <div class="hc" id="hc">
@@ -317,6 +324,19 @@ function setLogged(u){ currentUser=u;
   document.getElementById('navLogin').classList.toggle('hide',!!u);
   document.getElementById('navSignup').classList.toggle('hide',!!u);
   document.getElementById('navLogout').classList.toggle('hide',!u);
+  if(u) loadLibrary(u); else document.getElementById('myLib').style.display='none';
+}
+async function loadLibrary(u){
+  try{
+    const {data}=await sb.from('book_access').select('book_id,active').eq('user_id',u.id);
+    const owned=(data||[]).filter(r=>r.active!==false).map(r=>r.book_id);
+    let btns='';
+    if(owned.includes('paper1')) btns+='<a class="lib-btn" href="/read.html">📘 Continue Paper 1 →</a>';
+    if(owned.includes('paper2')) btns+='<a class="lib-btn" href="/read.html?b=paper2">📗 Continue Paper 2 →</a>';
+    const el=document.getElementById('myLib');
+    if(btns){ el.innerHTML='<div class="lib-in"><span class="lt">📚 Welcome back! Open your course:</span>'+btns+'</div>'; el.style.display='block'; }
+    else { el.style.display='none'; }
+  }catch(e){ document.getElementById('myLib').style.display='none'; }
 }
 sb.auth.getSession().then(o=>{ if(o.data.session) setLogged(o.data.session.user); });
 

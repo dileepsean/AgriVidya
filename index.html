@@ -503,6 +503,8 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
   <a id="mnav-contact" onclick="showPage('contact');closeMobileNav()">Contact</a>
 </div>
 
+<div id="myLib" style="display:none;background:linear-gradient(135deg,#0F6E56,#04342C);color:#fff;padding:13px 1.3rem"></div>
+
 <!-- HOME -->
 <div id="page-home" class="page active">
   <div class="hero">
@@ -1100,11 +1102,26 @@ function updateNav(user){
     document.getElementById('btnSignup').style.display='none';
     document.getElementById('btnUser').style.display='block';
     document.getElementById('btnUser').textContent=user.email.split('@')[0]+' • Log out';
+    loadLibrary(user);
   } else {
     document.getElementById('btnLogin').style.display='block';
     document.getElementById('btnSignup').style.display='block';
     document.getElementById('btnUser').style.display='none';
+    var lib=document.getElementById('myLib'); if(lib) lib.style.display='none';
   }
+}
+async function loadLibrary(user){
+  var lib=document.getElementById('myLib'); if(!lib) return;
+  try{
+    const {data}=await _supabase.from('book_access').select('book_id,active').eq('user_id',user.id);
+    const owned=(data||[]).filter(r=>r.active!==false).map(r=>r.book_id);
+    const B='style="background:#fff;color:#0E3A2C;font-weight:700;padding:9px 16px;border-radius:10px;text-decoration:none;font-size:14px;font-family:inherit"';
+    let btns='';
+    if(owned.includes('paper1')) btns+='<a href="/read.html" '+B+'>📘 Continue Paper 1 →</a>';
+    if(owned.includes('paper2')) btns+='<a href="/read.html?b=paper2" '+B+'>📗 Continue Paper 2 →</a>';
+    if(btns){ lib.innerHTML='<div style="max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center"><span style="font-weight:700;font-size:14px">📚 Welcome back! Open your course:</span>'+btns+'</div>'; lib.style.display='block'; }
+    else lib.style.display='none';
+  }catch(e){ lib.style.display='none'; }
 }
 
 _supabase.auth.getSession().then(({data:{session}})=>{updateNav(session?.user??null);updateCounter();});
