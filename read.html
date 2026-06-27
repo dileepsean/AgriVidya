@@ -13,42 +13,46 @@
 :root{--bg:#021E17;--bg2:#04342C;--bar:#085041;--ln:#0F6E56;--ac:#1D9E75;--ac2:#5DCAA5;--mint:#9FE1CB;--txt:#E1F5EE}
 body{background:radial-gradient(900px 500px at 80% -10%,rgba(29,158,117,.25),transparent 60%),var(--bg);color:var(--txt);min-height:100vh}
 body.light{--bg:#EAF3EF;--txt:#0D1F1A}
-.bar{background:linear-gradient(135deg,#0F6E56,#085041);padding:10px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20;box-shadow:0 4px 20px -8px rgba(0,0,0,.5)}
-.bar .brand{display:flex;align-items:center;gap:8px}
-.bar .logo{width:28px;height:28px;border-radius:7px;background:var(--ac);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 10px -3px rgba(0,0,0,.5)}
-.bar .nm{font-family:'Sora',sans-serif;font-weight:800;color:#fff;font-size:15px;letter-spacing:-.3px}
+.bar{background:linear-gradient(135deg,#0F6E56,#085041);padding:8px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:0;z-index:20;box-shadow:0 4px 20px -8px rgba(0,0,0,.5)}
+.bar .brand{display:flex;align-items:center;gap:7px}
+.bar .logo{width:26px;height:26px;border-radius:7px;background:var(--ac);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bar .nm{font-family:'Sora',sans-serif;font-weight:800;color:#fff;font-size:14px;letter-spacing:-.3px}
 .bar .sp{flex:1}
-.bar button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(159,225,203,.25);border-radius:9px;padding:7px 13px;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;backdrop-filter:blur(4px)}
-.bar button:hover{background:rgba(255,255,255,.22);transform:translateY(-1px)}
+.bar button,.bar select{background:rgba(255,255,255,.13);color:#fff;border:1px solid rgba(159,225,203,.25);border-radius:9px;padding:6px 11px;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.bar button:hover{background:rgba(255,255,255,.24)}
+.bar select{padding:6px 8px}
+.bar select option{color:#0D1F1A}
+.bar .on{background:#fff;color:#0E3A2C}
+#bookSw{display:flex;gap:6px}
 .prog{height:5px;background:rgba(255,255,255,.12)}
 .prog>i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));width:0;transition:width .4s ease;box-shadow:0 0 12px rgba(93,202,165,.6)}
-.meta{text-align:center;font-size:12px;color:var(--mint);padding:8px;font-weight:500;letter-spacing:.2px}
+.meta{text-align:center;font-size:12px;color:var(--mint);padding:8px;font-weight:500}
 .wrap{max-width:860px;margin:0 auto;padding:12px 12px 96px}
-.pg{position:relative;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 14px 40px -12px rgba(0,0,0,.55)}
-canvas{display:block;width:100%;height:auto;pointer-events:none}
-.nav{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#0F6E56,#085041);display:flex;align-items:center;justify-content:center;gap:14px;padding:11px;z-index:20;border-top:1px solid var(--ln);box-shadow:0 -4px 24px -10px rgba(0,0,0,.6)}
-.nav button{background:linear-gradient(135deg,var(--ac),#0F6E56);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 8px 20px -8px rgba(29,158,117,.8);transition:all .2s}
-.nav button:hover{transform:translateY(-2px);filter:brightness(1.08)}
-.nav button:active{transform:translateY(0)}
+.pg{position:relative;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 14px 40px -12px rgba(0,0,0,.55);touch-action:auto}
+canvas{display:block;width:100%;height:auto;pointer-events:none;transform-origin:center center;transition:transform .12s ease-out}
+.nav{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#0F6E56,#085041);display:flex;align-items:center;justify-content:center;gap:14px;padding:11px;z-index:20;border-top:1px solid var(--ln)}
+.nav button{background:linear-gradient(135deg,var(--ac),#0F6E56);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 8px 20px -8px rgba(29,158,117,.8)}
+.nav button:active{transform:translateY(1px)}
 .nav input{width:62px;text-align:center;border-radius:9px;border:1px solid var(--ln);padding:7px;background:#fff;color:#0D1F1A;font-weight:600;font-size:14px}
 .gate{max-width:360px;margin:8vh auto;background:linear-gradient(160deg,rgba(15,110,86,.55),rgba(8,80,65,.85));border:1px solid var(--ln);border-radius:18px;padding:28px;backdrop-filter:blur(10px);box-shadow:0 30px 70px -30px rgba(0,0,0,.7)}
-.gate .glogo{width:46px;height:46px;border-radius:12px;background:var(--ac);display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:0 8px 20px -6px rgba(29,158,117,.7)}
-.gate h2{font-family:'Sora',sans-serif;color:#fff;font-size:21px;margin-bottom:4px;letter-spacing:-.3px}
+.gate .glogo{width:46px;height:46px;border-radius:12px;background:var(--ac);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.gate h2{font-family:'Sora',sans-serif;color:#fff;font-size:21px;margin-bottom:4px}
 .gate p{font-size:12.5px;color:var(--mint);margin-bottom:16px;line-height:1.5}
-.gate input{width:100%;padding:11px 13px;margin-bottom:9px;border-radius:10px;border:1px solid var(--ln);background:rgba(255,255,255,.08);color:#fff;font-size:13px;outline:none;transition:border .2s}
+.gate input{width:100%;padding:11px 13px;margin-bottom:9px;border-radius:10px;border:1px solid var(--ln);background:rgba(255,255,255,.08);color:#fff;font-size:13px;outline:none}
 .gate input:focus{border-color:var(--ac2)}
 .gate input::placeholder{color:rgba(159,225,203,.6)}
-.gate button{width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--ac),#0F6E56);color:#fff;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 10px 24px -10px rgba(29,158,117,.8);transition:all .2s}
-.gate button:hover{transform:translateY(-2px);filter:brightness(1.07)}
+.gate button{width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--ac),#0F6E56);color:#fff;font-size:14px;font-weight:600;cursor:pointer}
 .gate .er{color:#ffb4a8;font-size:12px;margin-top:8px;display:none;line-height:1.4}
 .gate .sw{font-size:12px;color:var(--mint);text-align:center;margin-top:12px;cursor:pointer}
-.gate .sw:hover{color:#fff}
-.ai{position:fixed;bottom:70px;right:14px;left:14px;max-width:560px;margin:0 auto;background:linear-gradient(160deg,#04342C,#021E17);border:1px solid var(--ln);border-radius:14px;padding:14px;z-index:30;display:none;box-shadow:0 24px 60px -24px rgba(0,0,0,.8)}
+.panel{position:fixed;bottom:70px;right:14px;left:14px;max-width:560px;margin:0 auto;background:linear-gradient(160deg,#04342C,#021E17);border:1px solid var(--ln);border-radius:14px;padding:14px;z-index:30;display:none;box-shadow:0 24px 60px -24px rgba(0,0,0,.8)}
 .ai textarea{width:100%;height:56px;border-radius:10px;border:1px solid var(--ln);background:rgba(255,255,255,.06);color:#fff;padding:9px;font-size:13px;resize:none;outline:none}
 .ai .row{display:flex;gap:8px;margin-top:8px}
-.ai button{background:linear-gradient(135deg,var(--ac),#0F6E56);color:#fff;border:none;border-radius:9px;padding:9px 16px;font-size:13px;font-weight:500;cursor:pointer}
+.ai .row button{background:linear-gradient(135deg,var(--ac),#0F6E56);color:#fff;border:none;border-radius:9px;padding:9px 16px;font-size:13px;cursor:pointer}
 .ai .ans{font-size:13px;color:var(--mint);margin-top:10px;max-height:170px;overflow:auto;line-height:1.65;white-space:pre-wrap}
 .hide{display:none}
+.botbubble{position:fixed;bottom:80px;right:16px;z-index:40;display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#1D9E75,#0F6E56);color:#fff;border:none;border-radius:30px;padding:12px 18px;font-family:'Sora',sans-serif;font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 12px 28px -8px rgba(29,158,117,.85);animation:bbpulse 2.6s infinite}
+.botbubble:hover{filter:brightness(1.08)}
+@keyframes bbpulse{0%,100%{transform:translateY(0);box-shadow:0 12px 28px -8px rgba(29,158,117,.85)}50%{transform:translateY(-2px);box-shadow:0 16px 34px -8px rgba(29,158,117,1)}}
 </style>
 </head>
 <body oncontextmenu="return false" ondragstart="return false">
@@ -66,25 +70,36 @@ canvas{display:block;width:100%;height:auto;pointer-events:none}
 
 <div id="reader" class="hide">
   <div class="bar">
-    <div class="brand"><img src="/av-logo-white.png" alt="AgriVidya" style="height:26px;width:auto;display:block"><span class="nm" style="opacity:.85;font-weight:500">Reader</span></div>
+    <div class="brand"><div class="logo"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 2 6 4.5 6 8c0 2 0.8 3.8 2 5V16h1v3h6v-3h1v-3c1.2-1.2 2-3 2-5 0-3.5-3-6-6-6z" fill="#021E17"/><circle cx="12" cy="8" r="2.5" fill="#9FE1CB"/></svg></div><span class="nm">Reader</span></div>
+    <span id="bookSw"></span>
+    <select id="jumpSel" onchange="jumpToPart(this.value)"></select>
+    <button id="bmBtn" onclick="toggleBookmark()" title="Bookmark page">☆</button>
+    <button onclick="openBookmarks()" title="My bookmarks">📑</button>
     <span class="sp"></span>
-    <button onclick="askAI()">Ask AI</button>
-    <button onclick="document.body.classList.toggle('light')">Theme</button>
+    <button onclick="zoomBtn(1)" title="Zoom in">＋</button>
+    <button onclick="zoomBtn(-1)" title="Zoom out">－</button>
+    <button onclick="toggleFull()" title="Fullscreen">⛶</button>
+    <button onclick="document.body.classList.toggle('light')">◐</button>
     <button onclick="logout()">Exit</button>
   </div>
   <div class="prog"><i id="bar"></i></div>
   <div class="meta" id="meta">Loading...</div>
-  <div class="wrap"><div class="pg"><canvas id="cv"></canvas></div></div>
+  <div class="wrap"><div class="pg" id="pg"><canvas id="cv"></canvas></div></div>
   <div class="nav">
     <button onclick="prev()">Prev</button>
     <input id="jump" type="number" min="1" onchange="jumpTo(this.value)">
     <button onclick="next()">Next</button>
   </div>
-  <div class="ai" id="aiBox">
-    <textarea id="aiQ" placeholder="Ask about what you are reading..."></textarea>
+  <div class="panel ai" id="aiBox">
+    <textarea id="aiQ" placeholder="Ask about your AO/AAO syllabus..."></textarea>
     <div class="row"><button onclick="sendAI()">Ask</button><button onclick="document.getElementById('aiBox').style.display='none'" style="background:#0F6E56">Close</button></div>
     <div class="ans" id="aiA"></div>
   </div>
+  <div class="panel" id="bmPanel"></div>
+  <button class="botbubble" id="botBubble" onclick="askAI()" title="Ask the AO/AAO AI tutor">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.6-.8L3 21l1.9-5.4A8.38 8.38 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Ask AI</span>
+  </button>
 </div>
 
 <script>
@@ -92,18 +107,15 @@ const SUPA_URL='https://yrrielpjbbsxdgbwzwzx.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlycmllbHBqYmJzeGRnYnd6d3p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NTY5NDMsImV4cCI6MjA5MDAzMjk0M30.v7jeOcfQU7-LAxWFSftnTHMSDbZmiTRJEN19bB1z5RA';
 const BUCKET='books';
 const CFG={
-  paper1:{total:352, skip:[1,2,3,4], prefix:'paper1/p1-'},
-  paper2:{total:617, skip:[1,2,3,4], prefix:'paper2/p2-'}
+  paper1:{total:352, skip:[1,2,3,4], prefix:'paper1/p1-', label:'Paper 1', parts:8, plabel:'Unit'},
+  paper2:{total:617, skip:[1,2,3,4], prefix:'paper2/p2-', label:'Paper 2', parts:10, plabel:'Section'}
 };
-const _p=new URLSearchParams(location.search).get('b');
-const BOOK_ID=(_p==='paper2')?'paper2':'paper1';
-const C=CFG[BOOK_ID];
-const SKIP=new Set(C.skip);
-const ORDER=[]; for(let n=1;n<=C.total;n++){ if(!SKIP.has(n)) ORDER.push(n); }
-const TOTAL=ORDER.length;
+let BOOK_ID, C, SKIP, ORDER=[], TOTAL=0, ownedBooks=[];
+function setBook(id){ BOOK_ID=id; C=CFG[id]; SKIP=new Set(C.skip); ORDER=[]; for(let n=1;n<=C.total;n++){ if(!SKIP.has(n)) ORDER.push(n); } TOTAL=ORDER.length; }
 function pad(n){ return C.prefix+String(n).padStart(3,'0')+'.jpg'; }
 const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
 let mode='login', user=null, pos=0, myTok=Math.random().toString(36).slice(2), saveT=null, hasBot=false;
+
 function tog(){ mode=(mode==='login')?'signup':'login'; document.getElementById('gT').textContent=(mode==='login')?'Log in to read':'Create account'; document.getElementById('go').textContent=(mode==='login')?'Log in':'Sign up'; document.getElementById('sw').textContent=(mode==='login')?'New here? Create account':'Have an account? Log in'; }
 function showEr(m){ var e=document.getElementById('er'); e.textContent=m; e.style.display='block'; }
 async function doAuth(){
@@ -116,27 +128,88 @@ async function doAuth(){
   start(res.data.user);
 }
 async function logout(){ await sb.auth.signOut(); location.reload(); }
+
 async function start(u){
   user=u;
-  var r1=await sb.from('book_access').select('active').eq('user_id',u.id).eq('book_id',BOOK_ID).maybeSingle();
-  if(!r1.data || r1.data.active===false){
+  // which books does this user own?
+  var acc=await sb.from('book_access').select('book_id,active').eq('user_id',u.id);
+  ownedBooks=(acc.data||[]).filter(r=>r.active!==false).map(r=>r.book_id).filter(b=>CFG[b]);
+  hasBot=(acc.data||[]).some(r=>r.book_id==='bot'&&r.active!==false);
+  // requested book (from URL) — fall back to first owned
+  var req=new URLSearchParams(location.search).get('b'); req=(req==='paper2')?'paper2':'paper1';
+  if(ownedBooks.indexOf(req)<0){ if(ownedBooks.length){ req=ownedBooks[0]; } }
+  if(ownedBooks.indexOf(req)<0){
     document.getElementById('gT').textContent='No access yet';
-    var er=document.getElementById('er'); er.textContent='This account has not purchased this material. Buy it on the E-Books page.'; er.style.display='block';
+    var er=document.getElementById('er'); er.textContent='This account has not purchased any material yet. Buy it on the AO/AAO page.'; er.style.display='block';
     document.getElementById('go').style.display='none'; document.getElementById('sw').style.display='none'; return;
   }
-  var rb=await sb.from('book_access').select('active').eq('user_id',u.id).eq('book_id','bot').maybeSingle();
-  hasBot = !!(rb.data && rb.data.active!==false);
+  setBook(req);
   await sb.from('user_sessions').upsert({user_id:u.id,session_token:myTok,updated_at:new Date().toISOString()});
   setInterval(chkSession,8000);
   var r2=await sb.from('reading_progress').select('last_page').eq('user_id',u.id).eq('book_id',BOOK_ID).maybeSingle();
   if(r2.data && r2.data.last_page){ var i=ORDER.indexOf(r2.data.last_page); pos=(i>=0)?i:0; } else { pos=0; }
   document.getElementById('gate').classList.add('hide');
   document.getElementById('reader').classList.remove('hide');
-  document.getElementById('jump').max=TOTAL; render();
+  document.getElementById('jump').max=TOTAL;
+  buildSwitcher(); buildJump(); initZoom();
+  render();
 }
 async function chkSession(){ var r=await sb.from('user_sessions').select('session_token').eq('user_id',user.id).maybeSingle(); if(r.data && r.data.session_token!==myTok){ alert('Opened on another device - logged out.'); logout(); } }
+
+/* ===== Book switcher ===== */
+function buildSwitcher(){ var el=document.getElementById('bookSw'); if(ownedBooks.length<2){ el.innerHTML=''; return; } el.innerHTML=ownedBooks.map(function(b){ return '<button class="'+(b===BOOK_ID?'on':'')+'" onclick="switchBook(\''+b+'\')">'+CFG[b].label+'</button>'; }).join(''); }
+async function switchBook(id){ if(id===BOOK_ID||ownedBooks.indexOf(id)<0) return; setBook(id); history.replaceState(null,'', id==='paper2'?'?b=paper2':location.pathname); buildSwitcher(); buildJump(); resetZoom(); document.getElementById('jump').max=TOTAL; var r2=await sb.from('reading_progress').select('last_page').eq('user_id',user.id).eq('book_id',BOOK_ID).maybeSingle(); var i=(r2.data&&r2.data.last_page)?ORDER.indexOf(r2.data.last_page):-1; pos=(i>=0)?i:0; render(); window.scrollTo(0,0); }
+
+/* ===== Jump to section ===== */
+function buildJump(){ var s=document.getElementById('jumpSel'); var o='<option value="-1">Jump to…</option>'; for(var i=0;i<C.parts;i++){ var p=Math.round(i/C.parts*(TOTAL-1)); o+='<option value="'+p+'">'+C.plabel+' '+(i+1)+'</option>'; } s.innerHTML=o; }
+function jumpToPart(v){ v=parseInt(v); if(v>=0){ pos=Math.max(0,Math.min(TOTAL-1,v)); resetZoom(); render(); window.scrollTo(0,0);} document.getElementById('jumpSel').value="-1"; }
+
+/* ===== Bookmarks (saved on this device) ===== */
+function bmKey(){ return 'av_bm_'+BOOK_ID; }
+function getBm(){ try{ return JSON.parse(localStorage.getItem(bmKey())||'[]'); }catch(e){ return []; } }
+function toggleBookmark(){ var p=ORDER[pos], a=getBm(), i=a.indexOf(p); if(i>=0)a.splice(i,1); else a.push(p); localStorage.setItem(bmKey(),JSON.stringify(a)); updateBmBtn(); }
+function updateBmBtn(){ var p=ORDER[pos]; document.getElementById('bmBtn').textContent=getBm().indexOf(p)>=0?'★':'☆'; }
+function openBookmarks(){ var a=getBm().sort(function(x,y){return x-y;}); var el=document.getElementById('bmPanel');
+  if(!a.length){ el.innerHTML='<div style="color:var(--mint);font-size:13px">No bookmarks yet. Tap ☆ in the top bar to save the page you are on.</div>'; }
+  else{ el.innerHTML='<div style="font-weight:700;margin-bottom:8px;color:#fff;font-family:Sora">Your bookmarks</div>'+a.map(function(p){ return '<a onclick="gotoPage('+p+')" style="display:inline-block;margin:4px;background:var(--ac);color:#fff;padding:7px 13px;border-radius:8px;cursor:pointer;font-size:13px">Page '+(ORDER.indexOf(p)+1)+'</a>'; }).join('')+'<div style="margin-top:10px"><button onclick="document.getElementById(\'bmPanel\').style.display=\'none\'" style="background:#0F6E56;color:#fff;border:none;border-radius:8px;padding:7px 14px;cursor:pointer">Close</button></div>'; }
+  el.style.display='block';
+}
+function gotoPage(p){ var i=ORDER.indexOf(p); if(i>=0){ pos=i; resetZoom(); render(); window.scrollTo(0,0); document.getElementById('bmPanel').style.display='none'; } }
+
+/* ===== Reading streak ===== */
+function streak(){ var today=new Date().toDateString(), last=localStorage.getItem('av_lastday'), s=parseInt(localStorage.getItem('av_streak')||'0');
+  if(last!==today){ var y=new Date(Date.now()-86400000).toDateString(); s=(last===y)?s+1:1; localStorage.setItem('av_streak',s); localStorage.setItem('av_lastday',today); }
+  return parseInt(localStorage.getItem('av_streak')||'1'); }
+
+/* ===== Zoom & pan ===== */
+var z=1,tx=0,ty=0,startD=0,startZ=1,panX=0,panY=0,dragging=false,lastTap=0;
+function applyT(){ var cv=document.getElementById('cv'); cv.style.transform='translate('+tx+'px,'+ty+'px) scale('+z+')'; document.getElementById('pg').style.touchAction=(z>1)?'none':'auto'; }
+function setZoom(nz){ z=Math.max(1,Math.min(3.2,nz)); if(z<=1){ z=1; tx=0; ty=0; } applyT(); }
+function zoomBtn(d){ setZoom(z+d*0.5); }
+function resetZoom(){ z=1; tx=0; ty=0; applyT(); }
+function toggleFull(){ var el=document.getElementById('reader'); if(!document.fullscreenElement){ (el.requestFullscreen||el.webkitRequestFullscreen||function(){}).call(el); } else { document.exitFullscreen&&document.exitFullscreen(); } }
+function dist(t){ var dx=t[0].clientX-t[1].clientX, dy=t[0].clientY-t[1].clientY; return Math.hypot(dx,dy); }
+function initZoom(){
+  var wr=document.getElementById('pg');
+  wr.addEventListener('touchstart',function(e){
+    if(e.touches.length===2){ startD=dist(e.touches); startZ=z; }
+    else if(e.touches.length===1){ var now=Date.now(); if(now-lastTap<300){ setZoom(z>1?1:2); } lastTap=now; if(z>1){ dragging=true; panX=e.touches[0].clientX-tx; panY=e.touches[0].clientY-ty; } }
+  },{passive:true});
+  wr.addEventListener('touchmove',function(e){
+    if(e.touches.length===2){ setZoom(startZ*dist(e.touches)/startD); e.preventDefault(); }
+    else if(dragging&&z>1){ tx=e.touches[0].clientX-panX; ty=e.touches[0].clientY-panY; applyT(); e.preventDefault(); }
+  },{passive:false});
+  wr.addEventListener('touchend',function(){ dragging=false; });
+  wr.addEventListener('dblclick',function(){ setZoom(z>1?1:2); });
+  wr.addEventListener('mousedown',function(e){ if(z>1){ dragging=true; panX=e.clientX-tx; panY=e.clientY-ty; } });
+  window.addEventListener('mousemove',function(e){ if(dragging&&z>1){ tx=e.clientX-panX; ty=e.clientY-panY; applyT(); } });
+  window.addEventListener('mouseup',function(){ dragging=false; });
+}
+
+/* ===== Render ===== */
 var cv=document.getElementById('cv'), ctx=cv.getContext('2d');
 async function render(){
+  resetZoom();
   var pageNum=ORDER[pos];
   document.getElementById('meta').textContent='Loading...';
   var s=await sb.storage.from(BUCKET).createSignedUrl(pad(pageNum),120);
@@ -149,8 +222,8 @@ async function render(){
     ctx.restore();
     var pct=Math.round((pos+1)/TOTAL*100);
     document.getElementById('bar').style.width=pct+'%';
-    document.getElementById('meta').textContent='Page '+(pos+1)+' / '+TOTAL+'  -  '+pct+'% done  -  '+(TOTAL-pos-1)+' pages left';
-    document.getElementById('jump').value=pos+1; saveProgress(pageNum);
+    document.getElementById('meta').textContent='🔥 '+streak()+'-day streak  ·  '+C.label+'  ·  Page '+(pos+1)+' / '+TOTAL+'  ·  '+pct+'% done  ·  '+(TOTAL-pos-1)+' left';
+    document.getElementById('jump').value=pos+1; updateBmBtn(); saveProgress(pageNum);
   };
   im.src=s.data.signedUrl;
 }
@@ -158,14 +231,10 @@ function saveProgress(pageNum){ clearTimeout(saveT); saveT=setTimeout(function()
 function next(){ if(pos<TOTAL-1){ pos++; render(); window.scrollTo(0,0); } }
 function prev(){ if(pos>0){ pos--; render(); window.scrollTo(0,0); } }
 function jumpTo(v){ v=parseInt(v); if(v>=1 && v<=TOTAL){ pos=v-1; render(); window.scrollTo(0,0); } }
-function askAI(){
-  if(!hasBot){ unlockBot(); return; }
-  document.getElementById('aiBox').style.display='block'; document.getElementById('aiQ').focus();
-}
-function unlockBot(){
-  if(!confirm('Unlock the AO/AAO AI Tutor for ₹100 (one-time)?\n\nAsk doubts about your AO/AAO syllabus and get instant answers while you read.')) return;
-  buyBot();
-}
+
+/* ===== AO/AAO AI tutor (₹100 add-on) ===== */
+function askAI(){ if(!hasBot){ unlockBot(); return; } document.getElementById('aiBox').style.display='block'; document.getElementById('aiQ').focus(); }
+function unlockBot(){ if(!confirm('Unlock the AO/AAO AI Tutor for ₹100 (one-time)?\n\nAsk doubts about your AO/AAO syllabus and get instant answers while you read.')) return; buyBot(); }
 async function buyBot(){
   try{
     var r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:10000,book_id:'bot',user_id:user.id})});
