@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriVidya — Mock Tests</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+input{-webkit-user-select:text;user-select:text}
+:root{--bg:#021E17;--bg2:#04342C;--bar:#085041;--ln:#0F6E56;--ac:#1D9E75;--ac2:#5DCAA5;--mint:#9FE1CB;--txt:#E1F5EE;--red:#ff8a7a;--amber:#ffce6b}
+body{background:radial-gradient(900px 500px at 80% -10%,rgba(29,158,117,.25),transparent 60%),var(--bg);color:var(--txt);min-height:100vh}
+.bar{background:linear-gradient(135deg,#0F6E56,#085041);padding:10px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:30;box-shadow:0 4px 20px -8px rgba(0,0,0,.5)}
+.bar .logo{width:28px;height:28px;border-radius:8px;background:var(--ac);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bar .nm{font-family:'Sora',sans-serif;font-weight:800;color:#fff;font-size:15px;letter-spacing:-.3px}
+.bar .sp{flex:1}
+.bar button{background:rgba(255,255,255,.13);color:#fff;border:1px solid rgba(159,225,203,.25);border-radius:9px;padding:7px 12px;font-size:12.5px;font-weight:600;cursor:pointer}
+.bar button:hover{background:rgba(255,255,255,.24)}
+.wrap{max-width:840px;margin:0 auto;padding:18px 14px 80px}
+.hide{display:none!important}
+h1{font-family:'Sora',sans-serif;font-size:22px;margin-bottom:4px}
+.sub{color:var(--mint);font-size:13px;margin-bottom:18px;line-height:1.5}
+.psec{font-family:'Sora',sans-serif;font-size:14px;color:var(--ac2);margin:22px 0 10px;text-transform:uppercase;letter-spacing:.5px}
+/* ---- gate ---- */
+.gate{max-width:380px;margin:7vh auto;background:linear-gradient(160deg,rgba(15,110,86,.55),rgba(8,80,65,.85));border:1px solid var(--ln);border-radius:18px;padding:26px;box-shadow:0 30px 70px -30px rgba(0,0,0,.7)}
+.gate .glogo{width:46px;height:46px;border-radius:12px;background:var(--ac);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.gate h2{font-family:'Sora',sans-serif;color:#fff;font-size:21px;margin-bottom:4px}
+.gate p{font-size:12.5px;color:var(--mint);margin-bottom:16px;line-height:1.5}
+.gate input{width:100%;padding:11px 13px;margin-bottom:9px;border-radius:10px;border:1px solid var(--ln);background:rgba(255,255,255,.08);color:#fff;font-size:13.5px;outline:none}
+.gate input:focus{border-color:var(--ac2)}
+.gate input::placeholder{color:rgba(159,225,203,.6)}
+.gate button{width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--ac),#0F6E56);color:#fff;font-size:14px;font-weight:700;cursor:pointer}
+.gate .er{color:#ffb4a8;font-size:12px;margin-top:8px;display:none;line-height:1.4}
+.gate .sw{font-size:12px;color:var(--mint);text-align:center;margin-top:12px;cursor:pointer}
+/* ---- test cards ---- */
+.card{background:linear-gradient(160deg,rgba(15,110,86,.30),rgba(8,80,65,.55));border:1px solid var(--ln);border-radius:14px;padding:15px 16px;margin-bottom:12px;display:flex;align-items:center;gap:14px}
+.card .ci{flex:1}
+.card h3{font-family:'Sora',sans-serif;font-size:15.5px;color:#fff;margin-bottom:3px}
+.card .meta{font-size:12px;color:var(--mint)}
+.badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:6px;vertical-align:middle}
+.b-free{background:#0c7;color:#022}
+.b-lock{background:rgba(255,255,255,.12);color:var(--mint)}
+.b-best{background:rgba(255,206,107,.18);color:var(--amber);font-size:11px;margin-top:6px;display:inline-block}
+.btn{background:linear-gradient(135deg,var(--ac),#0F6E56);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 8px 20px -8px rgba(29,158,117,.8)}
+.btn:active{transform:translateY(1px)}
+.btn.lk{background:rgba(255,255,255,.10);box-shadow:none;color:var(--mint)}
+/* ---- exam ---- */
+.ehead{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,#0F6E56,#085041);padding:10px 14px;display:flex;align-items:center;gap:12px;border-radius:0 0 12px 12px;box-shadow:0 6px 18px -8px rgba(0,0,0,.6)}
+.ehead .et{font-family:'Sora',sans-serif;font-weight:700;font-size:13.5px;color:#fff;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.timer{font-family:'Sora',sans-serif;font-weight:800;font-size:16px;background:rgba(0,0,0,.22);padding:6px 12px;border-radius:10px;color:#fff}
+.timer.warn{color:var(--amber)}
+.timer.crit{color:var(--red);animation:bl 1s infinite}
+@keyframes bl{50%{opacity:.45}}
+.qcard{background:#fff;color:#10221c;border-radius:14px;padding:18px 18px 20px;margin:16px 0;box-shadow:0 14px 40px -16px rgba(0,0,0,.5)}
+.qtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.qno{font-family:'Sora',sans-serif;font-weight:800;font-size:14px;color:#0F6E56}
+.qsec{font-size:11px;font-weight:700;color:#0a5;background:#e6f7f0;padding:3px 9px;border-radius:20px}
+.qtext{font-size:15.5px;line-height:1.5;font-weight:600;margin-bottom:14px}
+.opt{display:flex;align-items:flex-start;gap:10px;border:1.6px solid #d8e6e0;border-radius:11px;padding:11px 13px;margin-bottom:9px;cursor:pointer;font-size:14.5px;line-height:1.45;transition:all .12s}
+.opt:hover{border-color:var(--ac)}
+.opt.sel{border-color:var(--ac);background:#e8f8f1}
+.opt .k{font-weight:800;color:#0F6E56;flex-shrink:0}
+.opt.sel .k{color:var(--ac)}
+.erow{display:flex;gap:10px;margin:14px 0;flex-wrap:wrap}
+.erow button{flex:1;min-width:90px;border:none;border-radius:10px;padding:11px;font-size:13.5px;font-weight:700;cursor:pointer}
+.b-nav{background:rgba(255,255,255,.13);color:#fff;border:1px solid var(--ln)!important}
+.b-mark{background:rgba(255,206,107,.18);color:var(--amber);border:1px solid rgba(255,206,107,.4)!important}
+.b-sub{background:linear-gradient(135deg,var(--ac),#0F6E56);color:#fff}
+.palette{background:rgba(8,80,65,.5);border:1px solid var(--ln);border-radius:12px;padding:12px;margin-top:8px}
+.palette .pt{font-size:12px;color:var(--mint);margin-bottom:8px;display:flex;gap:14px;flex-wrap:wrap}
+.dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:6px}
+.pcell{aspect-ratio:1;border-radius:7px;border:1px solid var(--ln);background:rgba(255,255,255,.05);color:var(--mint);font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pcell.ans{background:var(--ac);color:#fff;border-color:var(--ac)}
+.pcell.mark{background:var(--amber);color:#222;border-color:var(--amber)}
+.pcell.cur{outline:2px solid #fff;outline-offset:1px}
+/* ---- result ---- */
+.scorebox{background:linear-gradient(160deg,rgba(29,158,117,.30),rgba(8,80,65,.7));border:1px solid var(--ln);border-radius:16px;padding:22px;text-align:center;margin-bottom:16px}
+.scorebox .big{font-family:'Sora',sans-serif;font-size:46px;font-weight:800;color:#fff;line-height:1}
+.scorebox .of{color:var(--mint);font-size:14px;margin-top:4px}
+.statrow{display:flex;gap:10px;margin:16px 0;flex-wrap:wrap}
+.stat{flex:1;min-width:80px;background:rgba(255,255,255,.05);border:1px solid var(--ln);border-radius:12px;padding:12px;text-align:center}
+.stat .v{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:#fff}
+.stat .l{font-size:11px;color:var(--mint);margin-top:2px}
+.rankbox{background:linear-gradient(160deg,rgba(255,206,107,.16),rgba(8,80,65,.5));border:1px solid rgba(255,206,107,.4);border-radius:14px;padding:16px;text-align:center;margin-bottom:16px}
+.rankbox .r{font-family:'Sora',sans-serif;font-size:24px;font-weight:800;color:var(--amber)}
+.rankbox .rl{font-size:12.5px;color:var(--mint);margin-top:3px}
+.swot{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 16px}
+.sw{border-radius:12px;padding:13px;border:1px solid}
+.sw h4{font-family:'Sora',sans-serif;font-size:13px;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.sw ul{list-style:none;font-size:12.5px;line-height:1.6}
+.sw li{margin-bottom:2px}
+.sw .pc{font-weight:700}
+.sw-s{background:rgba(12,200,120,.10);border-color:rgba(12,200,120,.4)}.sw-s h4{color:#3fe39a}
+.sw-w{background:rgba(255,138,122,.10);border-color:rgba(255,138,122,.4)}.sw-w h4{color:var(--red)}
+.sw-o{background:rgba(93,202,165,.10);border-color:rgba(93,202,165,.4)}.sw-o h4{color:var(--ac2)}
+.sw-t{background:rgba(255,206,107,.10);border-color:rgba(255,206,107,.4)}.sw-t h4{color:var(--amber)}
+.secbar{margin-bottom:9px}
+.secbar .sl{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:3px;color:var(--txt)}
+.secbar .track{height:8px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden}
+.secbar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--ac),var(--ac2))}
+.rev{background:rgba(255,255,255,.04);border:1px solid var(--ln);border-radius:12px;padding:14px;margin-bottom:10px}
+.rev .rq{font-size:14px;font-weight:600;margin-bottom:9px;line-height:1.45}
+.rev .ro{font-size:13px;padding:7px 10px;border-radius:8px;margin-bottom:5px}
+.ro.correct{background:rgba(12,200,120,.14);color:#bff5da;border:1px solid rgba(12,200,120,.4)}
+.ro.wrong{background:rgba(255,138,122,.14);color:#ffd3ca;border:1px solid rgba(255,138,122,.4)}
+.ro.plain{color:var(--mint)}
+.rev .ex{font-size:12.5px;color:var(--mint);margin-top:7px;line-height:1.55;border-top:1px dashed var(--ln);padding-top:7px}
+.modal{position:fixed;inset:0;background:rgba(2,15,12,.82);display:flex;align-items:center;justify-content:center;z-index:50;padding:18px}
+.modal .mc{max-width:360px;width:100%;background:linear-gradient(160deg,#04342C,#021E17);border:1px solid var(--ln);border-radius:16px;padding:22px}
+.modal h3{font-family:'Sora',sans-serif;color:#fff;font-size:18px;margin-bottom:8px}
+.modal p{font-size:12.5px;color:var(--mint);margin-bottom:14px;line-height:1.5}
+.modal input{width:100%;padding:11px 13px;margin-bottom:9px;border-radius:10px;border:1px solid var(--ln);background:rgba(255,255,255,.08);color:#fff;font-size:13.5px;outline:none}
+.modal .mb{display:flex;gap:10px;margin-top:6px}
+.modal .mb button{flex:1;border:none;border-radius:10px;padding:11px;font-weight:700;font-size:13.5px;cursor:pointer}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#04342C;border:1px solid var(--ln);color:var(--txt);padding:11px 18px;border-radius:10px;font-size:13px;z-index:60;box-shadow:0 12px 30px -10px rgba(0,0,0,.7)}
+</style>
+</head>
+<body oncontextmenu="return false" ondragstart="return false">
+
+<div class="bar">
+  <div class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 2 6 4.5 6 8c0 2 0.8 3.8 2 5V16h1v3h6v-3h1v-3c1.2-1.2 2-3 2-5 0-3.5-3-6-6-6z" fill="#021E17"/><circle cx="12" cy="8" r="2.5" fill="#9FE1CB"/></svg></div>
+  <span class="nm">AgriVidya Mocks</span>
+  <span class="sp"></span>
+  <button onclick="location.href='/aao.html'">🏠 Home</button>
+  <button id="logoutBtn" class="hide" onclick="logout()">Log out</button>
+</div>
+
+<div class="wrap">
+
+  <!-- ===== GATE ===== -->
+  <div class="gate" id="gate">
+    <div class="glogo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 2 6 4.5 6 8c0 2 0.8 3.8 2 5V16h1v3h6v-3h1v-3c1.2-1.2 2-3 2-5 0-3.5-3-6-6-6z" fill="#021E17"/><circle cx="12" cy="8" r="2.5" fill="#9FE1CB"/></svg></div>
+    <h2 id="gT">Start your free mock</h2>
+    <p id="gP">Create a free account to take AO/AAO mock tests with timer, rank and a personal SWOT analysis.</p>
+    <input id="g_name" class="suOnly" type="text" placeholder="Full name" autocomplete="name">
+    <input id="g_phone" class="suOnly" type="tel" placeholder="Phone / WhatsApp number" autocomplete="tel">
+    <input id="g_email" type="email" placeholder="Email" autocomplete="email">
+    <input id="g_pw" type="password" placeholder="Password" autocomplete="current-password">
+    <button id="g_go" onclick="doAuth()">Create free account</button>
+    <div class="er" id="g_er"></div>
+    <div class="sw" id="g_sw" onclick="tog()">Already have an account? Log in</div>
+  </div>
+
+  <!-- ===== TEST LIST ===== -->
+  <div id="list" class="hide">
+    <h1>AO/AAO Mock Tests</h1>
+    <div class="sub" id="listSub">Pick a test below. Each runs on a real exam timer, then shows your score, rank and a SWOT analysis of your strong &amp; weak subjects.</div>
+    <div id="cards"></div>
+  </div>
+
+  <!-- ===== EXAM ===== -->
+  <div id="exam" class="hide"></div>
+
+  <!-- ===== RESULT ===== -->
+  <div id="result" class="hide"></div>
+
+</div>
+
+<script>
+const SUPA_URL='https://yrrielpjbbsxdgbwzwzx.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlycmllbHBqYmJzeGRnYnd6d3p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NTY5NDMsImV4cCI6MjA5MDAzMjk0M30.v7jeOcfQU7-LAxWFSftnTHMSDbZmiTRJEN19bB1z5RA';
+const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
+const WHATSAPP='919492982424';
+const NEG=0.25;   // negative marking: marks deducted per wrong answer
+let mode='signup', user=null, owns=false, leadPhone='', myTok=Math.random().toString(36).slice(2), sessTimer=null;
+let T=null, Q=[], ans={}, marks={}, cur=0, endAt=0, tick=null, started=0;
+
+/* ---------- helpers ---------- */
+function $(id){return document.getElementById(id);}
+function show(id){['gate','list','exam','result'].forEach(s=>$(s).classList.add('hide'));$(id).classList.remove('hide');window.scrollTo(0,0);}
+function toast(m){var t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2600);}
+function esc(s){return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+
+/* ---------- auth ---------- */
+function tog(){
+  mode=(mode==='signup')?'login':'signup';
+  var su=document.querySelectorAll('.suOnly');
+  su.forEach(e=>e.style.display=(mode==='signup')?'block':'none');
+  $('gT').textContent=(mode==='signup')?'Start your free mock':'Log in';
+  $('gP').textContent=(mode==='signup')?'Create a free account to take AO/AAO mock tests with timer, rank and a personal SWOT analysis.':'Welcome back — log in to continue your mock tests.';
+  $('g_go').textContent=(mode==='signup')?'Create free account':'Log in';
+  $('g_sw').textContent=(mode==='signup')?'Already have an account? Log in':'New here? Create a free account';
+}
+function ger(m){var e=$('g_er');e.textContent=m;e.style.display='block';}
+async function doAuth(){
+  $('g_er').style.display='none';
+  var em=$('g_email').value.trim().toLowerCase(), pw=$('g_pw').value;
+  if(!em||!pw){ger('Enter email and password');return;}
+  if(mode==='signup'){
+    var nm=$('g_name').value.trim(), ph=$('g_phone').value.trim();
+    if(!nm){ger('Please enter your name');return;}
+    if(!ph||ph.replace(/\D/g,'').length<10){ger('Please enter a valid phone number');return;}
+    var r=await sb.auth.signUp({email:em,password:pw,options:{data:{name:nm,phone:ph}}});
+    if(r.error){ger(r.error.message);return;}
+    leadPhone=ph;
+    if(!r.data.session){ger('Account created. Please confirm via the email we sent, then log in.');tog();return;}
+    await saveLead(r.data.user,nm,em,ph);
+    start(r.data.user);
+  }else{
+    var r=await sb.auth.signInWithPassword({email:em,password:pw});
+    if(r.error){ger(r.error.message);return;}
+    start(r.data.user);
+  }
+}
+async function saveLead(u,nm,em,ph){
+  try{await sb.from('mock_leads').upsert({user_id:u.id,name:nm,email:em,phone:ph});}catch(e){}
+}
+async function logout(){await sb.auth.signOut();location.reload();}
+
+/* ---------- start / load list ---------- */
+async function start(u){
+  user=u;
+  $('logoutBtn').classList.remove('hide');
+  var acc=await sb.from('book_access').select('book_id,active').eq('user_id',u.id);
+  var rows=(acc.data||[]).filter(r=>r.active!==false).map(r=>r.book_id);
+  owns=rows.indexOf('paper1')>=0||rows.indexOf('paper2')>=0||rows.indexOf('mocks')>=0;
+  leadPhone=(u.user_metadata&&u.user_metadata.phone)||'';
+  // single-device session lock (anti-sharing): claim this session, then watch it
+  try{ await sb.from('user_sessions').upsert({user_id:u.id,session_token:myTok,updated_at:new Date().toISOString()}); }catch(e){}
+  clearInterval(sessTimer); sessTimer=setInterval(chkSession,8000);
+  await loadList();
+}
+async function chkSession(){
+  if(!user) return;
+  var r=await sb.from('user_sessions').select('session_token').eq('user_id',user.id).maybeSingle();
+  if(r.data && r.data.session_token && r.data.session_token!==myTok){
+    clearInterval(sessTimer);
+    alert('This account was just opened on another device. For security, one login works on one device at a time, so you have been logged out here.\n\nDon\'t worry — any test progress is saved.');
+    logout();
+  }
+}
+async function loadList(){
+  show('list');
+  $('cards').innerHTML='<div class="sub">Loading tests…</div>';
+  var t=await sb.from('mock_tests').select('*').eq('active',true).order('paper').order('sort');
+  var tests=t.data||[];
+  // best scores
+  var att=await sb.from('mock_attempts').select('test_id,score,total').eq('user_id',user.id);
+  var best={};(att.data||[]).forEach(a=>{if(!best[a.test_id]||a.score>best[a.test_id].score)best[a.test_id]=a;});
+  var papers={paper1:'Paper 1 — General Studies',paper2:'Paper 2 — Agriculture / Technical'};
+  var html='';var lastP='';
+  tests.forEach(t=>{
+    if(t.paper!==lastP){html+='<div class="psec">'+(papers[t.paper]||t.paper)+'</div>';lastP=t.paper;}
+    var free=t.access==='free';
+    var unlocked=free||owns;
+    var bb=best[t.id]?'<span class="b-best">Best: '+best[t.id].score+'/'+best[t.id].total+'</span>':'';
+    var badge=free?'<span class="badge b-free">FREE</span>':(unlocked?'':'<span class="badge b-lock">🔒 buyers</span>');
+    var btn=unlocked
+      ?'<button class="btn" onclick="openTest(\''+t.id+'\')">'+(best[t.id]?'Retake':'Start')+'</button>'
+      :'<button class="btn lk" onclick="lockedMsg()">Unlock</button>';
+    html+='<div class="card"><div class="ci"><h3>'+esc(t.title)+badge+'</h3>'
+      +'<div class="meta">'+t.num_questions+' questions · '+t.duration_min+' min</div>'+bb+'</div>'+btn+'</div>';
+  });
+  if(!tests.length)html='<div class="sub">No tests published yet. Check back soon.</div>';
+  $('cards').innerHTML=html;
+  $('listSub').innerHTML=owns
+    ?'You have full access — all mock tests are unlocked. Each runs on a real exam timer, then shows your score, rank and a SWOT analysis.'
+    :'Free samples are open to everyone. The full mock series unlocks free when you buy <a href="/aao.html" style="color:var(--ac2)">Paper 1 or Paper 2</a>.';
+}
+function lockedMsg(){
+  if(confirm('The full mock series is included free with any paper.\n\nBuy Paper 1 or Paper 2 to unlock all mocks. Open the store now?'))location.href='/aao.html';
+}
+
+/* ---------- open a test ---------- */
+async function openTest(id){
+  // ensure we have a phone on file (lead capture) for free takers
+  if(!leadPhone){ askPhone(()=>openTest(id)); return; }
+  var t=await sb.from('mock_tests').select('*').eq('id',id).single();
+  if(t.error){toast('Could not load test');return;}
+  T=t.data;
+  var q=await sb.from('mock_questions').select('*').eq('test_id',id).order('q_no');
+  if(q.error||!q.data.length){toast('Questions unavailable — try again');return;}
+  Q=q.data;
+  // resume in-progress?
+  var saved=loadProgress(id);
+  if(saved&&saved.endAt>Date.now()&&confirm('Resume your in-progress attempt?')){
+    ans=saved.ans||{};marks=saved.marks||{};endAt=saved.endAt;cur=saved.cur||0;started=saved.started||Date.now();
+  }else{
+    var ok=confirm(T.title+'\n\n'+Q.length+' questions  ·  '+T.duration_min+' minutes\nMarking: +1 for correct, −'+NEG+' for wrong, 0 if unanswered.\n\nThe timer starts as soon as you begin. Ready?');
+    if(!ok){loadList();return;}
+    ans={};marks={};cur=0;started=Date.now();endAt=Date.now()+T.duration_min*60000;clearProgress(id);
+  }
+  renderExam();startTimer();
+}
+function askPhone(cb){
+  var m=document.createElement('div');m.className='modal';
+  m.innerHTML='<div class="mc"><h3>One quick detail</h3><p>Enter your phone / WhatsApp number to start. We use it only to send your results and important AO/AAO exam updates.</p>'
+    +'<input id="mp" type="tel" placeholder="Phone / WhatsApp number"><div class="mb">'
+    +'<button class="b-nav" style="border:1px solid var(--ln)" onclick="this.closest(\'.modal\').remove()">Cancel</button>'
+    +'<button class="b-sub" id="mpgo">Continue</button></div></div>';
+  document.body.appendChild(m);
+  $('mpgo').onclick=async function(){
+    var v=$('mp').value.trim();
+    if(v.replace(/\D/g,'').length<10){$('mp').style.borderColor='var(--red)';return;}
+    leadPhone=v;
+    try{await sb.auth.updateUser({data:{phone:v}});}catch(e){}
+    await saveLead(user,(user.user_metadata&&user.user_metadata.name)||'',user.email,v);
+    m.remove();cb&&cb();
+  };
+}
+
+/* ---------- exam render ---------- */
+function renderExam(){
+  show('exam');
+  var q=Q[cur];
+  var opts=[['A',q.opt_a],['B',q.opt_b],['C',q.opt_c],['D',q.opt_d]];
+  var oh=opts.map(o=>'<div class="opt'+(ans[q.id]===o[0]?' sel':'')+'" onclick="pick('+q.id+',\''+o[0]+'\')"><span class="k">'+o[0]+'</span><span>'+esc(o[1])+'</span></div>').join('');
+  var palette=Q.map((qq,i)=>'<div class="pcell'+(ans[qq.id]?' ans':'')+(marks[qq.id]?' mark':'')+(i===cur?' cur':'')+'" onclick="goto('+i+')">'+(i+1)+'</div>').join('');
+  $('exam').innerHTML=
+    '<div class="ehead"><span class="et">'+esc(T.title)+'</span><span class="timer" id="timer">--:--</span></div>'
+    +'<div class="qcard"><div class="qtop"><span class="qno">Question '+(cur+1)+' / '+Q.length+'</span><span class="qsec">'+esc(q.section)+'</span></div>'
+    +'<div class="qtext">'+esc(q.question)+'</div>'+oh+'</div>'
+    +'<div class="erow">'
+    +'<button class="b-nav" onclick="goto('+(cur-1)+')"'+(cur===0?' disabled style="opacity:.4"':'')+'>‹ Prev</button>'
+    +'<button class="b-mark" onclick="toggleMark('+q.id+')">'+(marks[q.id]?'★ Marked':'☆ Mark')+'</button>'
+    +'<button class="b-nav" onclick="clearPick('+q.id+')">Clear</button>'
+    +'<button class="b-nav" onclick="goto('+(cur+1)+')"'+(cur===Q.length-1?' disabled style="opacity:.4"':'')+'>Next ›</button>'
+    +'</div>'
+    +'<div class="palette"><div class="pt"><span><span class="dot" style="background:var(--ac)"></span>Answered</span><span><span class="dot" style="background:var(--amber)"></span>Marked</span><span><span class="dot" style="background:rgba(255,255,255,.15)"></span>Not seen</span></div><div class="pgrid">'+palette+'</div></div>'
+    +'<div class="erow" style="margin-top:14px"><button class="b-sub" style="flex:1" onclick="submitExam(false)">Submit test ('+answeredCount()+'/'+Q.length+' answered)</button></div>';
+  paintTimer();
+}
+function answeredCount(){return Object.keys(ans).length;}
+function pick(id,k){ans[id]=k;saveProgress();renderExam();}
+function clearPick(id){delete ans[id];saveProgress();renderExam();}
+function toggleMark(id){if(marks[id])delete marks[id];else marks[id]=1;saveProgress();renderExam();}
+function goto(i){if(i<0||i>=Q.length)return;cur=i;saveProgress();renderExam();}
+
+/* ---------- timer ---------- */
+function startTimer(){clearInterval(tick);tick=setInterval(()=>{paintTimer();if(Date.now()>=endAt){clearInterval(tick);submitExam(true);}},1000);}
+function paintTimer(){
+  var el=$('timer');if(!el)return;
+  var s=Math.max(0,Math.round((endAt-Date.now())/1000));
+  var h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;
+  el.textContent=(h>0?h+':':'')+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+  el.className='timer'+(s<60?' crit':(s<300?' warn':''));
+}
+
+/* ---------- progress autosave (survives refresh) ---------- */
+function pkey(id){return 'av_mock_'+id;}
+function saveProgress(){if(!T)return;try{localStorage.setItem(pkey(T.id),JSON.stringify({ans,marks,cur,endAt,started}));}catch(e){}}
+function loadProgress(id){try{return JSON.parse(localStorage.getItem(pkey(id))||'null');}catch(e){return null;}}
+function clearProgress(id){try{localStorage.removeItem(pkey(id));}catch(e){}}
+
+/* ---------- submit + score ---------- */
+async function submitExam(auto){
+  if(!auto){
+    var un=Q.length-answeredCount();
+    if(!confirm('Submit now?'+(un>0?'\n\n'+un+' question(s) are still unanswered.':'')))return;
+  }
+  clearInterval(tick);
+  var correct=0,wrong=0,un=0,sec={};
+  Q.forEach(q=>{
+    if(!sec[q.section])sec[q.section]={c:0,t:0};
+    sec[q.section].t++;
+    var a=ans[q.id];
+    if(!a){un++;}
+    else if(a===q.correct){correct++;sec[q.section].c++;}
+    else{wrong++;}
+  });
+  var time=Math.round((Date.now()-started)/1000);
+  var net=Math.round((correct-NEG*wrong)*100)/100;   // net score with negative marking
+  var rec={user_id:user.id,test_id:T.id,score:net,total:Q.length,correct_count:correct,wrong_count:wrong,unattempted:un,time_taken_sec:time,section_stats:sec};
+  try{await sb.from('mock_attempts').insert(rec);}catch(e){}
+  clearProgress(T.id);
+  // rank
+  var rank=null,totalTakers=null;
+  try{var r=await sb.rpc('mock_rank',{p_test_id:T.id,p_score:net});if(r.data&&r.data[0]){rank=r.data[0].rank;totalTakers=r.data[0].total;}}catch(e){}
+  renderResult({correct,wrong,un,time,sec,rank,totalTakers,auto,net});
+}
+
+/* ---------- result + SWOT ---------- */
+function renderResult(d){
+  show('result');
+  var net=(d.net!=null)?d.net:d.correct;
+  var pct=Math.max(0,Math.round(net/Q.length*100));
+  var mm=Math.floor(d.time/60),ss=d.time%60;
+  // section accuracy
+  var rows=Object.keys(d.sec).map(name=>{var s=d.sec[name];return{name,c:s.c,t:s.t,acc:s.t?s.c/s.t:0};}).sort((a,b)=>b.acc-a.acc);
+  var S=rows.filter(r=>r.acc>=0.70),W=rows.filter(r=>r.acc<0.40),O=rows.filter(r=>r.acc>=0.40&&r.acc<0.70);
+  var threat=W.slice().sort((a,b)=>b.t-a.t)[0]||rows[rows.length-1];
+  var li=r=>'<li>'+esc(r.name)+' <span class="pc">'+Math.round(r.acc*100)+'%</span> <span style="opacity:.7">('+r.c+'/'+r.t+')</span></li>';
+  var none='<li style="opacity:.6">—</li>';
+  var rankHtml=d.rank?'<div class="rankbox"><div class="r">Rank #'+d.rank+' of '+d.totalTakers+'</div><div class="rl">You scored better than '+(d.totalTakers>1?Math.round((d.totalTakers-d.rank)/(d.totalTakers-1)*100):100)+'% of test-takers</div></div>':'';
+  var secbars=rows.map(r=>'<div class="secbar"><div class="sl"><span>'+esc(r.name)+'</span><span>'+r.c+'/'+r.t+' · '+Math.round(r.acc*100)+'%</span></div><div class="track"><div class="fill" style="width:'+Math.round(r.acc*100)+'%;'+(r.acc<0.4?'background:linear-gradient(90deg,#c44,#ff8a7a)':(r.acc<0.7?'background:linear-gradient(90deg,#caa23a,#ffce6b)':''))+'"></div></div></div>').join('');
+  var review=Q.map((q,i)=>{
+    var a=ans[q.id];var opts={A:q.opt_a,B:q.opt_b,C:q.opt_c,D:q.opt_d};
+    var orows=['A','B','C','D'].map(k=>{
+      var cls=k===q.correct?'correct':(a===k?'wrong':'plain');
+      var tag=k===q.correct?' ✓':(a===k?' ✗ your answer':'');
+      return '<div class="ro '+cls+'"><b>'+k+'.</b> '+esc(opts[k])+tag+'</div>';
+    }).join('');
+    return '<div class="rev"><div class="rq">Q'+(i+1)+'. '+esc(q.question)+' <span class="qsec" style="background:rgba(255,255,255,.06);color:var(--ac2)">'+esc(q.section)+'</span></div>'+orows
+      +(q.explanation?'<div class="ex"><b>Why:</b> '+esc(q.explanation)+'</div>':'')+(!a?'<div class="ex" style="color:var(--amber)">Not attempted</div>':'')+'</div>';
+  }).join('');
+  $('result').innerHTML=
+    '<h1>'+esc(T.title)+'</h1><div class="sub">'+(d.auto?'⏱ Time up — auto-submitted. ':'')+'Here is your full performance breakdown.</div>'
+    +'<div class="scorebox"><div class="big">'+net+'<span style="font-size:24px;color:var(--mint)">/'+Q.length+'</span></div><div class="of">'+pct+'% score · '+mm+'m '+ss+'s · net of −'+NEG+'/wrong</div></div>'
+    +rankHtml
+    +'<div class="statrow"><div class="stat"><div class="v" style="color:#3fe39a">'+d.correct+'</div><div class="l">Correct (+'+d.correct+')</div></div><div class="stat"><div class="v" style="color:var(--red)">'+d.wrong+'</div><div class="l">Wrong (−'+Math.round(d.wrong*NEG*100)/100+')</div></div><div class="stat"><div class="v">'+d.un+'</div><div class="l">Skipped</div></div></div>'
+    +'<div class="psec">Leaderboard</div><div id="lbBox" class="sub">Loading top scorers…</div>'
+    +'<div class="psec">SWOT analysis</div>'
+    +'<div class="swot">'
+    +'<div class="sw sw-s"><h4>💪 Strengths</h4><ul>'+(S.length?S.map(li).join(''):none)+'</ul></div>'
+    +'<div class="sw sw-w"><h4>⚠️ Weaknesses</h4><ul>'+(W.length?W.map(li).join(''):none)+'</ul></div>'
+    +'<div class="sw sw-o"><h4>📈 Opportunities</h4><ul>'+(O.length?O.map(li).join(''):none)+'</ul></div>'
+    +'<div class="sw sw-t"><h4>🎯 Biggest threat</h4><ul>'+(threat&&threat.acc<0.7?li(threat)+'<li style="opacity:.7;font-size:11.5px">High-weight, low-score — fix this first</li>':'<li style="opacity:.6">No major risk area 🎉</li>')+'</ul></div>'
+    +'</div>'
+    +'<div class="psec">Subject-wise accuracy</div>'+secbars
+    +'<div class="erow" style="margin:18px 0"><button class="b-nav" style="border:1px solid var(--ln)" onclick="loadList()">‹ All tests</button><button class="b-sub" onclick="openTest(\''+T.id+'\')">↻ Retake</button></div>'
+    +'<div class="psec">Answer review</div>'+review;
+  fillLeaderboard(net);
+}
+async function fillLeaderboard(myNet){
+  var box=$('lbBox');if(!box)return;
+  var myName=((user.user_metadata&&user.user_metadata.name)||'You').split(' ')[0];
+  var r;try{r=await sb.rpc('mock_leaderboard',{p_test_id:T.id,p_limit:10});}catch(e){}
+  var rows=(r&&r.data)||[];
+  if(!rows.length){box.innerHTML='<div style="color:var(--mint);font-size:13px">Be the first on the board — your score will appear here as others take this test.</div>';return;}
+  var mine=false;
+  var html='<div style="background:rgba(255,255,255,.04);border:1px solid var(--ln);border-radius:12px;overflow:hidden">';
+  rows.forEach((row,i)=>{
+    var me=(!mine && Math.abs(Number(row.score)-myNet)<0.001 && row.name===myName);
+    if(me)mine=true;
+    var medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'.';
+    var sc=Math.round(Number(row.score)*100)/100;
+    var mm=Math.floor(row.secs/60),ss=row.secs%60;
+    html+='<div style="display:flex;align-items:center;gap:10px;padding:9px 13px;border-top:'+(i?'1px solid rgba(255,255,255,.06)':'none')+';'+(me?'background:rgba(255,206,107,.14)':'')+'">'
+      +'<span style="width:26px;font-weight:800;color:'+(i<3?'var(--amber)':'var(--mint)')+'">'+medal+'</span>'
+      +'<span style="flex:1;font-size:13.5px;color:#fff">'+esc(row.name)+(me?' <span style="color:var(--amber);font-size:11px">(you)</span>':'')+'</span>'
+      +'<span style="font-family:Sora;font-weight:800;font-size:14px">'+sc+'</span>'
+      +'<span style="font-size:11px;color:var(--mint);width:54px;text-align:right">'+mm+'m '+ss+'s</span></div>';
+  });
+  html+='</div>';
+  box.innerHTML=html;
+}
+
+/* ---------- anti-copy (deter question scraping / sharing) ---------- */
+document.addEventListener('keydown',function(e){
+  var k=(e.key||'').toLowerCase();
+  if((e.ctrlKey||e.metaKey)&&['s','p','u','c'].indexOf(k)>=0){ e.preventDefault(); }
+  if(k==='f12'){ e.preventDefault(); }
+});
+document.addEventListener('copy',function(e){ if(!/input|textarea/i.test((e.target.tagName||''))) e.preventDefault(); });
+
+/* ---------- boot ---------- */
+tog();tog(); // initialise signup field visibility
+sb.auth.getSession().then(o=>{if(o.data.session)start(o.data.session.user);else show('gate');});
+</script>
+</body>
+</html>
