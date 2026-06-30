@@ -20,6 +20,13 @@ a{text-decoration:none;color:inherit}
 nav{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1.3rem;position:sticky;top:0;z-index:200;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--gs);gap:12px}
 nav .logo{height:36px;width:auto;display:block}
 .nav-r{display:flex;gap:8px;align-items:center}
+@media(max-width:640px){
+  nav{gap:6px;padding:.6rem .7rem}
+  nav .logo{height:30px}
+  .nav-r{gap:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .nav-r::-webkit-scrollbar{display:none}
+  .nav-r .btn{padding:6px 9px;font-size:12px;white-space:nowrap;flex-shrink:0}
+}
 .btn{font-family:inherit;cursor:pointer;border-radius:9px;font-weight:600;font-size:13px;padding:8px 15px;border:none;transition:transform .2s,box-shadow .2s,filter .2s}
 .btn-ghost{background:transparent;color:var(--gm);border:1.5px solid var(--gm)}
 .btn-solid{background:linear-gradient(135deg,var(--gb),var(--g));color:#fff;box-shadow:0 10px 22px -10px rgba(29,158,117,.7)}

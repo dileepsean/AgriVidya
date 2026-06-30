@@ -116,6 +116,38 @@ h1{font-family:'Sora',sans-serif;font-size:22px;margin-bottom:4px}
 .modal .mb{display:flex;gap:10px;margin-top:6px}
 .modal .mb button{flex:1;border:none;border-radius:10px;padding:11px;font-weight:700;font-size:13.5px;cursor:pointer}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#04342C;border:1px solid var(--ln);color:var(--txt);padding:11px 18px;border-radius:10px;font-size:13px;z-index:60;box-shadow:0 12px 30px -10px rgba(0,0,0,.7)}
+/* ---- public sales landing ---- */
+.hero{text-align:center;padding:14px 6px 6px}
+.hero-badge{display:inline-block;background:rgba(255,206,107,.16);color:var(--amber);border:1px solid rgba(255,206,107,.4);font-size:12.5px;font-weight:700;padding:5px 13px;border-radius:20px;margin-bottom:14px}
+.hero-h1{font-family:'Sora',sans-serif;font-size:30px;line-height:1.15;font-weight:800;margin-bottom:12px}
+.hero-sub{font-size:14px;color:var(--mint);line-height:1.6;max-width:620px;margin:0 auto 18px}
+.hero-cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.big-cta{background:linear-gradient(135deg,var(--ac),#0F6E56);color:#fff;border:none;border-radius:12px;padding:13px 20px;font-size:14.5px;font-weight:700;cursor:pointer;box-shadow:0 10px 24px -8px rgba(29,158,117,.8)}
+.big-cta.alt{background:rgba(255,255,255,.10)}
+.big-cta:active{transform:translateY(1px)}
+.hero-note{font-size:12px;color:var(--mint);opacity:.8;margin-top:10px}
+.deal{background:linear-gradient(135deg,rgba(255,206,107,.16),rgba(8,80,65,.5));border:1px solid rgba(255,206,107,.4);border-radius:14px;padding:14px 16px;margin:20px 0;font-size:14px;line-height:1.55;text-align:center}
+.price-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:10px}
+.price-card{background:linear-gradient(160deg,rgba(15,110,86,.30),rgba(8,80,65,.55));border:1px solid var(--ln);border-radius:14px;padding:16px;display:flex;flex-direction:column}
+.price-card.best{border:2px solid var(--amber);box-shadow:0 14px 34px -14px rgba(255,206,107,.5);position:relative}
+.pc-flag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--amber);color:#21340a;font-size:11px;font-weight:800;padding:3px 12px;border-radius:20px;white-space:nowrap}
+.pc-name{font-family:'Sora',sans-serif;font-weight:700;font-size:14.5px;color:#fff;margin-bottom:6px}
+.pc-price{font-size:15px;color:var(--mint);margin-bottom:10px}
+.pc-price s{opacity:.6;margin-right:4px}.pc-price b{font-family:'Sora',sans-serif;font-size:26px;color:#fff}
+.pc-list{list-style:none;font-size:12.8px;line-height:1.7;color:var(--txt);margin-bottom:14px;flex:1}
+.adv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.adv{background:rgba(255,255,255,.04);border:1px solid var(--ln);border-radius:12px;padding:14px}
+.adv span{font-size:22px}.adv b{display:block;font-family:'Sora',sans-serif;font-size:13.5px;margin:6px 0 4px;color:#fff}
+.adv p{font-size:12.3px;color:var(--mint);line-height:1.5}
+.finalcta{text-align:center;background:linear-gradient(160deg,rgba(29,158,117,.18),rgba(8,80,65,.5));border:1px solid var(--ln);border-radius:14px;padding:20px;margin-bottom:10px;font-size:13.5px;color:var(--mint)}
+.finalcta .big-cta{margin-top:10px}
+@media(max-width:680px){
+  .hero-h1{font-size:23px}
+  .price-row{grid-template-columns:1fr}
+  .adv-grid{grid-template-columns:1fr 1fr}
+  .price-card.best{order:-1}
+}
+@media(max-width:430px){.adv-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body oncontextmenu="return false" ondragstart="return false">
@@ -125,10 +157,65 @@ h1{font-family:'Sora',sans-serif;font-size:22px;margin-bottom:4px}
   <span class="nm">AgriVidya Mocks</span>
   <span class="sp"></span>
   <button onclick="location.href='/aao.html'">🏠 Home</button>
+  <button id="loginBtn" onclick="goLogin()">Log in</button>
   <button id="logoutBtn" class="hide" onclick="logout()">Log out</button>
 </div>
 
 <div class="wrap">
+
+  <!-- ===== PUBLIC SALES LANDING ===== -->
+  <div id="landing">
+    <div class="hero">
+      <div class="hero-badge">⏳ Final sprint — exam on 26 July 2026</div>
+      <h1 class="hero-h1">20 Full Mock Tests.<br>3,000 Exam-Ready Questions.</h1>
+      <p class="hero-sub">Real exam timer · negative marking · All-India rank · personal SWOT analysis · instant solutions. Built straight from the AO/AAO syllabus — practise like it's the real paper.</p>
+      <div class="hero-cta">
+        <button class="big-cta" onclick="goSample('p1_sample')">▶ Try FREE Paper 1 sample</button>
+        <button class="big-cta alt" onclick="goSample('p2_sample')">▶ Try FREE Paper 2 sample</button>
+      </div>
+      <div class="hero-note">No payment to try a sample — just see how good it is first.</div>
+    </div>
+
+    <div class="deal">🔥 BEST DEAL: Buy any paper and unlock <b>ALL 20 full mock tests + 6 practice sets — FREE</b>. That's 3,000+ questions for the price of a single book.</div>
+
+    <div class="psec" style="text-align:center">Choose your plan</div>
+    <div class="price-row">
+      <div class="price-card">
+        <div class="pc-name">Paper 1 — General Studies</div>
+        <div class="pc-price"><s>₹499</s> <b>₹249</b></div>
+        <ul class="pc-list"><li>✅ Full Paper 1 study material (348 pages)</li><li>✅ 10 Paper-1 full mocks <b>FREE</b></li><li>✅ Practice sets + free samples</li></ul>
+        <button class="btn" style="width:100%" onclick="location.href='/aao.html'">Buy Paper 1 →</button>
+      </div>
+      <div class="price-card best">
+        <div class="pc-flag">★ BEST VALUE</div>
+        <div class="pc-name">Combo — Both Papers</div>
+        <div class="pc-price"><s>₹998</s> <b>₹500</b></div>
+        <ul class="pc-list"><li>✅ Paper 1 + Paper 2 complete material</li><li>✅ <b>ALL 20</b> full mock tests FREE</li><li>✅ Rank, SWOT & leaderboard on every test</li><li>✅ Everything, one price — save ₹498</li></ul>
+        <button class="btn" style="width:100%" onclick="location.href='/aao.html'">Get the Combo →</button>
+      </div>
+      <div class="price-card">
+        <div class="pc-name">Paper 2 — Agri / Technical</div>
+        <div class="pc-price"><s>₹499</s> <b>₹249</b></div>
+        <ul class="pc-list"><li>✅ Full Paper 2 material (617 pages)</li><li>✅ 10 Paper-2 full mocks <b>FREE</b></li><li>✅ Practice sets + free samples</li></ul>
+        <button class="btn" style="width:100%" onclick="location.href='/aao.html'">Buy Paper 2 →</button>
+      </div>
+    </div>
+
+    <div class="psec" style="text-align:center">Why these mocks get you selected</div>
+    <div class="adv-grid">
+      <div class="adv"><span>⏱️</span><b>Real exam pressure</b><p>150 questions on a live countdown that auto-submits — train your speed.</p></div>
+      <div class="adv"><span>➖</span><b>Negative marking</b><p>−0.25 per wrong, exactly like KPSC — learn when NOT to guess.</p></div>
+      <div class="adv"><span>🏆</span><b>Rank & percentile</b><p>See where you stand against every other aspirant, instantly.</p></div>
+      <div class="adv"><span>🧭</span><b>Personal SWOT</b><p>Know your strong & weak subjects so you study what actually matters.</p></div>
+      <div class="adv"><span>📖</span><b>Instant solutions</b><p>Every question explained — turn each mistake into a mark.</p></div>
+      <div class="adv"><span>📱</span><b>Anytime, any device</b><p>Practise on your phone; secure single-login keeps your account yours.</p></div>
+    </div>
+
+    <div class="finalcta">
+      <div>Already bought a paper, or want to log in?</div>
+      <button class="big-cta" onclick="goLogin()">Log in to my mock tests →</button>
+    </div>
+  </div>
 
   <!-- ===== GATE ===== -->
   <div class="gate" id="gate">
@@ -165,12 +252,12 @@ const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
 const WHATSAPP='919492982424';
 const NEG=0.25;   // negative marking: marks deducted per wrong answer
-let mode='signup', user=null, owns=false, leadPhone='', myTok=Math.random().toString(36).slice(2), sessTimer=null;
+let mode='signup', user=null, owns=false, leadPhone='', myTok=Math.random().toString(36).slice(2), sessTimer=null, pendingTest=null;
 let T=null, Q=[], ans={}, marks={}, cur=0, endAt=0, tick=null, started=0;
 
 /* ---------- helpers ---------- */
 function $(id){return document.getElementById(id);}
-function show(id){['gate','list','exam','result'].forEach(s=>$(s).classList.add('hide'));$(id).classList.remove('hide');window.scrollTo(0,0);}
+function show(id){['landing','gate','list','exam','result'].forEach(s=>$(s).classList.add('hide'));$(id).classList.remove('hide');window.scrollTo(0,0);}
 function toast(m){var t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2600);}
 function esc(s){return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
 
@@ -221,8 +308,12 @@ async function start(u){
   // single-device session lock (anti-sharing): claim this session, then watch it
   try{ await sb.from('user_sessions').upsert({user_id:u.id,session_token:myTok,updated_at:new Date().toISOString()}); }catch(e){}
   clearInterval(sessTimer); sessTimer=setInterval(chkSession,8000);
+  var lb=$('loginBtn'); if(lb) lb.classList.add('hide');
   await loadList();
+  if(pendingTest){var p=pendingTest;pendingTest=null;openTest(p);}
 }
+function goSample(id){ if(user){openTest(id);} else {pendingTest=id; if(mode!=='signup')tog(); show('gate');} }
+function goLogin(){ pendingTest=null; if(mode!=='login')tog(); show('gate'); }
 async function chkSession(){
   if(!user) return;
   var r=await sb.from('user_sessions').select('session_token').eq('user_id',user.id).maybeSingle();
@@ -448,7 +539,7 @@ document.addEventListener('copy',function(e){ if(!/input|textarea/i.test((e.targ
 
 /* ---------- boot ---------- */
 tog();tog(); // initialise signup field visibility
-sb.auth.getSession().then(o=>{if(o.data.session)start(o.data.session.user);else show('gate');});
+sb.auth.getSession().then(o=>{if(o.data.session)start(o.data.session.user);else show('landing');});
 </script>
 </body>
 </html>
