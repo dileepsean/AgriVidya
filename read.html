@@ -57,6 +57,14 @@ canvas{display:block;width:100%;height:auto;pointer-events:none;transform-origin
 </head>
 <body oncontextmenu="return false" ondragstart="return false">
 
+<!-- always-visible mini nav so the login screen isn't a dead end — hides once the reader's own bar takes over -->
+<div class="bar" id="prebar" style="justify-content:flex-start">
+  <a href="/" style="display:flex;align-items:center;gap:7px;text-decoration:none">
+    <div class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 2 6 4.5 6 8c0 2 0.8 3.8 2 5V16h1v3h6v-3h1v-3c1.2-1.2 2-3 2-5 0-3.5-3-6-6-6z" fill="#021E17"/><circle cx="12" cy="8" r="2.5" fill="#9FE1CB"/></svg></div>
+    <span class="nm">🏠 Home</span>
+  </a>
+</div>
+
 <div class="gate" id="gate">
   <div class="glogo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 2 6 4.5 6 8c0 2 0.8 3.8 2 5V16h1v3h6v-3h1v-3c1.2-1.2 2-3 2-5 0-3.5-3-6-6-6z" fill="#021E17"/><circle cx="12" cy="8" r="2.5" fill="#9FE1CB"/></svg></div>
   <h2 id="gT">Log in to read</h2>
@@ -151,6 +159,7 @@ async function start(u){
   var r2=await sb.from('reading_progress').select('last_page').eq('user_id',u.id).eq('book_id',BOOK_ID).maybeSingle();
   if(r2.data && r2.data.last_page){ var i=ORDER.indexOf(r2.data.last_page); pos=(i>=0)?i:0; } else { pos=0; }
   document.getElementById('gate').classList.add('hide');
+  document.getElementById('prebar').classList.add('hide');
   document.getElementById('reader').classList.remove('hide');
   document.getElementById('jump').max=TOTAL;
   buildSwitcher(); buildJump(); initZoom();
