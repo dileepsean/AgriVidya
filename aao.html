@@ -34,7 +34,7 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--tp);background:var(--w
 .disp,.sec-t,.prod h3,.why h3,.modal h2,.hero h1{font-family:'Sora','Inter',sans-serif!important;letter-spacing:-.3px}
 a{text-decoration:none;color:inherit}
 /* nav — stays in the top bar on every screen size, no hamburger, no bottom bar */
-nav{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1.3rem;position:sticky;top:0;z-index:200;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--gs);gap:8px}
+nav{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1.3rem;position:-webkit-sticky;position:sticky;top:0;z-index:200;background:rgba(255,255,255,.96);-webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--gs);gap:8px;-webkit-transform:translateZ(0);transform:translateZ(0)}
 nav .logo{height:36px;width:auto;display:block;flex-shrink:0}
 .nav-r{display:flex;gap:8px;align-items:center;min-width:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .nav-r::-webkit-scrollbar{display:none}

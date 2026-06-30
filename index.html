@@ -11,6 +11,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2048078339156059');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2048078339156059&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -1325,7 +1342,7 @@ async function sendPopupMsg(){
 document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
 </script>
 <script>
-function getSample(){ window.open('/AgriVidya_AAO_Paper1_FREE_SAMPLE.pdf','_blank'); }
+function getSample(){ try{ fbq('track','Lead',{content_name:'Paper 1 free sample'}); }catch(e){} window.open('/AgriVidya_AAO_Paper1_FREE_SAMPLE.pdf','_blank'); }
 </script>
 <script>
 function paidSuccess(url){
@@ -1347,7 +1364,7 @@ async function buyMaterial(id,amount,desc){
         if(typeof currentUser!=='undefined'&&currentUser) vb.user_id=currentUser.id;
         var v=await fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(vb)});
         var vd=await v.json();
-        if(vd.success){ paidSuccess(vd.login_link || ((id==='paper2')?'/read.html?b=paper2':'/read.html')); }
+        if(vd.success){ try{ fbq('track','Purchase',{value:amount/100,currency:'INR',content_name:desc,content_ids:[id]}); }catch(e){} paidSuccess(vd.login_link || ((id==='paper2')?'/read.html?b=paper2':'/read.html')); }
         else { alert('Payment received but verification failed. WhatsApp +91 9492982424 with your payment id.'); }
       }};
     if(typeof currentUser!=='undefined'&&currentUser) opts.prefill={email:currentUser.email};
