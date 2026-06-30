@@ -156,6 +156,7 @@ h1{font-family:'Sora',sans-serif;font-size:22px;margin-bottom:4px}
   <div class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 2 6 4.5 6 8c0 2 0.8 3.8 2 5V16h1v3h6v-3h1v-3c1.2-1.2 2-3 2-5 0-3.5-3-6-6-6z" fill="#021E17"/><circle cx="12" cy="8" r="2.5" fill="#9FE1CB"/></svg></div>
   <span class="nm">AgriVidya Mocks</span>
   <span class="sp"></span>
+  <button onclick="location.href='/read.html'">📖 Material</button>
   <button onclick="location.href='/aao.html'">🏠 Home</button>
   <button id="loginBtn" onclick="goLogin()">Log in</button>
   <button id="logoutBtn" class="hide" onclick="logout()">Log out</button>
@@ -176,28 +177,28 @@ h1{font-family:'Sora',sans-serif;font-size:22px;margin-bottom:4px}
       <div class="hero-note">No payment to try a sample — just see how good it is first.</div>
     </div>
 
-    <div class="deal">🔥 BEST DEAL: Buy any paper and unlock <b>ALL 20 full mock tests + 6 practice sets — FREE</b>. That's 3,000+ questions for the price of a single book.</div>
+    <div class="deal">🔥 TODAY ONLY · ಇಂದು ಮಾತ್ರ: Unlock <b>all 20 full-length mock tests + practice sets</b> — 3,000+ exam-ready questions. Get the Mock Combo (₹999) or Everything (₹1299).</div>
 
     <div class="psec" style="text-align:center">Choose your plan</div>
     <div class="price-row">
       <div class="price-card">
-        <div class="pc-name">Paper 1 — General Studies</div>
-        <div class="pc-price"><s>₹499</s> <b>₹249</b></div>
-        <ul class="pc-list"><li>✅ Full Paper 1 study material (348 pages)</li><li>✅ 10 Paper-1 full mocks <b>FREE</b></li><li>✅ Practice sets + free samples</li></ul>
-        <button class="btn" style="width:100%" onclick="location.href='/aao.html'">Buy Paper 1 →</button>
+        <div class="pc-name">Mock-Test Combo</div>
+        <div class="pc-price"><s>₹1999</s> <b>₹999</b></div>
+        <ul class="pc-list"><li>✅ 10 + 10 full-length mock tests</li><li>✅ Real timer · −0.25 negative marking</li><li>✅ Rank, SWOT & leaderboard on every test</li><li>✅ Instant solutions for every question</li></ul>
+        <button class="btn" style="width:100%" onclick="location.href='/aao.html'">Get Mock Combo →</button>
       </div>
       <div class="price-card best">
         <div class="pc-flag">★ BEST VALUE</div>
-        <div class="pc-name">Combo — Both Papers</div>
-        <div class="pc-price"><s>₹998</s> <b>₹500</b></div>
-        <ul class="pc-list"><li>✅ Paper 1 + Paper 2 complete material</li><li>✅ <b>ALL 20</b> full mock tests FREE</li><li>✅ Rank, SWOT & leaderboard on every test</li><li>✅ Everything, one price — save ₹498</li></ul>
-        <button class="btn" style="width:100%" onclick="location.href='/aao.html'">Get the Combo →</button>
+        <div class="pc-name">EVERYTHING — Material + Mocks</div>
+        <div class="pc-price"><s>₹2997</s> <b>₹1299</b></div>
+        <ul class="pc-list"><li>✅ Paper 1 + Paper 2 complete material</li><li>✅ <b>ALL 20</b> full mock tests</li><li>✅ Mind maps + rank + SWOT + solutions</li><li>✅ Everything in one — save ₹1698</li></ul>
+        <button class="btn" style="width:100%" onclick="location.href='/aao.html'">Get Everything →</button>
       </div>
       <div class="price-card">
-        <div class="pc-name">Paper 2 — Agri / Technical</div>
-        <div class="pc-price"><s>₹499</s> <b>₹249</b></div>
-        <ul class="pc-list"><li>✅ Full Paper 2 material (617 pages)</li><li>✅ 10 Paper-2 full mocks <b>FREE</b></li><li>✅ Practice sets + free samples</li></ul>
-        <button class="btn" style="width:100%" onclick="location.href='/aao.html'">Buy Paper 2 →</button>
+        <div class="pc-name">Study Material only</div>
+        <div class="pc-price"><s>₹998</s> <b>from ₹249</b></div>
+        <ul class="pc-list"><li>✅ Paper 1 or Paper 2 — ₹249 each</li><li>✅ Both papers (material combo) — ₹459</li><li>ℹ️ Material only — mock tests not included</li></ul>
+        <button class="btn" style="width:100%" onclick="location.href='/aao.html'">View Material →</button>
       </div>
     </div>
 
@@ -212,7 +213,7 @@ h1{font-family:'Sora',sans-serif;font-size:22px;margin-bottom:4px}
     </div>
 
     <div class="finalcta">
-      <div>Already bought a paper, or want to log in?</div>
+      <div>Already bought the Mock Combo or Everything? Log in to start.</div>
       <button class="big-cta" onclick="goLogin()">Log in to my mock tests →</button>
     </div>
   </div>
@@ -303,7 +304,7 @@ async function start(u){
   $('logoutBtn').classList.remove('hide');
   var acc=await sb.from('book_access').select('book_id,active').eq('user_id',u.id);
   var rows=(acc.data||[]).filter(r=>r.active!==false).map(r=>r.book_id);
-  owns=rows.indexOf('paper1')>=0||rows.indexOf('paper2')>=0||rows.indexOf('mocks')>=0;
+  owns=rows.indexOf('mocks')>=0;
   leadPhone=(u.user_metadata&&u.user_metadata.phone)||'';
   // single-device session lock (anti-sharing): claim this session, then watch it
   try{ await sb.from('user_sessions').upsert({user_id:u.id,session_token:myTok,updated_at:new Date().toISOString()}); }catch(e){}
@@ -349,10 +350,10 @@ async function loadList(){
   $('cards').innerHTML=html;
   $('listSub').innerHTML=owns
     ?'You have full access — all mock tests are unlocked. Each runs on a real exam timer, then shows your score, rank and a SWOT analysis.'
-    :'Free samples are open to everyone. The full mock series unlocks free when you buy <a href="/aao.html" style="color:var(--ac2)">Paper 1 or Paper 2</a>.';
+    :'Free samples are open to everyone. Unlock all 10 + 10 full-length mocks with the <a href="/aao.html" style="color:var(--ac2)">Mock-Test Combo (₹999)</a> or the <a href="/aao.html" style="color:var(--ac2)">Everything plan (₹1299)</a>.';
 }
 function lockedMsg(){
-  if(confirm('The full mock series is included free with any paper.\n\nBuy Paper 1 or Paper 2 to unlock all mocks. Open the store now?'))location.href='/aao.html';
+  if(confirm('Unlock all 10 + 10 full-length mock tests.\n\nGet the Mock-Test Combo (₹999) or the Everything plan (₹1299). Open the store now?'))location.href='/aao.html';
 }
 
 /* ---------- open a test ---------- */
