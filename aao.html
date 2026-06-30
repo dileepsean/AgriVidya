@@ -10,6 +10,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2048078339156059');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2048078339156059&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--gd:#021E17;--gda:#04342C;--gm:#085041;--g:#0F6E56;--gb:#1D9E75;--gl:#5DCAA5;--gp:#9FE1CB;--gs:#E1F5EE;--w:#fff;--g1:#F6FAF8;--tp:#0D1F1A;--ts:#3D5E54;--tm:#7A9E94}
@@ -205,6 +222,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
         </ul>
         <div class="price"><span class="n">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
         <button class="btn btn-solid act" onclick="buyMaterial('paper1',24900,'AAO Paper 1 Study Material')">Buy Now — ₹249 →</button>
+        <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20AO%2FAAO%20Paper%201%20(%E2%82%B9249)" target="_blank">💬 Buy via WhatsApp</a>
         <div class="samp" onclick="getSample()">Get the free sample (PDF) →</div>
       </div>
 
@@ -222,6 +240,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
         </ul>
         <div class="price"><span class="n">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
         <button class="btn btn-solid act" onclick="buyMaterial('paper2',24900,'AAO Paper 2 Study Material')">Buy Now — ₹249 →</button>
+        <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20AO%2FAAO%20Paper%202%20(%E2%82%B9249)" target="_blank">💬 Buy via WhatsApp</a>
         <div class="samp" onclick="getSampleP2()">Get the free sample (PDF) →</div>
       </div>
 
@@ -239,6 +258,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
         </ul>
         <div class="price"><span class="n">₹999</span><span class="o">₹1999</span><span class="badge">50% OFF</span></div>
         <button class="btn btn-solid act" onclick="buyMaterial('mocks',99900,'AO/AAO Mock-Test Combo (10+10)')">Buy Now — ₹999 →</button>
+        <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20the%20AO%2FAAO%20Mock-Test%20Combo%20(%E2%82%B9999)" target="_blank">💬 Buy via WhatsApp</a>
         <div class="sub">Unlocks all mocks up to exam day.</div>
       </div>
 
@@ -400,8 +420,8 @@ async function doAuth(){
 }
 async function logoutUser(){ await sb.auth.signOut(); setLogged(null); }
 
-function getSample(){ window.open('/AgriVidya_AAO_Paper1_FREE_SAMPLE.pdf','_blank'); }
-function getSampleP2(){ window.open('/AgriVidya_AAO_Paper2_FREE_SAMPLE.pdf','_blank'); }
+function getSample(){ try{ fbq('track','Lead',{content_name:'Paper 1 free sample'}); }catch(e){} window.open('/AgriVidya_AAO_Paper1_FREE_SAMPLE.pdf','_blank'); }
+function getSampleP2(){ try{ fbq('track','Lead',{content_name:'Paper 2 free sample'}); }catch(e){} window.open('/AgriVidya_AAO_Paper2_FREE_SAMPLE.pdf','_blank'); }
 function notifyMe(what){
   if(currentUser){ alert('You\'re on the list! We\'ll message you on WhatsApp the moment '+what+' goes live.'); }
   else { alert('Create a free account (email + WhatsApp) and we\'ll notify you when '+what+' launches.'); openAuth('signup'); }
@@ -424,7 +444,7 @@ async function buyMaterial(id,amount,desc){
         if(currentUser) vb.user_id=currentUser.id;
         const v=await fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(vb)});
         const vd=await v.json();
-        if(vd.success){ paidSuccess(vd.login_link || ((id==='paper2')?'/read.html?b=paper2':'/read.html')); }
+        if(vd.success){ try{ fbq('track','Purchase',{value:amount/100,currency:'INR',content_name:desc,content_ids:[id]}); }catch(e){} paidSuccess(vd.login_link || ((id==='paper2')?'/read.html?b=paper2':'/read.html')); }
         else { alert('Payment received but verification failed. WhatsApp +91 9492982424 with your payment id.'); }
       }};
     if(currentUser) opts.prefill={email:currentUser.email};
