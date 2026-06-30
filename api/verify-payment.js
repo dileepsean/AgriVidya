@@ -28,7 +28,10 @@ export default async function handler(req, res) {
     } catch (e) {}
 
     let userId = b.user_id || null, login_link = null;
-    const redirect = (book_id === 'paper2') ? 'https://www.agrividya.in/read.html?b=paper2' : 'https://www.agrividya.in/read.html';
+    // where to send the buyer after login (mocks => mock page; paper2 => paper2 reader)
+    let redirect = 'https://www.agrividya.in/read.html';
+    if (book_id === 'paper2') redirect = 'https://www.agrividya.in/read.html?b=paper2';
+    else if (book_id === 'mocks') redirect = 'https://www.agrividya.in/mock.html';
 
     // 2) ensure an account exists for this email and get a one-tap login link
     if (email && SERVICE) {
@@ -46,9 +49,20 @@ export default async function handler(req, res) {
       } catch (e) {}
     }
 
-    // 3) grant access (combo => both papers)
+    // 3) grant access — map each product to the book_ids it unlocks
+    //    combo      = both papers (material)
+    //    mocks      = all mock tests
+    //    everything = both papers + mocks
     if (userId && SERVICE) {
-      const books = (book_id === 'combo') ? ['paper1', 'paper2'] : [book_id || 'paper1'];
+      const GRANTS = {
+        combo: ['paper1', 'paper2'],
+        everything: ['paper1', 'paper2', 'mocks'],
+        mocks: ['mocks'],
+        paper1: ['paper1'],
+        paper2: ['paper2'],
+        bot: ['bot']
+      };
+      const books = GRANTS[book_id] || [book_id || 'paper1'];
       await fetch(SUPA + '/rest/v1/book_access', {
         method: 'POST',
         headers: { ...H, 'Prefer': 'resolution=merge-duplicates' },
