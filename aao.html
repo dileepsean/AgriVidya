@@ -221,7 +221,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
           <li>Instant access · read on mobile or laptop</li>
         </ul>
         <div class="price"><span class="n">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
-        <button class="btn btn-solid act" onclick="buyMaterial('paper1',24900,'AAO Paper 1 Study Material')">Buy Now — ₹249 →</button>
+        <button class="btn btn-solid act" id="btnPaper1" onclick="buyMaterial('paper1',24900,'AAO Paper 1 Study Material')">Buy Now — ₹249 →</button>
         <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20AO%2FAAO%20Paper%201%20(%E2%82%B9249)" target="_blank">💬 Buy via WhatsApp</a>
         <div class="samp" onclick="getSample()">Get the free sample (PDF) →</div>
       </div>
@@ -239,7 +239,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
           <li>Instant access · same secure reader</li>
         </ul>
         <div class="price"><span class="n">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
-        <button class="btn btn-solid act" onclick="buyMaterial('paper2',24900,'AAO Paper 2 Study Material')">Buy Now — ₹249 →</button>
+        <button class="btn btn-solid act" id="btnPaper2" onclick="buyMaterial('paper2',24900,'AAO Paper 2 Study Material')">Buy Now — ₹249 →</button>
         <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20AO%2FAAO%20Paper%202%20(%E2%82%B9249)" target="_blank">💬 Buy via WhatsApp</a>
         <div class="samp" onclick="getSampleP2()">Get the free sample (PDF) →</div>
       </div>
@@ -257,7 +257,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
           <li>Detailed solutions &amp; weak-area report</li>
         </ul>
         <div class="price"><span class="n">₹999</span><span class="o">₹1999</span><span class="badge">50% OFF</span></div>
-        <button class="btn btn-solid act" onclick="buyMaterial('mocks',99900,'AO/AAO Mock-Test Combo (10+10)')">Buy Now — ₹999 →</button>
+        <button class="btn btn-solid act" id="btnMocks" onclick="buyMaterial('mocks',99900,'AO/AAO Mock-Test Combo (10+10)')">Buy Now — ₹999 →</button>
         <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20the%20AO%2FAAO%20Mock-Test%20Combo%20(%E2%82%B9999)" target="_blank">💬 Buy via WhatsApp</a>
         <div class="sub">Unlocks all mocks up to exam day.</div>
       </div>
@@ -272,7 +272,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
       </div>
       <div style="text-align:right;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
         <div><span class="disp" style="color:#fff;font-size:32px;font-weight:800">₹459</span> <span style="color:var(--gl);text-decoration:line-through;font-size:16px">₹998</span></div>
-        <button class="btn btn-solid btn-lg" onclick="buyMaterial('combo',45900,'AO/AAO Material Combo (Paper 1 + Paper 2)')">Get both — ₹459 →</button>
+        <button class="btn btn-solid btn-lg" id="btnCombo" onclick="buyMaterial('combo',45900,'AO/AAO Material Combo (Paper 1 + Paper 2)')">Get both — ₹459 →</button>
       </div>
     </div>
 
@@ -285,7 +285,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
       </div>
       <div style="text-align:right;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
         <div><span class="disp" style="color:#1A1205;font-size:34px;font-weight:800">₹1299</span> <span style="color:#5A3A00;text-decoration:line-through;font-size:16px">₹2997</span></div>
-        <button class="btn btn-lg" style="background:#04342C;color:#fff" onclick="buyMaterial('everything',129900,'AO/AAO Everything — Material + Mock Tests')">Get everything — ₹1299 →</button>
+        <button class="btn btn-lg" style="background:#04342C;color:#fff" id="btnEverything" onclick="buyMaterial('everything',129900,'AO/AAO Everything — Material + Mock Tests')">Get everything — ₹1299 →</button>
       </div>
     </div>
   </div>
@@ -312,7 +312,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
     <div class="why rv">
       <h3 class="disp">Most aspirants don't fail on knowledge — they fail on negative marking.</h3>
       <p>One wrong guess under −0.75 wipes out three correct answers. AgriVidya is the only AO/AAO material that tells you exactly which questions to attempt and which to skip.</p>
-      <button class="btn btn-solid btn-lg" onclick="buyMaterial('paper1',24900,'AAO Paper 1 Study Material')">Start with Paper 1 — ₹249 →</button>
+      <button class="btn btn-solid btn-lg" id="btnWhyPaper1" onclick="buyMaterial('paper1',24900,'AAO Paper 1 Study Material')">Start with Paper 1 — ₹249 →</button>
     </div>
   </div>
 </section>
@@ -384,10 +384,31 @@ async function loadLibrary(u){
     let btns='';
     if(owned.includes('paper1')) btns+='<a class="lib-btn" href="/read.html">📘 Continue Paper 1 →</a>';
     if(owned.includes('paper2')) btns+='<a class="lib-btn" href="/read.html?b=paper2">📗 Continue Paper 2 →</a>';
+    if(owned.includes('mocks')) btns+='<a class="lib-btn" href="/mock.html">📝 Continue Mock Tests →</a>';
     const el=document.getElementById('myLib');
     if(btns){ el.innerHTML='<div class="lib-in"><span class="lt">📚 Welcome back! Open your course:</span>'+btns+'</div>'; el.style.display='block'; }
     else { el.style.display='none'; }
+    applyOwnership(owned);
   }catch(e){ document.getElementById('myLib').style.display='none'; }
+}
+/* swap Buy buttons to Open/Continue for things the logged-in user already owns —
+   prevents confusing a returning buyer or letting them pay twice */
+function applyOwnership(owned){
+  owned = owned || [];
+  var hasP1=owned.indexOf('paper1')>=0, hasP2=owned.indexOf('paper2')>=0, hasMocks=owned.indexOf('mocks')>=0;
+  function own(btnId, href, label){
+    var b=document.getElementById(btnId);
+    if(!b || b.tagName==='A') return;
+    var a=document.createElement('a');
+    a.href=href; a.className=b.className; a.textContent=label;
+    a.style.cssText='text-decoration:none;display:flex;align-items:center;justify-content:center';
+    b.parentNode.replaceChild(a,b);
+  }
+  if(hasP1){ own('btnPaper1','/read.html','✓ Owned — Open Paper 1 →'); own('btnWhyPaper1','/read.html','✓ Owned — Open Paper 1 →'); }
+  if(hasP2) own('btnPaper2','/read.html?b=paper2','✓ Owned — Open Paper 2 →');
+  if(hasMocks) own('btnMocks','/mock.html','✓ Owned — Open Mock Tests →');
+  if(hasP1&&hasP2) own('btnCombo','/read.html','✓ Owned — Open my material →');
+  if(hasP1&&hasP2&&hasMocks) own('btnEverything','/read.html','✓ Owned — Open everything →');
 }
 sb.auth.getSession().then(o=>{ if(o.data.session) setLogged(o.data.session.user); });
 
@@ -418,7 +439,7 @@ async function doAuth(){
     setLogged(data.user); closeAuth();
   }
 }
-async function logoutUser(){ await sb.auth.signOut(); setLogged(null); }
+async function logoutUser(){ await sb.auth.signOut(); location.reload(); }
 
 function getSample(){ try{ fbq('track','Lead',{content_name:'Paper 1 free sample'}); }catch(e){} window.open('/AgriVidya_AAO_Paper1_FREE_SAMPLE.pdf','_blank'); }
 function getSampleP2(){ try{ fbq('track','Lead',{content_name:'Paper 2 free sample'}); }catch(e){} window.open('/AgriVidya_AAO_Paper2_FREE_SAMPLE.pdf','_blank'); }
