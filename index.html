@@ -223,21 +223,23 @@ footer{background:var(--gd);padding:1.75rem 1.5rem;text-align:center}
 /* PRICING (hidden) */
 #page-pricing{display:none !important}
 
-/* MOBILE */
+/* MOBILE — two-row nav: row 1 = logo + login/signup, row 2 = full-width link bar.
+   Giving links their own row (instead of squeezing them next to the buttons) means
+   they don't get clipped, and the whole bar is fully visible + scrollable if needed. */
 @media(max-width:900px){
-  /* keep ALL nav links visible on mobile (horizontal scroll), no hamburger */
-  nav{padding:0.6rem 0.6rem;gap:6px}
-  .nav-links{display:flex;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:2px;min-width:0}
+  nav{flex-wrap:wrap;row-gap:8px;padding:0.6rem 0.6rem;gap:6px}
+  .logo-wrap{order:1}
+  .nav-right{order:2;gap:4px}
+  .nav-links{order:3;flex-basis:100%;width:100%;display:flex;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:4px;min-width:0}
   .nav-links::-webkit-scrollbar{display:none}
-  .nav-links a{font-size:11px;padding:6px 7px;white-space:nowrap;flex-shrink:0}
+  .nav-links a{font-size:12px;padding:7px 10px;white-space:nowrap;flex-shrink:0;background:var(--g1);border-radius:7px}
   .hamburger{display:none}
   .mobile-nav{display:none !important}
-  .nav-right{gap:4px}
   .btn-login,.btn-signup,.btn-user{padding:6px 9px;font-size:11px}
 }
 @media(max-width:420px){
   .logo-img{height:24px!important}
-  .nav-links a{font-size:10px;padding:5px 6px}
+  .nav-links a{font-size:11px;padding:6px 9px}
   .btn-login,.btn-signup,.btn-user{padding:5px 7px;font-size:10px}
 }
 @media(max-width:768px){
