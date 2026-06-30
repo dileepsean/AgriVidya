@@ -148,15 +148,16 @@ h1{font-family:'Sora',sans-serif;font-size:22px;margin-bottom:4px}
   .price-card.best{order:-1}
 }
 @media(max-width:430px){.adv-grid{grid-template-columns:1fr}}
-/* bottom tab bar — mobile only, always-visible nav (no hamburger) */
-.bnav{display:none}
-@media(max-width:680px){
-  body{padding-bottom:62px}
-  .bar #topMaterial,.bar #topHome{display:none}
-  .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:600;background:#04342C;border-top:1px solid var(--ln);box-shadow:0 -10px 26px -14px rgba(0,0,0,.5)}
-  .bn-it{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:7px 4px 8px;color:var(--mint);font-size:10.5px;font-weight:700;text-decoration:none}
-  .bn-it.on{color:#fff}
-  .bn-ic{font-size:19px;line-height:1}
+/* top bar — keep all links visible on mobile, no hamburger, no bottom bar */
+.bar{flex-wrap:nowrap}
+@media(max-width:480px){
+  .bar{padding:8px 8px;gap:5px}
+  .bar .nm{font-size:11.5px}
+  .bar button{padding:6px 8px;font-size:10.5px;white-space:nowrap}
+}
+@media(max-width:360px){
+  .bar .nm{display:none}
+  .bar button{padding:5px 7px;font-size:10px}
 }
 </style>
 </head>
@@ -167,18 +168,10 @@ h1{font-family:'Sora',sans-serif;font-size:22px;margin-bottom:4px}
   <span class="nm">AgriVidya Mocks</span>
   <span class="sp"></span>
   <button id="topMaterial" onclick="location.href='/read.html'">📖 Material</button>
-  <button id="topHome" onclick="location.href='/aao.html'">🏠 Home</button>
+  <button id="topHome" onclick="location.href='/'">🏠 Home</button>
   <button id="loginBtn" onclick="goLogin()">Log in</button>
   <button id="logoutBtn" class="hide" onclick="logout()">Log out</button>
 </div>
-
-<!-- mobile bottom nav — always visible, no hamburger -->
-<nav class="bnav">
-  <a href="/aao.html" class="bn-it"><span class="bn-ic">🏠</span><span>Home</span></a>
-  <a href="/read.html" class="bn-it"><span class="bn-ic">📖</span><span>Material</span></a>
-  <a href="/mock.html" class="bn-it on"><span class="bn-ic">📝</span><span>Tests</span></a>
-  <a href="https://wa.me/919492982424?text=Hi%2C%20I%20have%20a%20question%20about%20the%20mock%20tests" target="_blank" class="bn-it"><span class="bn-ic">💬</span><span>Help</span></a>
-</nav>
 
 <div class="wrap">
 
@@ -283,7 +276,7 @@ let T=null, Q=[], ans={}, marks={}, cur=0, endAt=0, tick=null, started=0;
 
 /* ---------- helpers ---------- */
 function $(id){return document.getElementById(id);}
-function show(id){['landing','gate','list','exam','result'].forEach(s=>$(s).classList.add('hide'));$(id).classList.remove('hide');window.scrollTo(0,0);var bn=document.querySelector('.bnav');if(bn)bn.style.display=(id==='exam')?'none':'';}
+function show(id){['landing','gate','list','exam','result'].forEach(s=>$(s).classList.add('hide'));$(id).classList.remove('hide');window.scrollTo(0,0);}
 function toast(m){var t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2600);}
 function esc(s){return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
 

@@ -16,27 +16,20 @@
 body{font-family:'Inter',system-ui,sans-serif;color:var(--tp);background:var(--w);line-height:1.6;-webkit-font-smoothing:antialiased}
 .disp,.sec-t,.prod h3,.why h3,.modal h2,.hero h1{font-family:'Sora','Inter',sans-serif!important;letter-spacing:-.3px}
 a{text-decoration:none;color:inherit}
-/* nav */
-nav{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1.3rem;position:sticky;top:0;z-index:200;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--gs);gap:12px}
-nav .logo{height:36px;width:auto;display:block}
-.nav-r{display:flex;gap:8px;align-items:center}
-@media(max-width:640px){
-  nav{gap:6px;padding:.6rem .7rem}
-  nav .logo{height:30px}
-  .nav-r{gap:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-  .nav-r::-webkit-scrollbar{display:none}
-  .nav-r .btn{padding:6px 9px;font-size:12px;white-space:nowrap;flex-shrink:0}
-  #navMocks{display:none}
+/* nav — stays in the top bar on every screen size, no hamburger, no bottom bar */
+nav{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1.3rem;position:sticky;top:0;z-index:200;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--gs);gap:8px}
+nav .logo{height:36px;width:auto;display:block;flex-shrink:0}
+.nav-r{display:flex;gap:8px;align-items:center;min-width:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.nav-r::-webkit-scrollbar{display:none}
+@media(max-width:480px){
+  nav{gap:4px;padding:.55rem .55rem}
+  nav .logo{height:22px}
+  .nav-r{gap:4px}
+  .nav-r .btn{padding:6px 8px;font-size:11px;white-space:nowrap;flex-shrink:0}
 }
-/* bottom tab bar — mobile only, always-visible nav (no hamburger) */
-.bnav{display:none}
-@media(max-width:680px){
-  body{padding-bottom:62px}
-  .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:600;background:#fff;border-top:1px solid var(--gs);box-shadow:0 -10px 26px -14px rgba(0,0,0,.2)}
-  .bn-it{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:7px 4px 8px;color:var(--ts);font-size:10.5px;font-weight:700;text-decoration:none}
-  .bn-it.on{color:var(--gb)}
-  .bn-ic{font-size:19px;line-height:1}
-  .fab-wa{display:none!important}
+@media(max-width:360px){
+  nav .logo{height:19px}
+  .nav-r .btn{padding:5px 6px;font-size:10px}
 }
 .btn{font-family:inherit;cursor:pointer;border-radius:9px;font-weight:600;font-size:13px;padding:8px 15px;border:none;transition:transform .2s,box-shadow .2s,filter .2s}
 .btn-ghost{background:transparent;color:var(--gm);border:1.5px solid var(--gm)}
@@ -327,15 +320,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
   </div>
 </section>
 
-<a href="https://wa.me/919492982424?text=Hi%2C%20I%20have%20a%20question%20about%20the%20AO%2FAAO%20material" target="_blank" class="fab-wa" style="position:fixed;bottom:18px;right:18px;z-index:500;display:flex;align-items:center;gap:9px;background:#25D366;color:#fff;font-weight:700;font-size:14px;padding:12px 18px;border-radius:30px;box-shadow:0 10px 26px -8px rgba(0,0,0,.4);text-decoration:none">💬 Questions? WhatsApp us</a>
-
-<!-- mobile bottom nav — always visible, no hamburger -->
-<nav class="bnav">
-  <a href="/aao.html" class="bn-it on"><span class="bn-ic">🏠</span><span>Home</span></a>
-  <a href="#store" class="bn-it" onclick="document.getElementById('store').scrollIntoView({behavior:'smooth'});return false;"><span class="bn-ic">📚</span><span>Material</span></a>
-  <a href="/mock.html" class="bn-it"><span class="bn-ic">📝</span><span>Mocks</span></a>
-  <a href="https://wa.me/919492982424?text=Hi%2C%20I%20have%20a%20question%20about%20the%20AO%2FAAO%20material" target="_blank" class="bn-it"><span class="bn-ic">💬</span><span>Help</span></a>
-</nav>
+<a href="https://wa.me/919492982424?text=Hi%2C%20I%20have%20a%20question%20about%20the%20AO%2FAAO%20material" target="_blank" style="position:fixed;bottom:18px;right:18px;z-index:500;display:flex;align-items:center;gap:9px;background:#25D366;color:#fff;font-weight:700;font-size:14px;padding:12px 18px;border-radius:30px;box-shadow:0 10px 26px -8px rgba(0,0,0,.4);text-decoration:none">💬 Questions? WhatsApp us</a>
 
 <footer>
   <img src="/av-logo-white.png" alt="AgriVidya">
