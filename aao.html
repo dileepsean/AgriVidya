@@ -26,6 +26,17 @@ nav .logo{height:36px;width:auto;display:block}
   .nav-r{gap:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
   .nav-r::-webkit-scrollbar{display:none}
   .nav-r .btn{padding:6px 9px;font-size:12px;white-space:nowrap;flex-shrink:0}
+  #navMocks{display:none}
+}
+/* bottom tab bar — mobile only, always-visible nav (no hamburger) */
+.bnav{display:none}
+@media(max-width:680px){
+  body{padding-bottom:62px}
+  .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:600;background:#fff;border-top:1px solid var(--gs);box-shadow:0 -10px 26px -14px rgba(0,0,0,.2)}
+  .bn-it{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:7px 4px 8px;color:var(--ts);font-size:10.5px;font-weight:700;text-decoration:none}
+  .bn-it.on{color:var(--gb)}
+  .bn-ic{font-size:19px;line-height:1}
+  .fab-wa{display:none!important}
 }
 .btn{font-family:inherit;cursor:pointer;border-radius:9px;font-weight:600;font-size:13px;padding:8px 15px;border:none;transition:transform .2s,box-shadow .2s,filter .2s}
 .btn-ghost{background:transparent;color:var(--gm);border:1.5px solid var(--gm)}
@@ -181,7 +192,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
       <p class="sec-s">Secure, online-only access. No downloads to lose, no PDFs to leak. Instant access the moment you pay.</p>
     </div>
     <div class="rv" style="margin:0 0 22px;background:linear-gradient(135deg,#F4B63F,#D68616);border-radius:14px;padding:13px 20px;text-align:center;color:#1A1205;font-weight:800;font-size:15px;box-shadow:0 14px 34px -18px rgba(214,134,22,.8)">
-      ⏰ Launch offer — <span style="text-decoration:underline">TODAY ONLY</span> · ಇಂದು ಮಾತ್ರ &nbsp;|&nbsp; up to 56% off · mind maps for every chapter included
+      ⏳ <span id="examDays">25</span> days left to your AO/AAO exam (26 Jul 2026) · ಪರೀಕ್ಷೆಗೆ <span id="examDaysK">25</span> ದಿನಗಳು ಬಾಕಿ &nbsp;|&nbsp; launch price — up to 56% off · mind maps for every chapter included
     </div>
     <div class="prods">
 
@@ -316,7 +327,15 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
   </div>
 </section>
 
-<a href="https://wa.me/919492982424?text=Hi%2C%20I%20have%20a%20question%20about%20the%20AO%2FAAO%20material" target="_blank" style="position:fixed;bottom:18px;right:18px;z-index:500;display:flex;align-items:center;gap:9px;background:#25D366;color:#fff;font-weight:700;font-size:14px;padding:12px 18px;border-radius:30px;box-shadow:0 10px 26px -8px rgba(0,0,0,.4);text-decoration:none">💬 Questions? WhatsApp us</a>
+<a href="https://wa.me/919492982424?text=Hi%2C%20I%20have%20a%20question%20about%20the%20AO%2FAAO%20material" target="_blank" class="fab-wa" style="position:fixed;bottom:18px;right:18px;z-index:500;display:flex;align-items:center;gap:9px;background:#25D366;color:#fff;font-weight:700;font-size:14px;padding:12px 18px;border-radius:30px;box-shadow:0 10px 26px -8px rgba(0,0,0,.4);text-decoration:none">💬 Questions? WhatsApp us</a>
+
+<!-- mobile bottom nav — always visible, no hamburger -->
+<nav class="bnav">
+  <a href="/aao.html" class="bn-it on"><span class="bn-ic">🏠</span><span>Home</span></a>
+  <a href="#store" class="bn-it" onclick="document.getElementById('store').scrollIntoView({behavior:'smooth'});return false;"><span class="bn-ic">📚</span><span>Material</span></a>
+  <a href="/mock.html" class="bn-it"><span class="bn-ic">📝</span><span>Mocks</span></a>
+  <a href="https://wa.me/919492982424?text=Hi%2C%20I%20have%20a%20question%20about%20the%20AO%2FAAO%20material" target="_blank" class="bn-it"><span class="bn-ic">💬</span><span>Help</span></a>
+</nav>
 
 <footer>
   <img src="/av-logo-white.png" alt="AgriVidya">
@@ -430,6 +449,13 @@ async function buyMaterial(id,amount,desc){
   }catch(e){ alert('Could not start payment. Try again or WhatsApp +91 9492982424.'); }
 }
 
+/* exam countdown — honest, always-accurate */
+(function(){
+  var EXAM=new Date('2026-07-26T00:00:00+05:30');
+  var now=new Date();
+  var days=Math.max(0,Math.ceil((EXAM-now)/86400000));
+  document.querySelectorAll('#examDays,#examDaysK').forEach(function(el){ el.textContent=days; });
+})();
 /* hero carousel crossfade */
 (function(){ var s=document.querySelectorAll('#hc .s'); if(s.length<2) return; var i=0;
   setInterval(function(){ s[i].classList.remove('on'); i=(i+1)%s.length; s[i].classList.add('on'); }, 5000);
