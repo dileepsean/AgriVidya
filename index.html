@@ -1048,13 +1048,12 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div id="modal-login">
       <h2>Welcome back</h2>
-      <p>Log in to your AgriVidya account</p>
+      <p>Enter your email — we'll send a one-tap login link. No password needed.</p>
       <input class="modal-input" id="loginEmail" type="email" placeholder="Email address"/>
-      <input class="modal-input" id="loginPassword" type="password" placeholder="Password"/>
-      <button class="modal-btn" onclick="handleLogin()">Log in</button>
-      <div class="modal-loading" id="loginLoading">Logging in...</div>
+      <button class="modal-btn" onclick="handleLogin()">Email me a login link</button>
+      <div class="modal-loading" id="loginLoading">Sending link...</div>
       <div class="modal-error" id="loginError"></div>
-      <div class="modal-success" id="loginSuccess">✓ Logged in! Welcome back.</div>
+      <div class="modal-success" id="loginSuccess">✓ Login link sent! Check your email (and spam folder).</div>
       <div class="modal-switch">No account? <a onclick="openModal('signup')">Sign up free</a></div>
     </div>
     <div id="modal-signup" style="display:none">
@@ -1183,14 +1182,13 @@ _supabase.auth.onAuthStateChange((_e,s)=>{updateNav(s?.user??null);});
 
 async function handleLogin(){
   const e=document.getElementById('loginEmail').value.trim();
-  const p=document.getElementById('loginPassword').value;
-  if(!e||!p){showErr('login','Please fill email and password');return;}
+  if(!e){showErr('login','Please enter your email');return;}
   showLoad('login',true);
-  const{error}=await _supabase.auth.signInWithPassword({email:e,password:p});
+  const{error}=await _supabase.auth.signInWithOtp({email:e,options:{emailRedirectTo:location.origin+'/read.html',shouldCreateUser:false}});
   showLoad('login',false);
   if(error){showErr('login',error.message);return;}
   document.getElementById('loginSuccess').style.display='block';
-  setTimeout(()=>{closeModal();document.getElementById('loginSuccess').style.display='none';},1500);
+  setTimeout(()=>{closeModal();document.getElementById('loginSuccess').style.display='none';},3000);
 }
 
 async function handleSignup(){

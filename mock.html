@@ -285,17 +285,18 @@ function tog(){
   mode=(mode==='signup')?'login':'signup';
   var su=document.querySelectorAll('.suOnly');
   su.forEach(e=>e.style.display=(mode==='signup')?'block':'none');
+  $('g_pw').style.display=(mode==='signup')?'block':'none';
   $('gT').textContent=(mode==='signup')?'Start your free mock':'Log in';
-  $('gP').textContent=(mode==='signup')?'Create a free account to take AO/AAO mock tests with timer, rank and a personal SWOT analysis.':'Welcome back — log in to continue your mock tests.';
-  $('g_go').textContent=(mode==='signup')?'Create free account':'Log in';
+  $('gP').textContent=(mode==='signup')?'Create a free account to take AO/AAO mock tests with timer, rank and a personal SWOT analysis.':"Enter your email — we'll send a one-tap login link. No password needed.";
+  $('g_go').textContent=(mode==='signup')?'Create free account':'Email me a login link';
   $('g_sw').textContent=(mode==='signup')?'Already have an account? Log in':'New here? Create a free account';
 }
-function ger(m){var e=$('g_er');e.textContent=m;e.style.display='block';}
+function ger(m){var e=$('g_er');e.style.color='';e.textContent=m;e.style.display='block';}
 async function doAuth(){
   $('g_er').style.display='none';
   var em=$('g_email').value.trim().toLowerCase(), pw=$('g_pw').value;
-  if(!em||!pw){ger('Enter email and password');return;}
   if(mode==='signup'){
+    if(!em||!pw){ger('Enter email and password');return;}
     var nm=$('g_name').value.trim(), ph=$('g_phone').value.trim();
     if(!nm){ger('Please enter your name');return;}
     if(!ph||ph.replace(/\D/g,'').length<10){ger('Please enter a valid phone number');return;}
@@ -306,9 +307,10 @@ async function doAuth(){
     await saveLead(r.data.user,nm,em,ph);
     start(r.data.user);
   }else{
-    var r=await sb.auth.signInWithPassword({email:em,password:pw});
+    if(!em){ger('Enter your email');return;}
+    var r=await sb.auth.signInWithOtp({email:em,options:{emailRedirectTo:location.origin+'/mock.html',shouldCreateUser:false}});
     if(r.error){ger(r.error.message);return;}
-    start(r.data.user);
+    var e=$('g_er'); e.style.color='#0F6E56'; e.textContent='Login link sent to '+em+' — check your email (and spam), then tap it on this device.'; e.style.display='block';
   }
 }
 async function saveLead(u,nm,em,ph){
@@ -561,6 +563,7 @@ document.addEventListener('copy',function(e){ if(!/input|textarea/i.test((e.targ
 /* ---------- boot ---------- */
 tog();tog(); // initialise signup field visibility
 sb.auth.getSession().then(o=>{if(o.data.session)start(o.data.session.user);else show('landing');});
+sb.auth.onAuthStateChange((_e,s)=>{if(s&&!user)start(s.user);});
 </script>
 </body>
 </html>

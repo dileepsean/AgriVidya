@@ -117,6 +117,14 @@ nav .logo{height:36px;width:auto;display:block;flex-shrink:0}
 .prod .act{width:100%}
 .prod .sub{font-size:11.5px;color:var(--tm);text-align:center;margin-top:9px}
 .prod .samp{font-size:12.5px;color:var(--gb);cursor:pointer;text-align:center;margin-top:9px;font-weight:600}
+/* countdown */
+.cd-unit{background:rgba(255,255,255,.08);border:1px solid rgba(93,202,165,.35);border-radius:12px;padding:10px 16px;min-width:66px}
+.cd-n{display:block;font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(26px,5.5vw,40px);color:#fff;line-height:1}
+.cd-l{display:block;font-size:10.5px;color:var(--gp);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+/* promo */
+.promo-toggle{font-size:12.5px;color:var(--gb);cursor:pointer;font-weight:600}
+.promo-form input{padding:9px 13px;border:1px solid #E0E0E0;border-radius:10px;font-size:13px;font-family:inherit;text-transform:uppercase;max-width:170px;outline:none}
+.promo-form input:focus{border-color:var(--gb)}
 /* steps */
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .step{background:var(--g1);border:1px solid var(--gs);border-radius:14px;padding:1.5rem}
@@ -201,8 +209,23 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
       <h2 class="sec-t disp">Pick what you need</h2>
       <p class="sec-s">Secure, online-only access. No downloads to lose, no PDFs to leak. Instant access the moment you pay.</p>
     </div>
-    <div class="rv" style="margin:0 0 22px;background:linear-gradient(135deg,#F4B63F,#D68616);border-radius:14px;padding:13px 20px;text-align:center;color:#1A1205;font-weight:800;font-size:15px;box-shadow:0 14px 34px -18px rgba(214,134,22,.8)">
-      ⏳ <span id="examDays">25</span> days left to your AO/AAO exam (26 Jul 2026) · ಪರೀಕ್ಷೆಗೆ <span id="examDaysK">25</span> ದಿನಗಳು ಬಾಕಿ &nbsp;|&nbsp; launch price — up to 56% off · mind maps for every chapter included
+    <div class="rv" style="margin:0 0 14px;background:linear-gradient(135deg,#04342C,#021E17);border-radius:16px;padding:18px 20px;text-align:center;box-shadow:0 20px 50px -26px rgba(4,52,44,.7)">
+      <div style="color:var(--gp);font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px">⏳ Time left to your KPSC AO/AAO exam · 26 July 2026</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <div class="cd-unit"><span class="cd-n" id="cdD">--</span><span class="cd-l">Days</span></div>
+        <div class="cd-unit"><span class="cd-n" id="cdH">--</span><span class="cd-l">Hrs</span></div>
+        <div class="cd-unit"><span class="cd-n" id="cdM">--</span><span class="cd-l">Min</span></div>
+        <div class="cd-unit"><span class="cd-n" id="cdS">--</span><span class="cd-l">Sec</span></div>
+      </div>
+      <div style="color:var(--gp);font-size:12.5px;margin-top:10px">ಪರೀಕ್ಷೆಗೆ ಬಾಕಿ ಸಮಯ &nbsp;|&nbsp; launch price — up to 56% off · mind maps for every chapter included</div>
+    </div>
+    <div class="rv" style="margin:0 0 22px;text-align:center">
+      <span class="promo-toggle" onclick="togglePromo()">🏷️ Have a promo code?</span>
+      <div class="promo-form" id="promoForm" style="display:none;margin-top:10px;justify-content:center;gap:8px;flex-wrap:wrap">
+        <input id="promoInput" placeholder="Enter code">
+        <button class="btn btn-solid" style="padding:9px 16px" onclick="applyPromo()">Apply</button>
+      </div>
+      <div id="promoMsg" style="font-size:12.5px;margin-top:8px;display:none"></div>
     </div>
     <div class="prods">
 
@@ -220,8 +243,8 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
           <li>Exam-day time &amp; attempt strategy</li>
           <li>Instant access · read on mobile or laptop</li>
         </ul>
-        <div class="price"><span class="n">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
-        <button class="btn btn-solid act" id="btnPaper1" onclick="buyMaterial('paper1',24900,'AAO Paper 1 Study Material')">Buy Now — ₹249 →</button>
+        <div class="price"><span class="n" id="price-paper1">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
+        <button class="btn btn-solid act" id="btnPaper1" onclick="buyMaterial('paper1','AAO Paper 1 Study Material')">Buy Now — ₹249 →</button>
         <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20AO%2FAAO%20Paper%201%20(%E2%82%B9249)" target="_blank">💬 Buy via WhatsApp</a>
         <div class="samp" onclick="getSample()">Get the free sample (PDF) →</div>
       </div>
@@ -238,8 +261,8 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
           <li>Food + Agri engineering subjects in depth</li>
           <li>Instant access · same secure reader</li>
         </ul>
-        <div class="price"><span class="n">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
-        <button class="btn btn-solid act" id="btnPaper2" onclick="buyMaterial('paper2',24900,'AAO Paper 2 Study Material')">Buy Now — ₹249 →</button>
+        <div class="price"><span class="n" id="price-paper2">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
+        <button class="btn btn-solid act" id="btnPaper2" onclick="buyMaterial('paper2','AAO Paper 2 Study Material')">Buy Now — ₹249 →</button>
         <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20AO%2FAAO%20Paper%202%20(%E2%82%B9249)" target="_blank">💬 Buy via WhatsApp</a>
         <div class="samp" onclick="getSampleP2()">Get the free sample (PDF) →</div>
       </div>
@@ -256,8 +279,8 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
           <li>Instant rank + personal SWOT analysis</li>
           <li>Detailed solutions &amp; weak-area report</li>
         </ul>
-        <div class="price"><span class="n">₹999</span><span class="o">₹1999</span><span class="badge">50% OFF</span></div>
-        <button class="btn btn-solid act" id="btnMocks" onclick="buyMaterial('mocks',99900,'AO/AAO Mock-Test Combo (10+10)')">Buy Now — ₹999 →</button>
+        <div class="price"><span class="n" id="price-mocks">₹999</span><span class="o">₹1999</span><span class="badge">50% OFF</span></div>
+        <button class="btn btn-solid act" id="btnMocks" onclick="buyMaterial('mocks','AO/AAO Mock-Test Combo (10+10)')">Buy Now — ₹999 →</button>
         <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20the%20AO%2FAAO%20Mock-Test%20Combo%20(%E2%82%B9999)" target="_blank">💬 Buy via WhatsApp</a>
         <div class="sub">Unlocks all mocks up to exam day.</div>
       </div>
@@ -271,8 +294,8 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
         <div style="color:var(--gp);font-size:13px;margin-top:4px">The complete AO/AAO study library — both books, one secure account.</div>
       </div>
       <div style="text-align:right;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
-        <div><span class="disp" style="color:#fff;font-size:32px;font-weight:800">₹459</span> <span style="color:var(--gl);text-decoration:line-through;font-size:16px">₹998</span></div>
-        <button class="btn btn-solid btn-lg" id="btnCombo" onclick="buyMaterial('combo',45900,'AO/AAO Material Combo (Paper 1 + Paper 2)')">Get both — ₹459 →</button>
+        <div><span class="disp" style="color:#fff;font-size:32px;font-weight:800" id="price-combo">₹459</span> <span style="color:var(--gl);text-decoration:line-through;font-size:16px">₹998</span></div>
+        <button class="btn btn-solid btn-lg" id="btnCombo" onclick="buyMaterial('combo','AO/AAO Material Combo (Paper 1 + Paper 2)')">Get both — ₹459 →</button>
       </div>
     </div>
 
@@ -284,8 +307,8 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
         <div style="color:#3A2A05;font-size:13px;margin-top:4px">Both papers + all 10 + 10 mock tests. The complete AO/AAO kit in one purchase.</div>
       </div>
       <div style="text-align:right;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
-        <div><span class="disp" style="color:#1A1205;font-size:34px;font-weight:800">₹1299</span> <span style="color:#5A3A00;text-decoration:line-through;font-size:16px">₹2997</span></div>
-        <button class="btn btn-lg" style="background:#04342C;color:#fff" id="btnEverything" onclick="buyMaterial('everything',129900,'AO/AAO Everything — Material + Mock Tests')">Get everything — ₹1299 →</button>
+        <div><span class="disp" style="color:#1A1205;font-size:34px;font-weight:800" id="price-everything">₹1299</span> <span style="color:#5A3A00;text-decoration:line-through;font-size:16px">₹2997</span></div>
+        <button class="btn btn-lg" style="background:#04342C;color:#fff" id="btnEverything" onclick="buyMaterial('everything','AO/AAO Everything — Material + Mock Tests')">Get everything — ₹1299 →</button>
       </div>
     </div>
   </div>
@@ -312,7 +335,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
     <div class="why rv">
       <h3 class="disp">Most aspirants don't fail on knowledge — they fail on negative marking.</h3>
       <p>One wrong guess under −0.75 wipes out three correct answers. AgriVidya is the only AO/AAO material that tells you exactly which questions to attempt and which to skip.</p>
-      <button class="btn btn-solid btn-lg" id="btnWhyPaper1" onclick="buyMaterial('paper1',24900,'AAO Paper 1 Study Material')">Start with Paper 1 — ₹249 →</button>
+      <button class="btn btn-solid btn-lg" id="btnWhyPaper1" onclick="buyMaterial('paper1','AAO Paper 1 Study Material')">Start with Paper 1 — ₹249 →</button>
     </div>
   </div>
 </section>
@@ -418,25 +441,27 @@ function toggleAuth(){ authMode=authMode==='signup'?'login':'signup'; updateAuth
 function updateAuthUI(){
   const s=authMode==='signup';
   document.getElementById('mTitle').textContent=s?'Create your free account':'Welcome back';
-  document.getElementById('mSub').textContent=s?'Email + WhatsApp number. See a free sample, then buy.':'Log in to continue.';
-  document.getElementById('mGo').textContent=s?'Sign up':'Log in';
+  document.getElementById('mSub').textContent=s?'Email + WhatsApp number. See a free sample, then buy.':"Enter your email — we'll send a one-tap login link. No password needed.";
+  document.getElementById('mGo').textContent=s?'Sign up':'Email me a login link';
   document.getElementById('mWa').style.display=s?'block':'none';
+  document.getElementById('mPw').style.display=s?'block':'none';
   document.getElementById('mSwitch').innerHTML=s?'Already have an account? <a onclick="toggleAuth()">Log in</a>':'New here? <a onclick="toggleAuth()">Create account</a>';
 }
 async function doAuth(){
-  const er=document.getElementById('mErr'); er.style.display='none';
+  const er=document.getElementById('mErr'); er.style.display='none'; er.style.color='';
   const email=document.getElementById('mEmail').value.trim(), pw=document.getElementById('mPw').value, wa=document.getElementById('mWa').value.trim();
-  if(!email||!pw){ er.textContent='Enter email and password.'; er.style.display='block'; return; }
   if(authMode==='signup'){
+    if(!email||!pw){ er.textContent='Enter email and password.'; er.style.display='block'; return; }
     if(!/^[6-9]\d{9}$/.test(wa)){ er.textContent='Enter a valid 10-digit WhatsApp number.'; er.style.display='block'; return; }
     const {data,error}=await sb.auth.signUp({email,password:pw,options:{data:{whatsapp:wa}}});
     if(error){ er.textContent=error.message; er.style.display='block'; return; }
     if(!data.session){ er.style.color='#0F6E56'; er.textContent='Account made! Confirm via the email we sent, then log in.'; er.style.display='block'; return; }
     setLogged(data.user); closeAuth();
   } else {
-    const {data,error}=await sb.auth.signInWithPassword({email,password:pw});
+    if(!email){ er.textContent='Enter your email.'; er.style.display='block'; return; }
+    const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+'/read.html',shouldCreateUser:false}});
     if(error){ er.textContent=error.message; er.style.display='block'; return; }
-    setLogged(data.user); closeAuth();
+    er.style.color='#0F6E56'; er.textContent='Login link sent to '+email+' — check your email (and spam), then tap it to open your material.'; er.style.display='block';
   }
 }
 async function logoutUser(){ await sb.auth.signOut(); location.reload(); }
@@ -454,9 +479,9 @@ function paidSuccess(url){
   document.body.appendChild(d);
   setTimeout(function(){ try{ window.location.href=url; }catch(e){} }, 1400);
 }
-async function buyMaterial(id,amount,desc){
+async function buyMaterial(id,desc){
   try{
-    var body={amount:amount,book_id:id}; if(currentUser) body.user_id=currentUser.id;
+    var body={book_id:id}; if(currentUser) body.user_id=currentUser.id; if(appliedPromo) body.promo_code=appliedPromo;
     const r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     const o=await r.json(); if(o.error||!o.order_id) throw 0;
     var opts={key:o.key_id,amount:o.amount,currency:o.currency,order_id:o.order_id,name:'AgriVidya',description:desc,theme:{color:'#085041'},
@@ -465,7 +490,7 @@ async function buyMaterial(id,amount,desc){
         if(currentUser) vb.user_id=currentUser.id;
         const v=await fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(vb)});
         const vd=await v.json();
-        if(vd.success){ try{ fbq('track','Purchase',{value:amount/100,currency:'INR',content_name:desc,content_ids:[id]}); }catch(e){} paidSuccess(vd.login_link || ((id==='paper2')?'/read.html?b=paper2':'/read.html')); }
+        if(vd.success){ try{ fbq('track','Purchase',{value:o.amount/100,currency:'INR',content_name:desc,content_ids:[id]}); }catch(e){} paidSuccess(vd.login_link || ((id==='paper2')?'/read.html?b=paper2':'/read.html')); }
         else { alert('Payment received but verification failed. WhatsApp +91 9492982424 with your payment id.'); }
       }};
     if(currentUser) opts.prefill={email:currentUser.email};
@@ -475,12 +500,45 @@ async function buyMaterial(id,amount,desc){
   }catch(e){ alert('Could not start payment. Try again or WhatsApp +91 9492982424.'); }
 }
 
-/* exam countdown — honest, always-accurate */
+/* promo code — codes are only ever given out manually (e.g. on WhatsApp), never advertised.
+   This list is cosmetic (updates the displayed price); the real discount is enforced
+   server-side in api/create-order.js — keep both lists in sync when adding a code. */
+const PROMOS={AAO15:15};
+const BASE_PRICES={paper1:249,paper2:249,combo:459,mocks:999,everything:1299};
+let appliedPromo=null, appliedPromoPct=0;
+function togglePromo(){ var f=document.getElementById('promoForm'); f.style.display = f.style.display==='none'?'flex':'none'; }
+function applyPromo(){
+  var code=document.getElementById('promoInput').value.trim().toUpperCase();
+  var msg=document.getElementById('promoMsg'); msg.style.display='block';
+  if(PROMOS[code]){
+    appliedPromo=code; appliedPromoPct=PROMOS[code];
+    msg.style.color='#0F6E56'; msg.textContent='✅ Code applied — extra '+appliedPromoPct+'% off at checkout.';
+    updatePriceDisplay();
+  } else {
+    appliedPromo=null; appliedPromoPct=0;
+    msg.style.color='#C0392B'; msg.textContent='Invalid code.';
+  }
+}
+function updatePriceDisplay(){
+  Object.keys(BASE_PRICES).forEach(function(id){
+    var disc=Math.round(BASE_PRICES[id]*(100-appliedPromoPct)/100);
+    var el=document.getElementById('price-'+id);
+    if(el) el.textContent='₹'+disc;
+  });
+}
+
+/* exam countdown — honest, always-accurate, ticks live */
 (function(){
   var EXAM=new Date('2026-07-26T00:00:00+05:30');
-  var now=new Date();
-  var days=Math.max(0,Math.ceil((EXAM-now)/86400000));
-  document.querySelectorAll('#examDays,#examDaysK').forEach(function(el){ el.textContent=days; });
+  var dEl=document.getElementById('cdD'), hEl=document.getElementById('cdH'), mEl=document.getElementById('cdM'), sEl=document.getElementById('cdS');
+  if(!dEl) return;
+  function pad(n){ return n<10?'0'+n:''+n; }
+  function tick(){
+    var diff=Math.max(0,EXAM-new Date());
+    var d=Math.floor(diff/86400000), h=Math.floor(diff%86400000/3600000), m=Math.floor(diff%3600000/60000), s=Math.floor(diff%60000/1000);
+    dEl.textContent=d; hEl.textContent=pad(h); mEl.textContent=pad(m); sEl.textContent=pad(s);
+  }
+  tick(); setInterval(tick,1000);
 })();
 /* hero carousel crossfade */
 (function(){ var s=document.querySelectorAll('#hc .s'); if(s.length<2) return; var i=0;
