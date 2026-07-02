@@ -596,6 +596,27 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
             <button class="btn-pay" style="width:auto;padding:13px 26px" onclick="buyMaterial('paper1')">Buy Now &mdash; &#8377;249 &rarr;</button>
             <button class="ghost" onclick="getSample()">Get free sample (PDF)</button>
           </div>
+          <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(29,158,117,.18)">
+            <div style="font-size:11px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Also available</div>
+            <div style="display:flex;flex-direction:column;gap:8px;max-width:480px">
+              <div onclick="buyMaterial('paper2',24900,'AAO Paper 2 Study Material')" style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--gs);border-radius:10px;padding:10px 14px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='var(--gb)'" onmouseout="this.style.borderColor='var(--gs)'">
+                <span style="font-size:13px;font-weight:500;color:var(--tp)">Paper 2 &mdash; Complete Material</span>
+                <span style="font-size:13px;font-weight:700;color:var(--gm);white-space:nowrap">&#8377;249 &rarr;</span>
+              </div>
+              <div onclick="buyMaterial('combo',45900,'AO/AAO Material Combo (Paper 1 + Paper 2)')" style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--gs);border-radius:10px;padding:10px 14px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='var(--gb)'" onmouseout="this.style.borderColor='var(--gs)'">
+                <span style="font-size:13px;font-weight:500;color:var(--tp)">Material Combo &mdash; Paper 1 + Paper 2</span>
+                <span style="font-size:13px;font-weight:700;color:var(--gm);white-space:nowrap">&#8377;459 &rarr;</span>
+              </div>
+              <div onclick="buyMaterial('mocks',99900,'AO/AAO Mock-Test Combo (10+10)')" style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--gs);border-radius:10px;padding:10px 14px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='var(--gb)'" onmouseout="this.style.borderColor='var(--gs)'">
+                <span style="font-size:13px;font-weight:500;color:var(--tp)">Mock-Test Combo &mdash; 10 + 10</span>
+                <span style="font-size:13px;font-weight:700;color:var(--gm);white-space:nowrap">&#8377;999 &rarr;</span>
+              </div>
+              <div onclick="buyMaterial('everything',129900,'AO/AAO Everything — Material + Mock Tests')" style="display:flex;justify-content:space-between;align-items:center;background:var(--gs);border:1.5px solid var(--gb);border-radius:10px;padding:10px 14px;cursor:pointer">
+                <span style="font-size:13px;font-weight:700;color:var(--gm)">&#11088; EVERYTHING &mdash; Material + Mocks</span>
+                <span style="font-size:13px;font-weight:700;color:var(--gm);white-space:nowrap">&#8377;1299 &rarr;</span>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="feat-visual">
           <div class="book-card">
