@@ -1,3 +1,22 @@
+// Vercel serverless — creates the Razorpay order.
+// Price is decided SERVER-SIDE from book_id (never trusted from the browser), so the
+// amount charged can't be tampered with via devtools/network edits.
+// Optional promo_code applies a discount. Promo codes are only ever handed out
+// manually (e.g. on WhatsApp when someone asks) — never advertised on the site —
+// so keep this list short and only add codes you're actively giving out.
+const PRICES = {           // in paise
+  paper1: 24900,
+  paper2: 24900,
+  combo: 45900,
+  mocks: 99900,
+  everything: 129900,
+  bot: 10000
+};
+const PROMOS = {           // CODE -> % off, applies to every product above
+  AAO15: 15
+};
+const TEST_CODE = 'DRSEANTEST'; // Dr Sean's own ₹1 test-purchase code — keep secret, do not publish anywhere
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -7,11 +26,25 @@ export default async function handler(req, res) {
   try {
     let b = req.body; if (typeof b === 'string') b = JSON.parse(b || '{}'); if (!b) b = {};
     const id = process.env.RAZORPAY_KEY_ID, secret = process.env.RAZORPAY_KEY_SECRET;
-    const amount = Math.round(Number(b.amount));
-    if (!amount || amount < 100) { res.status(400).json({ error: 'Invalid amount' }); return; }
+    const bookId = b.book_id;
+    if (!PRICES[bookId]) { res.status(400).json({ error: 'Invalid product' }); return; }
+
+    let amount = PRICES[bookId];
+    const code = String(b.promo_code || '').toUpperCase().trim();
+    if (code === TEST_CODE) {
+      amount = 100; // ₹1 — testing only
+    } else if (code && PROMOS[code]) {
+      amount = Math.round(amount * (100 - PROMOS[code]) / 100);
+    }
+    if (amount < 100) amount = 100;
+
     if (!id || !secret) { res.status(401).json({ error: 'Razorpay keys not configured' }); return; }
     const auth = 'Basic ' + Buffer.from(id + ':' + secret).toString('base64');
-    const rr = await fetch('https://api.razorpay.com/v1/orders', { method: 'POST', headers: { 'Authorization': auth, 'Content-Type': 'application/json' }, body: JSON.stringify({ amount: amount, currency: 'INR', receipt: 'rcpt_' + Date.now(), notes: { book_id: b.book_id || 'paper1', user_id: b.user_id || '' } }) });
+    const rr = await fetch('https://api.razorpay.com/v1/orders', {
+      method: 'POST',
+      headers: { 'Authorization': auth, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount: amount, currency: 'INR', receipt: 'rcpt_' + Date.now(), notes: { book_id: bookId, promo: code || '', user_id: b.user_id || '' } })
+    });
     const order = await rr.json();
     if (!rr.ok || !order.id) { res.status(500).json({ error: 'Order creation failed' }); return; }
     res.status(200).json({ order_id: order.id, amount: order.amount, currency: order.currency, key_id: id });
