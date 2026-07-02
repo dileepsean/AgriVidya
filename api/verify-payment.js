@@ -9,11 +9,24 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
   try {
     let b = req.body; if (typeof b === 'string') b = JSON.parse(b || '{}'); if (!b) b = {};
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, book_id } = b;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = b;
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) { res.status(400).json({ error: 'Missing fields' }); return; }
     const secret = process.env.RAZORPAY_KEY_SECRET, keyid = process.env.RAZORPAY_KEY_ID;
     const expected = crypto.createHmac('sha256', secret).update(razorpay_order_id + '|' + razorpay_payment_id).digest('hex');
     if (expected !== razorpay_signature) { res.status(400).json({ error: 'Signature mismatch' }); return; }
+
+    const auth = 'Basic ' + Buffer.from(keyid + ':' + secret).toString('base64');
+
+    // SECURITY: the product being unlocked must come from the Razorpay ORDER itself (set
+    // server-side in api/create-order.js's notes.book_id), never from whatever the browser
+    // sends here. Otherwise a real (cheap) payment's valid signature could be replayed with a
+    // different book_id to unlock a more expensive product for free.
+    let book_id = null;
+    try {
+      const order = await fetch('https://api.razorpay.com/v1/orders/' + razorpay_order_id, { headers: { 'Authorization': auth } }).then(r => r.json());
+      book_id = order && order.notes && order.notes.book_id;
+    } catch (e) {}
+    if (!book_id) { res.status(400).json({ error: 'Could not verify order' }); return; }
 
     const SUPA = process.env.SUPABASE_URL || 'https://yrrielpjbbsxdgbwzwzx.supabase.co';
     const SERVICE = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -22,7 +35,6 @@ export default async function handler(req, res) {
     // 1) get the buyer's email + phone from the Razorpay payment
     let email = '', contact = '';
     try {
-      const auth = 'Basic ' + Buffer.from(keyid + ':' + secret).toString('base64');
       const pay = await fetch('https://api.razorpay.com/v1/payments/' + razorpay_payment_id, { headers: { 'Authorization': auth } }).then(r => r.json());
       email = (pay.email || '').toLowerCase().trim(); contact = pay.contact || '';
     } catch (e) {}
@@ -62,7 +74,8 @@ export default async function handler(req, res) {
         paper2: ['paper2'],
         bot: ['bot']
       };
-      const books = GRANTS[book_id] || [book_id || 'paper1'];
+      const books = GRANTS[book_id];
+      if (!books) { res.status(400).json({ error: 'Unknown product' }); return; }
       await fetch(SUPA + '/rest/v1/book_access', {
         method: 'POST',
         headers: { ...H, 'Prefer': 'resolution=merge-duplicates' },
