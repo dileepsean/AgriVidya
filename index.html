@@ -785,7 +785,7 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
   <div class="section">
     <div class="section-label">AI assistant</div>
     <div class="section-title">Ask VidyaBot 📚</div>
-    <div class="section-sub">Your AI companion for Food & Agri Engineering — sign in to use. 5 free questions per account.</div>
+    <div class="section-sub">Your AI companion for Food & Agri Engineering — sign in to use. Free daily questions per account.</div>
     <div class="bot-wrap">
       <div class="bot-top">
         <div class="bot-av">VB</div>
@@ -793,7 +793,7 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
           <div class="bot-name">VidyaBot — Your AI Companion 📚</div>
           <div class="bot-status"><div class="bot-dot"></div>Online — ready to help</div>
         </div>
-        <div style="font-size:11px;color:var(--gl)" id="questionCounter">5 free questions left</div>
+        <div style="font-size:11px;color:var(--gl)" id="questionCounter">Free daily questions</div>
       </div>
       <div class="chat-area" id="chatArea">
         <div class="msg-ai">Namaste! I'm VidyaBot 📚 — ask me anything about Food Engineering, Agricultural Engineering or GATE/ICAR prep. You have 5 free questions!</div>
@@ -806,8 +806,8 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
     </div>
     <div class="paywall" id="botPaywall">
       <div style="font-size:28px;margin-bottom:0.5rem">🔒</div>
-      <h3>Free questions used up!</h3>
-      <p>You've used your 5 free questions. WhatsApp us to continue or we'll add more options soon!</p>
+      <h3>Daily free limit reached</h3>
+      <p>You've used today's free questions. Come back tomorrow, or WhatsApp us for help now!</p>
       <button class="btn-pay" onclick="window.open('https://wa.me/919492982424?text=Hi AgriVidya! I need more VidyaBot questions.','_blank')">Contact us on WhatsApp</button>
     </div>
   </div>
@@ -823,14 +823,14 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
   <div class="section">
     <div class="section-label">Get help now</div>
     <div class="section-title">Describe your assignment</div>
-    <div class="section-sub">VidyaBot gives you a detailed, exam-quality answer — 3 free answers, then contact us for more</div>
+    <div class="section-sub">VidyaBot gives you a detailed, exam-quality answer — free daily answers, then contact us for more</div>
 
     <div style="background:var(--g1);border-radius:12px;border:1px solid var(--gs);overflow:hidden;max-width:740px">
       <div style="background:var(--gm);padding:0.875rem 1.25rem;display:flex;align-items:center;gap:10px">
         <div style="width:30px;height:30px;background:var(--gb);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;flex-shrink:0">VB</div>
         <div>
           <div style="font-size:13px;font-weight:500;color:white">VidyaBot Assignment Helper 📝</div>
-          <div style="font-size:10px;color:var(--gl)" id="assignCounter">● Ready to help • 3 free answers remaining</div>
+          <div style="font-size:10px;color:var(--gl)" id="assignCounter">● Ready to help • free daily answers</div>
         </div>
       </div>
       <div style="padding:1.25rem">
@@ -902,8 +902,8 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
 
     <div class="paywall" id="assignPaywall">
       <div style="font-size:28px;margin-bottom:0.5rem">📩</div>
-      <h3>Free answers used!</h3>
-      <p>You've used your 3 free assignment answers. WhatsApp us to get more help!</p>
+      <h3>Daily free limit reached</h3>
+      <p>You've used today's free assignment answers. Come back tomorrow, or WhatsApp us for help now!</p>
       <button class="btn-pay" onclick="window.open('https://wa.me/919492982424?text=Hi AgriVidya! I need more assignment help.','_blank')">Contact us on WhatsApp</button>
     </div>
 
@@ -1151,18 +1151,12 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
 const _supabase = supabase.createClient('https://yrrielpjbbsxdgbwzwzx.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlycmllbHBqYmJzeGRnYnd6d3p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NTY5NDMsImV4cCI6MjA5MDAzMjk0M30.v7jeOcfQU7-LAxWFSftnTHMSDbZmiTRJEN19bB1z5RA');
 
 let currentUser=null;
-let botQ=parseInt(localStorage.getItem('botQ')||'0');
-let assignQ=parseInt(localStorage.getItem('assignQ')||'0');
-const FREE_BOT=5,FREE_ASSIGN=3;
-
-function updateCounter(){
-  const left=Math.max(0,FREE_BOT-botQ);
-  const el=document.getElementById('questionCounter');
-  if(el)el.textContent=left>0?left+' free questions left':'Free questions used';
-  const el2=document.getElementById('assignCounter');
-  const left2=Math.max(0,FREE_ASSIGN-assignQ);
-  if(el2)el2.textContent='● Ready to help • '+left2+' free answers remaining';
-}
+// NOTE (2026-07-02 security audit): free-question limits used to be tracked here via
+// localStorage — trivially reset by clearing browser storage or an incognito tab, and the
+// homepage popup bubble had no limit at all. The real limit is now enforced server-side,
+// per day, per logged-in user, in api/chat.js (see chat_usage table + increment_chat_usage
+// RPC in Supabase). This is now just a static label.
+function updateCounter(){}
 
 function updateNav(user){
   currentUser=user;
@@ -1277,22 +1271,23 @@ function stripMd(t){return t.replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g
 const botMsgs=[];
 async function sendBotMsg(){
   if(!currentUser){openModal('login');return;}
-  if(botQ>=FREE_BOT){document.getElementById('botPaywall').style.display='block';return;}
   const inp=document.getElementById('botInput');
   const msg=inp.value.trim();if(!msg)return;inp.value='';
-  botQ++;localStorage.setItem('botQ',botQ);updateCounter();
   const ca=document.getElementById('chatArea');
   const u=document.createElement('div');u.className='msg-user';u.textContent=msg;ca.appendChild(u);ca.scrollTop=ca.scrollHeight;
   document.getElementById('chatTyping').style.display='block';
   botMsgs.push({role:'user',content:msg});
   try{
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:botMsgs,max_tokens:600})});
+    const {data:{session}}=await _supabase.auth.getSession();
+    if(!session){document.getElementById('chatTyping').style.display='none';botMsgs.pop();openModal('login');return;}
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token},body:JSON.stringify({messages:botMsgs,max_tokens:600})});
+    document.getElementById('chatTyping').style.display='none';
+    if(r.status===429){botMsgs.pop();document.getElementById('botPaywall').style.display='block';return;}
+    if(r.status===401){botMsgs.pop();openModal('login');return;}
     const d=await r.json();if(d.error)throw new Error(d.error);
     const rep=stripMd(d.content[0].text);
     botMsgs.push({role:'assistant',content:rep});
-    document.getElementById('chatTyping').style.display='none';
     const a=document.createElement('div');a.className='msg-ai';a.textContent=rep;ca.appendChild(a);ca.scrollTop=ca.scrollHeight;
-    if(botQ>=FREE_BOT)document.getElementById('botPaywall').style.display='block';
   }catch(e){
     document.getElementById('chatTyping').style.display='none';
     const err=document.createElement('div');err.className='msg-ai';err.textContent='VidyaBot unavailable. WhatsApp: +91 94929 82424';ca.appendChild(err);
@@ -1305,24 +1300,25 @@ function selectAssignType(btn,t){document.querySelectorAll('.assign-type-btn').f
 function quickAssign(q){document.getElementById('assignQuestion').value=q;submitAssignment();}
 async function submitAssignment(){
   if(!currentUser){openModal('login');return;}
-  if(assignQ>=FREE_ASSIGN){document.getElementById('assignPaywall').style.display='block';return;}
   const subj=document.getElementById('assignSubject').value;
   const q=document.getElementById('assignQuestion').value.trim();
   if(!q){alert('Please type your question!');return;}
-  assignQ++;localStorage.setItem('assignQ',assignQ);updateCounter();
   const ctx=subj?'Subject: '+subj+'. ':'';
   const full=ctx+assignType+': '+q;
   document.getElementById('assignTyping').style.display='block';
   document.getElementById('assignAnswer').style.display='none';
   try{
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:full}],max_tokens:800})});
+    const {data:{session}}=await _supabase.auth.getSession();
+    if(!session){document.getElementById('assignTyping').style.display='none';openModal('login');return;}
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token},body:JSON.stringify({messages:[{role:'user',content:full}],max_tokens:800})});
+    document.getElementById('assignTyping').style.display='none';
+    if(r.status===429){document.getElementById('assignPaywall').style.display='block';return;}
+    if(r.status===401){openModal('login');return;}
     const d=await r.json();if(d.error)throw new Error(d.error);
     const rep=stripMd(d.content[0].text);
-    document.getElementById('assignTyping').style.display='none';
     document.getElementById('assignAnswerText').textContent=rep;
     document.getElementById('assignAnswer').style.display='block';
     document.getElementById('assignAnswer').scrollIntoView({behavior:'smooth'});
-    if(assignQ>=FREE_ASSIGN)setTimeout(()=>{document.getElementById('assignPaywall').style.display='block';},1500);
   }catch(e){
     document.getElementById('assignTyping').style.display='none';
     document.getElementById('assignAnswerText').textContent='VidyaBot unavailable. WhatsApp: +91 94929 82424';
@@ -1342,9 +1338,22 @@ function togglePopup(){
   if(!open)document.getElementById('popupInput').focus();
 }
 function popupQuick(q){document.getElementById('popupInput').value=q;sendPopupMsg();}
+function popupAssistantMsg(text,linkLogin){
+  const msgs=document.getElementById('popupMsgs');
+  const a=document.createElement('div');
+  a.style.cssText='background:#E1F5EE;color:#04342C;font-size:11px;padding:7px 9px;border-radius:3px 9px 9px 9px;max-width:88%;line-height:1.5';
+  if(linkLogin){ a.innerHTML=text+' <a onclick="openModal(\'login\')" style="color:#085041;font-weight:700;cursor:pointer;text-decoration:underline">Log in</a> / <a onclick="openModal(\'signup\')" style="color:#085041;font-weight:700;cursor:pointer;text-decoration:underline">Sign up</a>'; }
+  else { a.textContent=text; }
+  msgs.appendChild(a);msgs.scrollTop=msgs.scrollHeight;
+}
+// NOTE (2026-07-02 security audit): this bubble used to call /api/chat with no login
+// requirement and no limit at all — fully open to any homepage visitor. It now requires
+// login like the other two AI entry points, and the server enforces a daily cap per user.
 async function sendPopupMsg(){
   const inp=document.getElementById('popupInput');
-  const msg=inp.value.trim();if(!msg)return;inp.value='';
+  const msg=inp.value.trim();if(!msg)return;
+  if(!currentUser){ inp.value=''; popupAssistantMsg('Please log in to chat with VidyaBot — it only takes a moment.',true); return; }
+  inp.value='';
   const msgs=document.getElementById('popupMsgs');
   const u=document.createElement('div');
   u.style.cssText='background:#085041;color:white;font-size:11px;padding:7px 9px;border-radius:9px 3px 9px 9px;max-width:78%;align-self:flex-end;line-height:1.5;margin-left:auto';
@@ -1352,20 +1361,19 @@ async function sendPopupMsg(){
   document.getElementById('popupTypingEl').style.display='block';
   popupMsgs.push({role:'user',content:msg});
   try{
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:popupMsgs,max_tokens:300})});
+    const {data:{session}}=await _supabase.auth.getSession();
+    document.getElementById('popupTypingEl').style.display='none';
+    if(!session){popupMsgs.pop();popupAssistantMsg('Please log in to chat with VidyaBot — it only takes a moment.',true);return;}
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token},body:JSON.stringify({messages:popupMsgs,max_tokens:300})});
+    if(r.status===429){popupMsgs.pop();popupAssistantMsg('You\'ve reached today\'s free question limit. Try again tomorrow, or WhatsApp us: +91 94929 82424',false);return;}
+    if(r.status===401){popupMsgs.pop();popupAssistantMsg('Please log in to chat with VidyaBot — it only takes a moment.',true);return;}
     const d=await r.json();if(d.error)throw new Error(d.error);
     const rep=stripMd(d.content[0].text);
     popupMsgs.push({role:'assistant',content:rep});
-    document.getElementById('popupTypingEl').style.display='none';
-    const a=document.createElement('div');
-    a.style.cssText='background:#E1F5EE;color:#04342C;font-size:11px;padding:7px 9px;border-radius:3px 9px 9px 9px;max-width:88%;line-height:1.5';
-    a.textContent=rep;msgs.appendChild(a);msgs.scrollTop=msgs.scrollHeight;
+    popupAssistantMsg(rep,false);
   }catch(e){
     document.getElementById('popupTypingEl').style.display='none';
-    const a=document.createElement('div');
-    a.style.cssText='background:#E1F5EE;color:#04342C;font-size:11px;padding:7px 9px;border-radius:3px 9px 9px 9px;max-width:88%;line-height:1.5';
-    a.textContent='VidyaBot unavailable. WhatsApp: +91 94929 82424';
-    msgs.appendChild(a);msgs.scrollTop=msgs.scrollHeight;
+    popupAssistantMsg('VidyaBot unavailable. WhatsApp: +91 94929 82424',false);
   }
 }
 document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});

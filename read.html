@@ -269,7 +269,12 @@ async function sendAI(){
   var a=document.getElementById('aiA'); a.textContent='Thinking...';
   var sys='You are VidyaBot, a tutor ONLY for the Karnataka KPSC AO/AAO (Agricultural Officer / Assistant Agricultural Officer) examination. Answer ONLY questions related to the AO/AAO exam syllabus and the study material the student is reading (current affairs, general science, Karnataka history & geography, polity, rural development & schemes, reasoning, science & technology, environment, agriculture, and food/agri engineering for this exam). If the question is NOT related to the AO/AAO exam, reply exactly: "I can only help with AO/AAO exam questions. Please ask something from your syllabus." Keep answers clear and exam-focused. Student question: ';
   try{
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:sys+q}],max_tokens:500})});
+    var sess=await sb.auth.getSession();
+    var token=sess.data.session && sess.data.session.access_token;
+    if(!token){ a.textContent='Please log in again to use the AI Tutor.'; return; }
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({messages:[{role:'user',content:sys+q}],max_tokens:500})});
+    if(r.status===429){ a.textContent="You've reached today's AI Tutor limit. Try again tomorrow, or WhatsApp us: +91 94929 82424"; return; }
+    if(r.status===401){ a.textContent='Please log in again to use the AI Tutor.'; return; }
     var d=await r.json(); if(d.error) throw 0;
     a.textContent=(d.content && d.content[0] ? d.content[0].text : '').replace(/[*#]/g,'');
   }catch(e){ a.textContent='AI is busy right now. Try again shortly.'; }
