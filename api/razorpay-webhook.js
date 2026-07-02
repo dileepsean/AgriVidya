@@ -132,7 +132,7 @@ export default async function handler(req, res) {
 
   // Always log the attempt — success or failure — so nothing is invisible again.
   try {
-    await fetch(SUPA + '/rest/v1/payment_log', {
+    await fetch(SUPA + '/rest/v1/payment_log?on_conflict=payment_id', {
       method: 'POST', headers: { ...H, Prefer: 'resolution=merge-duplicates' },
       body: JSON.stringify([{
         payment_id: payment.id,
