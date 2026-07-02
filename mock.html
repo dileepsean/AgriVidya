@@ -309,7 +309,7 @@ async function doAuth(){
   }else{
     if(!em){ger('Enter your email');return;}
     var r=await sb.auth.signInWithOtp({email:em,options:{emailRedirectTo:location.origin+'/mock.html',shouldCreateUser:false}});
-    if(r.error){ger(r.error.message);return;}
+    if(r.error){ger((r.error.code==='otp_disabled')?"We don't see an account for that email yet. Create a free account below to start.":r.error.message);return;}
     var e=$('g_er'); e.style.color='#0F6E56'; e.textContent='Login link sent to '+em+' — check your email (and spam), then tap it on this device.'; e.style.display='block';
   }
 }

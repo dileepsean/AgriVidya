@@ -1186,7 +1186,7 @@ async function handleLogin(){
   showLoad('login',true);
   const{error}=await _supabase.auth.signInWithOtp({email:e,options:{emailRedirectTo:location.origin+'/read.html',shouldCreateUser:false}});
   showLoad('login',false);
-  if(error){showErr('login',error.message);return;}
+  if(error){showErr('login',(error.code==='otp_disabled')?"We don't see an account for that email yet. Buy a course to get started, or tap Sign up.":error.message);return;}
   document.getElementById('loginSuccess').style.display='block';
   setTimeout(()=>{closeModal();document.getElementById('loginSuccess').style.display='none';},3000);
 }

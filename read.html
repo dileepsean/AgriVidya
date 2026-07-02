@@ -136,7 +136,7 @@ async function sendMagicLink(){
   document.getElementById('go').textContent='Sending...';
   var res=await sb.auth.signInWithOtp({email:e, options:{emailRedirectTo: location.origin+location.pathname+location.search, shouldCreateUser:false}});
   document.getElementById('go').textContent='Email me a login link';
-  if(res.error){ showEr(res.error.message); return; }
+  if(res.error){ showEr((res.error.code==='otp_disabled')?"We don't see any purchase for that email. Buy your material on the AO/AAO page first.":res.error.message); return; }
   var m=document.getElementById('msg'); m.textContent='Login link sent to '+e+' — check your inbox (and spam folder), then tap the link on this device to open your material.'; m.style.display='block';
 }
 

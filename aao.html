@@ -460,7 +460,7 @@ async function doAuth(){
   } else {
     if(!email){ er.textContent='Enter your email.'; er.style.display='block'; return; }
     const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+'/read.html',shouldCreateUser:false}});
-    if(error){ er.textContent=error.message; er.style.display='block'; return; }
+    if(error){ er.textContent=(error.code==='otp_disabled')?"We don't see an account for that email yet. Buy a course to get started, or tap Create account.":error.message; er.style.display='block'; return; }
     er.style.color='#0F6E56'; er.textContent='Login link sent to '+email+' — check your email (and spam), then tap it to open your material.'; er.style.display='block';
   }
 }
