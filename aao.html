@@ -503,25 +503,29 @@ async function buyMaterial(id,desc){
 /* promo code — codes are only ever given out manually (e.g. on WhatsApp), never advertised.
    This list is cosmetic (updates the displayed price); the real discount is enforced
    server-side in api/create-order.js — keep both lists in sync when adding a code. */
-const PROMOS={AAO15:15};
+const PROMOS={AAO15:{percent:15}, TAJUDDIN10:{fixed:{everything:1000,mocks:750}}};
 const BASE_PRICES={paper1:249,paper2:249,combo:459,mocks:999,everything:1299};
-let appliedPromo=null, appliedPromoPct=0;
+let appliedPromo=null, appliedPromoObj=null;
 function togglePromo(){ var f=document.getElementById('promoForm'); f.style.display = f.style.display==='none'?'flex':'none'; }
 function applyPromo(){
   var code=document.getElementById('promoInput').value.trim().toUpperCase();
   var msg=document.getElementById('promoMsg'); msg.style.display='block';
   if(PROMOS[code]){
-    appliedPromo=code; appliedPromoPct=PROMOS[code];
-    msg.style.color='#0F6E56'; msg.textContent='✅ Code applied — extra '+appliedPromoPct+'% off at checkout.';
+    appliedPromo=code; appliedPromoObj=PROMOS[code];
+    msg.style.color='#0F6E56'; msg.textContent='✅ Code applied — discount at checkout.';
     updatePriceDisplay();
   } else {
-    appliedPromo=null; appliedPromoPct=0;
+    appliedPromo=null; appliedPromoObj=null;
     msg.style.color='#C0392B'; msg.textContent='Invalid code.';
   }
 }
 function updatePriceDisplay(){
   Object.keys(BASE_PRICES).forEach(function(id){
-    var disc=Math.round(BASE_PRICES[id]*(100-appliedPromoPct)/100);
+    var disc=BASE_PRICES[id];
+    if(appliedPromoObj){
+      if(appliedPromoObj.fixed && appliedPromoObj.fixed[id]!=null) disc=appliedPromoObj.fixed[id];
+      else if(appliedPromoObj.percent) disc=Math.round(BASE_PRICES[id]*(100-appliedPromoObj.percent)/100);
+    }
     var el=document.getElementById('price-'+id);
     if(el) el.textContent='₹'+disc;
   });
