@@ -8,9 +8,11 @@
 // Now: requires a real Supabase login (Authorization: Bearer <access_token>, verified against
 // Supabase itself — never trust a client-supplied user id), and enforces a DAILY cap tracked
 // server-side in Supabase (table chat_usage + RPC increment_chat_usage), so it can't be reset
-// from the browser. Buyers of the ₹100 AI Tutor add-on (book_id 'bot') get a much higher daily
-// cap, since read.html promises them "ask as much as you need" up to exam day — free-tier users
-// (VidyaBot page, Assignment Helper, homepage popup bubble) get a modest daily allowance.
+// from the browser. (2026-07-03: the in-reader AO/AAO AI doubt-bot is now FREE for every study
+// material buyer, not a separate ₹100 add-on.) Anyone who owns paper1/paper2/mocks/combo/
+// everything (or the legacy 'bot' add-on) gets the higher daily cap, since read.html promises
+// them "ask as much as you need" up to exam day — free-tier users (VidyaBot page, Assignment
+// Helper, homepage popup bubble, people with no purchase) get a modest daily allowance.
 const FREE_DAILY_LIMIT = 8;
 const BOT_DAILY_LIMIT = 200;
 const MAX_TOKENS_CAP = 800;
@@ -44,10 +46,11 @@ export default async function handler(req, res) {
     if (!SERVICE) { res.status(500).json({ error: 'Server not configured' }); return; }
     const H = { apikey: SERVICE, Authorization: 'Bearer ' + SERVICE, 'Content-Type': 'application/json' };
 
-    // 2) Paying AI-Tutor owners get a much higher cap — they were promised near-unlimited use.
+    // 2) Any paying material owner gets a much higher cap — they were promised near-unlimited use
+    //    of the now-free in-reader AI doubt-bot, right up to exam day.
     let limit = FREE_DAILY_LIMIT;
     try {
-      const acc = await fetch(SUPA + '/rest/v1/book_access?user_id=eq.' + userId + '&book_id=eq.bot&active=eq.true&select=book_id', { headers: H }).then(r => r.json());
+      const acc = await fetch(SUPA + '/rest/v1/book_access?user_id=eq.' + userId + '&book_id=in.(paper1,paper2,mocks,combo,everything,bot)&active=eq.true&select=book_id', { headers: H }).then(r => r.json());
       if (Array.isArray(acc) && acc.length) limit = BOT_DAILY_LIMIT;
     } catch (e) {}
 
