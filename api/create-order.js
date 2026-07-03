@@ -12,8 +12,13 @@ const PRICES = {           // in paise
   everything: 129900,
   bot: 10000
 };
-const PROMOS = {           // CODE -> % off, applies to every product above
-  AAO15: 15
+const PROMOS = {           // CODE -> either { percent: N } off every product, or
+                            // { fixed: {book_id: paise}, maxUses: N } overriding specific product prices
+                            // with a redemption cap enforced via public.promo_redemptions
+  AAO15: { percent: 15 },
+  // Personal code for Tajuddin (tajuddinmmmakandar@gmail.com) — shared with up to 10 people.
+  // everything ₹1299->₹1000, mocks ₹999->₹750. Not advertised anywhere.
+  TAJUDDIN10: { fixed: { everything: 100000, mocks: 75000 }, maxUses: 10 }
 };
 const TEST_CODE = 'DRSEANTEST'; // Dr Sean's own ₹1 test-purchase code — keep secret, do not publish anywhere
 
@@ -31,10 +36,27 @@ export default async function handler(req, res) {
 
     let amount = PRICES[bookId];
     const code = String(b.promo_code || '').toUpperCase().trim();
+    const SUPA = process.env.SUPABASE_URL || 'https://yrrielpjbbsxdgbwzwzx.supabase.co';
+    const SERVICE = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    let promoApplied = '';
     if (code === TEST_CODE) {
       amount = 100; // ₹1 — testing only
     } else if (code && PROMOS[code]) {
-      amount = Math.round(amount * (100 - PROMOS[code]) / 100);
+      const promo = PROMOS[code];
+      let capOk = true;
+      if (promo.maxUses && SERVICE) {
+        try {
+          const cr = await fetch(SUPA + '/rest/v1/promo_redemptions?code=eq.' + encodeURIComponent(code) + '&select=id',
+            { headers: { apikey: SERVICE, Authorization: 'Bearer ' + SERVICE, Prefer: 'count=exact', Range: '0-0' } });
+          const range = cr.headers.get('content-range') || '';
+          const total = parseInt(range.split('/')[1] || '0', 10);
+          if (total >= promo.maxUses) capOk = false;
+        } catch (e) { /* if the check fails, fall back to full price rather than risk overselling */ capOk = false; }
+      }
+      if (capOk) {
+        if (promo.fixed && promo.fixed[bookId] != null) { amount = promo.fixed[bookId]; promoApplied = code; }
+        else if (promo.percent) { amount = Math.round(amount * (100 - promo.percent) / 100); promoApplied = code; }
+      }
     }
     if (amount < 100) amount = 100;
 
@@ -43,10 +65,22 @@ export default async function handler(req, res) {
     const rr = await fetch('https://api.razorpay.com/v1/orders', {
       method: 'POST',
       headers: { 'Authorization': auth, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount: amount, currency: 'INR', receipt: 'rcpt_' + Date.now(), notes: { book_id: bookId, promo: code || '', user_id: b.user_id || '' } })
+      body: JSON.stringify({ amount: amount, currency: 'INR', receipt: 'rcpt_' + Date.now(), notes: { book_id: bookId, promo: promoApplied, user_id: b.user_id || '' } })
     });
     const order = await rr.json();
     if (!rr.ok || !order.id) { res.status(500).json({ error: 'Order creation failed' }); return; }
+
+    // reserve a redemption slot for capped promo codes (best-effort; unique order_id prevents double-count)
+    if (promoApplied && PROMOS[promoApplied] && PROMOS[promoApplied].maxUses && SERVICE) {
+      try {
+        await fetch(SUPA + '/rest/v1/promo_redemptions', {
+          method: 'POST',
+          headers: { apikey: SERVICE, Authorization: 'Bearer ' + SERVICE, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: promoApplied, order_id: order.id, book_id: bookId })
+        });
+      } catch (e) {}
+    }
+
     res.status(200).json({ order_id: order.id, amount: order.amount, currency: order.currency, key_id: id });
   } catch (e) { res.status(500).json({ error: 'Server error' }); }
 }
