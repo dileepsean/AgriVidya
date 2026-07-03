@@ -106,14 +106,14 @@ canvas{display:block;width:100%;height:auto;pointer-events:none;transform-origin
     <button onclick="next()">Next</button>
   </div>
   <div class="panel ai" id="aiBox">
-    <textarea id="aiQ" placeholder="Ask about your AO/AAO syllabus..."></textarea>
+    <textarea id="aiQ" placeholder="ನಿಮ್ಮ ಪ್ರಶ್ನೆ ಇಲ್ಲಿ ಟೈಪ್ ಮಾಡಿ (ಉತ್ತರ ಕನ್ನಡದಲ್ಲಿ ಬರುತ್ತದೆ) — ask your doubt, answer comes in Kannada"></textarea>
     <div class="row"><button onclick="sendAI()">Ask</button><button onclick="document.getElementById('aiBox').style.display='none'" style="background:#0F6E56">Close</button></div>
     <div class="ans" id="aiA"></div>
   </div>
   <div class="panel" id="bmPanel"></div>
-  <button class="botbubble" id="botBubble" onclick="askAI()" title="Ask the AO/AAO AI tutor">
+  <button class="botbubble" id="botBubble" onclick="askAI()" title="Free AI doubt-solving bot — answers in Kannada">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.6-.8L3 21l1.9-5.4A8.38 8.38 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span>Ask AI</span>
+    <span>Ask me any doubt</span>
   </button>
 </div>
 
@@ -153,7 +153,7 @@ async function start(u){
   // which books does this user own?
   var acc=await sb.from('book_access').select('book_id,active').eq('user_id',u.id);
   ownedBooks=(acc.data||[]).filter(r=>r.active!==false).map(r=>r.book_id).filter(b=>CFG[b]);
-  hasBot=(acc.data||[]).some(r=>r.book_id==='bot'&&r.active!==false);
+  hasBot=true; // AI doubt-bot is now free for every material buyer — reaching the reader already proves ownership
   // requested book (from URL) — fall back to first owned
   var req=new URLSearchParams(location.search).get('b'); req=(req==='paper2')?'paper2':'paper1';
   if(ownedBooks.indexOf(req)<0){ if(ownedBooks.length){ req=ownedBooks[0]; } }
@@ -349,35 +349,19 @@ function scrollToPos(idx,instant){
   el.scrollIntoView({behavior:instant?'auto':'smooth',block:'start'});
 }
 
-/* ===== AO/AAO AI tutor (₹100 add-on) ===== */
-function askAI(){ if(!hasBot){ unlockBot(); return; } document.getElementById('aiBox').style.display='block'; document.getElementById('aiQ').focus(); }
-function unlockBot(){ if(!confirm('We would genuinely love to give the AI Tutor for free. 🙏\n\nBut every answer is powered by a paid AI that charges us for each question. So we ask a small one-time ₹100 — only to cover that cost, not for profit. It stays unlocked right up to your exam (26 July), so ask as much as you need.\n\nUnlock the AO/AAO AI Tutor?')) return; buyBot(); }
-async function buyBot(){
-  try{
-    var r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:10000,book_id:'bot',user_id:user.id})});
-    var o=await r.json(); if(o.error||!o.order_id) throw 0;
-    var rzp=new Razorpay({key:o.key_id,amount:o.amount,currency:o.currency,order_id:o.order_id,name:'AgriVidya',description:'AO/AAO AI Tutor (add-on)',prefill:{email:user.email},theme:{color:'#085041'},
-      handler:async function(resp){
-        var v=await fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({razorpay_order_id:resp.razorpay_order_id,razorpay_payment_id:resp.razorpay_payment_id,razorpay_signature:resp.razorpay_signature,user_id:user.id,book_id:'bot'})});
-        var vd=await v.json();
-        if(vd.success){ hasBot=true; alert('AI Tutor unlocked! Tap "Ask AI" to start.'); document.getElementById('aiBox').style.display='block'; document.getElementById('aiQ').focus(); }
-        else { alert('Payment received but unlock failed. WhatsApp +91 9492982424 with your payment id.'); }
-      }});
-    rzp.on('payment.failed',function(){ alert('Payment failed or cancelled. Please try again.'); });
-    rzp.open();
-  }catch(e){ alert('Could not start payment. Try again or WhatsApp +91 9492982424.'); }
-}
+/* ===== AO/AAO AI doubt-bot — FREE for every material buyer, Kannada-only, short answers ===== */
+function askAI(){ document.getElementById('aiBox').style.display='block'; document.getElementById('aiQ').focus(); }
 async function sendAI(){
   var q=document.getElementById('aiQ').value.trim(); if(!q) return;
-  var a=document.getElementById('aiA'); a.textContent='Thinking...';
-  var sys='You are VidyaBot, a tutor ONLY for the Karnataka KPSC AO/AAO (Agricultural Officer / Assistant Agricultural Officer) examination. Answer ONLY questions related to the AO/AAO exam syllabus and the study material the student is reading (current affairs, general science, Karnataka history & geography, polity, rural development & schemes, reasoning, science & technology, environment, agriculture, and food/agri engineering for this exam). If the question is NOT related to the AO/AAO exam, reply exactly: "I can only help with AO/AAO exam questions. Please ask something from your syllabus." Keep answers clear and exam-focused. Student question: ';
+  var a=document.getElementById('aiA'); a.textContent='ಯೋಚಿಸುತ್ತಿದೆ...';
+  var sys='Reply ONLY in the Kannada language — never in English, regardless of what language the question is asked in. Keep the answer to a maximum of 2-3 short lines — brief and exam-focused, no long explanations. Only answer questions that fall within the Karnataka KPSC AO/AAO (Agricultural Officer / Assistant Agricultural Officer) exam syllabus covered in Paper 1 (General Studies: current affairs, general science, Karnataka history & geography, polity, rural development & schemes, reasoning, science & technology, environment) and Paper 2 (Agriculture and allied/food engineering subjects). If the question is outside this syllabus, reply in Kannada only, in one short line, telling the student this question is outside their exam preparation and to ask something from their syllabus. Never use markdown formatting, asterisks or hash symbols — plain text only. Student question: ';
   try{
     var sess=await sb.auth.getSession();
     var token=sess.data.session && sess.data.session.access_token;
-    if(!token){ a.textContent='Please log in again to use the AI Tutor.'; return; }
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({messages:[{role:'user',content:sys+q}],max_tokens:500})});
-    if(r.status===429){ a.textContent="You've reached today's AI Tutor limit. Try again tomorrow, or WhatsApp us: +91 94929 82424"; return; }
-    if(r.status===401){ a.textContent='Please log in again to use the AI Tutor.'; return; }
+    if(!token){ a.textContent='Please log in again to use the AI doubt bot.'; return; }
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({messages:[{role:'user',content:sys+q}],max_tokens:150})});
+    if(r.status===429){ a.textContent="You've reached today's AI doubt-bot limit. Try again tomorrow, or WhatsApp us: +91 94929 82424"; return; }
+    if(r.status===401){ a.textContent='Please log in again to use the AI doubt bot.'; return; }
     var d=await r.json(); if(d.error) throw 0;
     a.textContent=(d.content && d.content[0] ? d.content[0].text : '').replace(/[*#]/g,'');
   }catch(e){ a.textContent='AI is busy right now. Try again shortly.'; }

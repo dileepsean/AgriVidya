@@ -219,48 +219,55 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
       </div>
       <div style="color:var(--gp);font-size:12.5px;margin-top:10px">ಪರೀಕ್ಷೆಗೆ ಬಾಕಿ ಸಮಯ &nbsp;|&nbsp; launch price — up to 56% off · mind maps for every chapter included</div>
     </div>
+    <!-- EVERYTHING BANNER — moved to top: the single best-value option, shown first -->
+    <div class="rv" style="margin:0 0 16px;background:linear-gradient(135deg,#F4B63F,#D68616);border-radius:18px;padding:1.8rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;box-shadow:0 22px 50px -28px rgba(214,134,22,.7)">
+      <div style="max-width:520px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:#5A3A00;margin-bottom:6px">⭐ MOST POPULAR · best value per rupee</div>
+        <div class="disp" style="color:#1A1205;font-size:24px;font-weight:800;line-height:1.2">EVERYTHING — Material + Mock Tests</div>
+        <div style="color:#3A2A05;font-size:13.5px;margin-top:6px;line-height:1.5">Both papers <b>plus</b> all 10 + 10 mock tests, in one account. Reading tells you what you know — mocks tell you what you'll actually get wrong on exam day. One payment covers your whole prep, start to finish.</div>
+        <div style="color:#3A2A05;font-size:13px;margin-top:8px;font-weight:700">🤖 + FREE AI doubt-solving bot inside the reader — ask any syllabus doubt, get an instant answer in ಕನ್ನಡ</div>
+        <div style="margin-top:12px">
+          <a href="javascript:void(0)" onclick="togglePromo('everything')" style="font-size:12px;color:#5A3A00;text-decoration:underline;cursor:pointer;font-weight:600">🏷️ Have a promo code for this plan?</a>
+          <div id="promoFormeverything" style="display:none;gap:8px;margin-top:8px;flex-wrap:wrap">
+            <input id="promoInputeverything" placeholder="Enter code" style="padding:8px 10px;border-radius:8px;border:none;font-size:13px">
+            <button onclick="applyPromo('everything')" style="padding:8px 14px;border-radius:8px;background:#04342C;color:#fff;border:none;font-weight:600;font-size:13px;cursor:pointer">Apply</button>
+          </div>
+          <div id="promoMsgeverything" style="display:none;font-size:12px;margin-top:6px;color:#3A2A05"></div>
+        </div>
+      </div>
+      <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:10px">
+        <div><span class="disp" style="color:#1A1205;font-size:34px;font-weight:800" id="price-everything">₹1299</span> <span style="color:#5A3A00;text-decoration:line-through;font-size:16px">₹2997</span></div>
+        <button class="btn btn-lg" style="background:#04342C;color:#fff" id="btnEverything" onclick="buyMaterial('everything','AO/AAO Everything — Material + Mock Tests')">Get everything — ₹1299 →</button>
+        <div style="font-size:11.5px;color:#5A3A00">Instant access · one login for material + mocks</div>
+      </div>
+    </div>
+
+    <!-- MATERIAL COMBO — moved to top, second -->
+    <div class="rv" style="margin-bottom:22px;background:linear-gradient(135deg,#0F6E56,#04342C);border-radius:18px;padding:1.8rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;box-shadow:0 22px 50px -28px rgba(15,110,86,.7)">
+      <div style="max-width:520px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--gl);margin-bottom:6px">Best value · both papers</div>
+        <div class="disp" style="color:#fff;font-size:22px;font-weight:800;line-height:1.2">Material Combo — Paper 1 + Paper 2</div>
+        <div style="color:var(--gp);font-size:13.5px;margin-top:6px;line-height:1.5">AO/AAO tests General Studies and Agriculture together — study them together too. Both books, one secure account, no switching between separate purchases.</div>
+        <div style="color:var(--gl);font-size:13px;margin-top:8px;font-weight:700">🤖 + FREE AI doubt-solving bot inside the reader — ask any syllabus doubt, get an instant answer in ಕನ್ನಡ</div>
+        <div style="margin-top:12px">
+          <a href="javascript:void(0)" onclick="togglePromo('combo')" style="font-size:12px;color:var(--gp);text-decoration:underline;cursor:pointer;font-weight:600">🏷️ Have a promo code for this plan?</a>
+          <div id="promoFormcombo" style="display:none;gap:8px;margin-top:8px;flex-wrap:wrap">
+            <input id="promoInputcombo" placeholder="Enter code" style="padding:8px 10px;border-radius:8px;border:none;font-size:13px">
+            <button onclick="applyPromo('combo')" style="padding:8px 14px;border-radius:8px;background:#fff;color:#04342C;border:none;font-weight:600;font-size:13px;cursor:pointer">Apply</button>
+          </div>
+          <div id="promoMsgcombo" style="display:none;font-size:12px;margin-top:6px;color:var(--gp)"></div>
+        </div>
+      </div>
+      <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:10px">
+        <div><span class="disp" style="color:#fff;font-size:32px;font-weight:800" id="price-combo">₹459</span> <span style="color:var(--gl);text-decoration:line-through;font-size:16px">₹998</span></div>
+        <button class="btn btn-solid btn-lg" id="btnCombo" onclick="buyMaterial('combo','AO/AAO Material Combo (Paper 1 + Paper 2)')">Get both — ₹459 →</button>
+      </div>
+    </div>
+
     <div class="prods">
 
-      <!-- PAPER 1 -->
-      <div class="prod feat rv">
-        <div class="ribbon">LIVE</div>
-        <div class="prod-media"><img src="/av-prod-1.jpg" alt="" loading="lazy"><div class="ic">📘</div></div>
-        <h3>AO/AAO Paper 1 — Complete Material</h3>
-        <div class="desc">The full General Studies paper with the negative-marking strategy no other book teaches.</div>
-        <ul>
-          <li>All 8 units · 100% syllabus coverage</li>
-          <li>200+ MCQs with trap explanations</li>
-          <li>SAFE / RISKY / SKIP tag on every topic</li>
-          <li>Mind maps + 10-point rapid revision per unit</li>
-          <li>Exam-day time &amp; attempt strategy</li>
-          <li>Instant access · read on mobile or laptop</li>
-        </ul>
-        <div class="price"><span class="n" id="price-paper1">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
-        <button class="btn btn-solid act" id="btnPaper1" onclick="buyMaterial('paper1','AAO Paper 1 Study Material')">Buy Now — ₹249 →</button>
-        <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20AO%2FAAO%20Paper%201%20(%E2%82%B9249)" target="_blank">💬 Buy via WhatsApp</a>
-        <div class="samp" onclick="getSample()">Get the free sample (PDF) →</div>
-      </div>
-
-      <!-- PAPER 2 -->
-      <div class="prod rv">
-        <div class="prod-media"><img src="/av-prod-2.jpg" alt="" loading="lazy"><div class="ic">📗</div></div>
-        <h3>AO/AAO Paper 2 — Complete Material</h3>
-        <div class="desc">Agriculture &amp; allied subjects in depth — the full Paper 2 syllabus with MCQs and concept notes.</div>
-        <ul>
-          <li>617 pages · complete Paper 2 syllabus</li>
-          <li>Topic-wise MCQs &amp; concept notes</li>
-          <li>Diagrams, tables &amp; solved examples</li>
-          <li>Food + Agri engineering subjects in depth</li>
-          <li>Instant access · same secure reader</li>
-        </ul>
-        <div class="price"><span class="n" id="price-paper2">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
-        <button class="btn btn-solid act" id="btnPaper2" onclick="buyMaterial('paper2','AAO Paper 2 Study Material')">Buy Now — ₹249 →</button>
-        <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20AO%2FAAO%20Paper%202%20(%E2%82%B9249)" target="_blank">💬 Buy via WhatsApp</a>
-        <div class="samp" onclick="getSampleP2()">Get the free sample (PDF) →</div>
-      </div>
-
       <!-- MOCK TEST -->
-      <div class="prod rv">
+      <div class="prod feat rv">
         <div class="ribbon">LIVE</div>
         <div class="prod-media"><img src="/av-prod-3.jpg" alt="" loading="lazy"><div class="ic">📝</div></div>
         <h3>AO/AAO Mock-Test Combo</h3>
@@ -279,37 +286,55 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
 
     </div>
 
-    <div class="rv" style="margin:22px 0 0;text-align:center">
-      <span class="promo-toggle" onclick="togglePromo()">🏷️ Have a promo code for combos below?</span>
-      <div class="promo-form" id="promoForm" style="display:none;margin-top:10px;justify-content:center;gap:8px;flex-wrap:wrap">
-        <input id="promoInput" placeholder="Enter code">
-        <button class="btn btn-solid" style="padding:9px 16px" onclick="applyPromo()">Apply</button>
-      </div>
-      <div id="promoMsg" style="font-size:12.5px;margin-top:8px;display:none"></div>
+    <div class="sec-h rv" style="margin-top:34px">
+      <div class="sec-lab">Prefer just one paper?</div>
+      <h2 class="sec-t disp" style="font-size:22px">Buy a single paper</h2>
+      <p class="sec-s">Most aspirants end up needing both — the combo above covers both papers for just ₹210 more than one alone.</p>
     </div>
-    <div class="rv" style="margin-top:14px;background:linear-gradient(135deg,#0F6E56,#04342C);border-radius:18px;padding:1.8rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;box-shadow:0 22px 50px -28px rgba(15,110,86,.7)">
-      <div>
-        <div style="font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--gl);margin-bottom:6px">Best value · both papers</div>
-        <div class="disp" style="color:#fff;font-size:22px;font-weight:800;line-height:1.2">Material Combo — Paper 1 + Paper 2</div>
-        <div style="color:var(--gp);font-size:13px;margin-top:4px">The complete AO/AAO study library — both books, one secure account.</div>
-      </div>
-      <div style="text-align:right;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
-        <div><span class="disp" style="color:#fff;font-size:32px;font-weight:800" id="price-combo">₹459</span> <span style="color:var(--gl);text-decoration:line-through;font-size:16px">₹998</span></div>
-        <button class="btn btn-solid btn-lg" id="btnCombo" onclick="buyMaterial('combo','AO/AAO Material Combo (Paper 1 + Paper 2)')">Get both — ₹459 →</button>
-      </div>
-    </div>
+    <div class="prods">
 
-    <!-- EVERYTHING BANNER -->
-    <div class="rv" style="margin-top:16px;background:linear-gradient(135deg,#F4B63F,#D68616);border-radius:18px;padding:1.8rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;box-shadow:0 22px 50px -28px rgba(214,134,22,.7)">
-      <div>
-        <div style="font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:#5A3A00;margin-bottom:6px">⭐ Best deal · everything</div>
-        <div class="disp" style="color:#1A1205;font-size:23px;font-weight:800;line-height:1.2">EVERYTHING — Material + Mock Tests</div>
-        <div style="color:#3A2A05;font-size:13px;margin-top:4px">Both papers + all 10 + 10 mock tests. The complete AO/AAO kit in one purchase.</div>
+      <!-- PAPER 1 -->
+      <div class="prod rv">
+        <div class="ribbon">LIVE</div>
+        <div class="prod-media"><img src="/av-prod-1.jpg" alt="" loading="lazy"><div class="ic">📘</div></div>
+        <h3>AO/AAO Paper 1 — Complete Material</h3>
+        <div class="desc">The full General Studies paper with the negative-marking strategy no other book teaches.</div>
+        <ul>
+          <li>All 8 units · 100% syllabus coverage</li>
+          <li>200+ MCQs with trap explanations</li>
+          <li>SAFE / RISKY / SKIP tag on every topic</li>
+          <li>Mind maps + 10-point rapid revision per unit</li>
+          <li>Exam-day time &amp; attempt strategy</li>
+          <li>Instant access · read on mobile or laptop</li>
+          <li>🤖 Free AI doubt-solving bot inside the reader (Kannada)</li>
+        </ul>
+        <div class="price"><span class="n" id="price-paper1">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
+        <button class="btn btn-solid act" id="btnPaper1" onclick="buyMaterial('paper1','AAO Paper 1 Study Material')">Buy Now — ₹249 →</button>
+        <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20AO%2FAAO%20Paper%201%20(%E2%82%B9249)" target="_blank">💬 Buy via WhatsApp</a>
+        <div class="samp" onclick="getSample()">Get the free sample (PDF) →</div>
+        <div class="sub" style="margin-top:8px">💡 Need Paper 2 as well? The <a onclick="document.querySelector('#store').scrollIntoView({behavior:'smooth'})" style="color:var(--gb);cursor:pointer;font-weight:600">Material Combo</a> gets you both for just ₹210 more.</div>
       </div>
-      <div style="text-align:right;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
-        <div><span class="disp" style="color:#1A1205;font-size:34px;font-weight:800" id="price-everything">₹1299</span> <span style="color:#5A3A00;text-decoration:line-through;font-size:16px">₹2997</span></div>
-        <button class="btn btn-lg" style="background:#04342C;color:#fff" id="btnEverything" onclick="buyMaterial('everything','AO/AAO Everything — Material + Mock Tests')">Get everything — ₹1299 →</button>
+
+      <!-- PAPER 2 -->
+      <div class="prod rv">
+        <div class="prod-media"><img src="/av-prod-2.jpg" alt="" loading="lazy"><div class="ic">📗</div></div>
+        <h3>AO/AAO Paper 2 — Complete Material</h3>
+        <div class="desc">Agriculture &amp; allied subjects in depth — the full Paper 2 syllabus with MCQs and concept notes.</div>
+        <ul>
+          <li>617 pages · complete Paper 2 syllabus</li>
+          <li>Topic-wise MCQs &amp; concept notes</li>
+          <li>Diagrams, tables &amp; solved examples</li>
+          <li>Food + Agri engineering subjects in depth</li>
+          <li>Instant access · same secure reader</li>
+          <li>🤖 Free AI doubt-solving bot inside the reader (Kannada)</li>
+        </ul>
+        <div class="price"><span class="n" id="price-paper2">₹249</span><span class="o">₹499</span><span class="badge">50% OFF</span></div>
+        <button class="btn btn-solid act" id="btnPaper2" onclick="buyMaterial('paper2','AAO Paper 2 Study Material')">Buy Now — ₹249 →</button>
+        <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20AO%2FAAO%20Paper%202%20(%E2%82%B9249)" target="_blank">💬 Buy via WhatsApp</a>
+        <div class="samp" onclick="getSampleP2()">Get the free sample (PDF) →</div>
+        <div class="sub" style="margin-top:8px">💡 Need Paper 1 as well? The <a onclick="document.querySelector('#store').scrollIntoView({behavior:'smooth'})" style="color:var(--gb);cursor:pointer;font-weight:600">Material Combo</a> gets you both for just ₹210 more.</div>
       </div>
+
     </div>
   </div>
 </section>
@@ -539,10 +564,12 @@ async function doBuy(id,desc,email){
 const PROMOS={AAO15:{percent:15}, TAJUDDIN10:{fixed:{everything:1000,mocks:750}}, RAMYA5:{fixed:{everything:1000,mocks:750}}};
 const BASE_PRICES={paper1:249,paper2:249,combo:459,mocks:999,everything:1299};
 let appliedPromo=null, appliedPromoObj=null;
-function togglePromo(){ var f=document.getElementById('promoForm'); f.style.display = f.style.display==='none'?'flex':'none'; }
-function applyPromo(){
-  var code=document.getElementById('promoInput').value.trim().toUpperCase();
-  var msg=document.getElementById('promoMsg'); msg.style.display='block';
+function togglePromo(n){ var f=document.getElementById(n?('promoForm'+n):'promoForm'); if(f) f.style.display = f.style.display==='none'?'flex':'none'; }
+function applyPromo(n){
+  var suf=n?String(n):'';
+  var el=document.getElementById('promoInput'+suf); if(!el) return;
+  var code=el.value.trim().toUpperCase();
+  var msg=document.getElementById('promoMsg'+suf); if(!msg) return; msg.style.display='block';
   if(PROMOS[code]){
     appliedPromo=code; appliedPromoObj=PROMOS[code];
     msg.style.color='#0F6E56'; msg.textContent='✅ Code applied — discount at checkout.';
