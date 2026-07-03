@@ -616,6 +616,14 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
                 <span style="font-size:13px;font-weight:700;color:var(--gm);white-space:nowrap">&#8377;1299 &rarr;</span>
               </div>
             </div>
+            <div style="margin-top:10px">
+              <a href="javascript:void(0)" onclick="togglePromo()" style="font-size:12px;color:var(--ts);text-decoration:underline">Have a promo code for combos above?</a>
+              <div id="promoForm" style="display:none;gap:8px;margin-top:8px;max-width:280px">
+                <input id="promoInput" placeholder="Enter code" style="flex:1;padding:8px 10px;border:1px solid var(--gs);border-radius:8px;font-size:13px">
+                <button onclick="applyPromo()" style="padding:8px 14px;border-radius:8px;background:var(--gb);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer">Apply</button>
+              </div>
+              <div id="promoMsg" style="display:none;font-size:12px;margin-top:6px"></div>
+            </div>
           </div>
         </div>
         <div class="feat-visual">
@@ -971,6 +979,14 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
         <div style="margin:14px 0;font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gm)">₹1299 <span style="font-size:13px;color:var(--tm);text-decoration:line-through;font-weight:400">₹2997</span></div>
         <button class="btn-pay" style="width:auto;padding:11px 26px" onclick="buyMaterial('everything',129900,'AO/AAO Everything — Material + Mock Tests')">Get everything &mdash; ₹1299 &rarr;</button>
       </div>
+    </div>
+    <div style="margin-top:14px">
+      <a href="javascript:void(0)" onclick="togglePromo('2')" style="font-size:12px;color:var(--ts);text-decoration:underline">Have a promo code for the Mock-Test Combo or EVERYTHING?</a>
+      <div id="promoForm2" style="display:none;gap:8px;margin-top:8px;max-width:280px">
+        <input id="promoInput2" placeholder="Enter code" style="flex:1;padding:8px 10px;border:1px solid var(--gs);border-radius:8px;font-size:13px">
+        <button onclick="applyPromo('2')" style="padding:8px 14px;border-radius:8px;background:var(--gb);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer">Apply</button>
+      </div>
+      <div id="promoMsg2" style="display:none;font-size:12px;margin-top:6px"></div>
     </div>
   </div>
 </div>
@@ -1389,10 +1405,29 @@ function paidSuccess(url){
   document.body.appendChild(d);
   setTimeout(function(){ try{ window.location.href=url; }catch(e){} }, 1400);
 }
+/* promo code — codes are only ever given out manually (e.g. on WhatsApp), never advertised.
+   This list is cosmetic (validates/shows a message); the real discount + any use-cap is
+   enforced server-side in api/create-order.js — keep both lists in sync when adding a code. */
+const PROMOS={AAO15:{percent:15}, TAJUDDIN10:{fixed:{everything:1000,mocks:750}}};
+let appliedPromo=null;
+function togglePromo(n){ var f=document.getElementById(n?('promoForm'+n):'promoForm'); if(f) f.style.display = f.style.display==='none'?'flex':'none'; }
+function applyPromo(n){
+  var suf=n?String(n):'';
+  var el=document.getElementById('promoInput'+suf); if(!el) return;
+  var code=el.value.trim().toUpperCase();
+  var msg=document.getElementById('promoMsg'+suf); if(!msg) return; msg.style.display='block';
+  if(PROMOS[code]){
+    appliedPromo=code;
+    msg.style.color='#0F6E56'; msg.textContent='✅ Code applied — discount at checkout.';
+  } else {
+    appliedPromo=null;
+    msg.style.color='#C0392B'; msg.textContent='Invalid code.';
+  }
+}
 async function buyMaterial(id,amount,desc){
   amount=amount||24900; desc=desc||'AAO Study Material';
   try{
-    var body={amount:amount,book_id:id}; if(typeof currentUser!=='undefined'&&currentUser) body.user_id=currentUser.id;
+    var body={book_id:id}; if(typeof currentUser!=='undefined'&&currentUser) body.user_id=currentUser.id; if(appliedPromo) body.promo_code=appliedPromo;
     var r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     var o=await r.json(); if(o.error||!o.order_id) throw 0;
     var opts={key:o.key_id,amount:o.amount,currency:o.currency,order_id:o.order_id,name:'AgriVidya',description:desc,theme:{color:'#085041'},
@@ -1401,7 +1436,7 @@ async function buyMaterial(id,amount,desc){
         if(typeof currentUser!=='undefined'&&currentUser) vb.user_id=currentUser.id;
         var v=await fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(vb)});
         var vd=await v.json();
-        if(vd.success){ try{ fbq('track','Purchase',{value:amount/100,currency:'INR',content_name:desc,content_ids:[id]}); }catch(e){} paidSuccess(vd.login_link || ((id==='paper2')?'/read.html?b=paper2':'/read.html')); }
+        if(vd.success){ try{ fbq('track','Purchase',{value:o.amount/100,currency:'INR',content_name:desc,content_ids:[id]}); }catch(e){} paidSuccess(vd.login_link || ((id==='paper2')?'/read.html?b=paper2':'/read.html')); }
         else { alert('Payment received but verification failed. WhatsApp +91 9492982424 with your payment id.'); }
       }};
     if(typeof currentUser!=='undefined'&&currentUser) opts.prefill={email:currentUser.email};
