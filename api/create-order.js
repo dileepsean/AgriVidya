@@ -18,7 +18,9 @@ const PROMOS = {           // CODE -> either { percent: N } off every product, o
   AAO15: { percent: 15 },
   // Personal code for Tajuddin (tajuddinmmmakandar@gmail.com) — shared with up to 10 people.
   // everything ₹1299->₹1000, mocks ₹999->₹750. Not advertised anywhere.
-  TAJUDDIN10: { fixed: { everything: 100000, mocks: 75000 }, maxUses: 10 }
+  TAJUDDIN10: { fixed: { everything: 100000, mocks: 75000 }, maxUses: 10 },
+  // Personal code for Ramya — shared with up to 5 friends. Same combo pricing as above.
+  RAMYA5: { fixed: { everything: 100000, mocks: 75000 }, maxUses: 5 }
 };
 const TEST_CODE = 'DRSEANTEST'; // Dr Sean's own ₹1 test-purchase code — keep secret, do not publish anywhere
 
