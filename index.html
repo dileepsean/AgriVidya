@@ -1115,6 +1115,14 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
       <div class="modal-success" id="signupSuccess">✓ Account created! Check email to confirm.</div>
       <div class="modal-switch">Have account? <a onclick="openModal('login')">Log in</a></div>
     </div>
+    <div id="modal-guestemail" style="display:none">
+      <h2>One quick thing</h2>
+      <p>Enter your email — this is where we send your login link and material access right after payment.</p>
+      <input class="modal-input" id="guestEmail" type="email" placeholder="Email address"/>
+      <button class="modal-btn" onclick="confirmEmailCapture()">Continue to payment</button>
+      <div class="modal-error" id="guestEmailError"></div>
+      <div class="modal-switch">Have account? <a onclick="pendingBuy=null;openModal('login')">Log in</a> instead</div>
+    </div>
   </div>
 </div>
 
@@ -1266,6 +1274,7 @@ function openModal(type){
   document.getElementById('modalOverlay').classList.add('open');
   document.getElementById('modal-login').style.display=type==='login'?'block':'none';
   document.getElementById('modal-signup').style.display=type==='signup'?'block':'none';
+  document.getElementById('modal-guestemail').style.display=type==='guestemail'?'block':'none';
 }
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
 
@@ -1424,22 +1433,42 @@ function applyPromo(n){
     msg.style.color='#C0392B'; msg.textContent='Invalid code.';
   }
 }
-async function buyMaterial(id,amount,desc){
+// Guest buyers must give us a real email BEFORE we open Razorpay — this is what lets
+// verify-payment.js correctly identify the account afterward. Some payment methods (UPI
+// intent especially) don't reliably hand Razorpay a usable email, which previously caused
+// access to be granted to the wrong (unreachable) account. Logged-in buyers skip this,
+// since we already know their email.
+let pendingBuy=null;
+function buyMaterial(id,amount,desc){
+  if(typeof currentUser!=='undefined'&&currentUser){ doBuy(id,amount,desc,currentUser.email); return; }
+  pendingBuy={id:id,amount:amount,desc:desc};
+  document.getElementById('guestEmail').value='';
+  document.getElementById('guestEmailError').textContent='';
+  openModal('guestemail');
+}
+function confirmEmailCapture(){
+  var email=document.getElementById('guestEmail').value.trim().toLowerCase();
+  var err=document.getElementById('guestEmailError');
+  if(!email || email.indexOf('@')<1 || email.indexOf('.')<0){ err.textContent='Enter a valid email — we use it to send your login link.'; return; }
+  err.textContent=''; closeModal();
+  if(pendingBuy){ doBuy(pendingBuy.id,pendingBuy.amount,pendingBuy.desc,email); pendingBuy=null; }
+}
+async function doBuy(id,amount,desc,email){
   amount=amount||24900; desc=desc||'AAO Study Material';
   try{
-    var body={book_id:id}; if(typeof currentUser!=='undefined'&&currentUser) body.user_id=currentUser.id; if(appliedPromo) body.promo_code=appliedPromo;
+    var body={book_id:id}; if(typeof currentUser!=='undefined'&&currentUser) body.user_id=currentUser.id; if(email) body.email=email; if(appliedPromo) body.promo_code=appliedPromo;
     var r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     var o=await r.json(); if(o.error||!o.order_id) throw 0;
     var opts={key:o.key_id,amount:o.amount,currency:o.currency,order_id:o.order_id,name:'AgriVidya',description:desc,theme:{color:'#085041'},
       handler:async function(resp){
         var vb={razorpay_order_id:resp.razorpay_order_id,razorpay_payment_id:resp.razorpay_payment_id,razorpay_signature:resp.razorpay_signature,book_id:id};
-        if(typeof currentUser!=='undefined'&&currentUser) vb.user_id=currentUser.id;
+        if(typeof currentUser!=='undefined'&&currentUser) vb.user_id=currentUser.id; if(email) vb.email=email;
         var v=await fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(vb)});
         var vd=await v.json();
         if(vd.success){ try{ fbq('track','Purchase',{value:o.amount/100,currency:'INR',content_name:desc,content_ids:[id]}); }catch(e){} paidSuccess(vd.login_link || ((id==='paper2')?'/read.html?b=paper2':'/read.html')); }
         else { alert('Payment received but verification failed. WhatsApp +91 9492982424 with your payment id.'); }
       }};
-    if(typeof currentUser!=='undefined'&&currentUser) opts.prefill={email:currentUser.email};
+    if(email) opts.prefill={email:email};
     var rzp=new Razorpay(opts);
     rzp.on('payment.failed',function(){ alert('Payment failed or cancelled. Please try again.'); });
     rzp.open();
