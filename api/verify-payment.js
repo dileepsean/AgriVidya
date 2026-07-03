@@ -38,6 +38,14 @@ export default async function handler(req, res) {
       const pay = await fetch('https://api.razorpay.com/v1/payments/' + razorpay_payment_id, { headers: { 'Authorization': auth } }).then(r => r.json());
       email = (pay.email || '').toLowerCase().trim(); contact = pay.contact || '';
     } catch (e) {}
+    // Some payment methods (UPI intent especially) don't hand Razorpay a real email — it
+    // falls back to a placeholder like "void@razorpay.com". Trusting that would silently
+    // create/grant access to an account the buyer can never reach. Prefer the email the
+    // buyer typed directly into our own checkout page (b.email) — the client now always
+    // collects this before opening Razorpay for guest buyers — and never trust @razorpay.com.
+    if (email.endsWith('@razorpay.com')) email = '';
+    const clientEmail = String(b.email || '').toLowerCase().trim();
+    if (clientEmail && clientEmail.includes('@')) email = clientEmail;
 
     let userId = b.user_id || null, login_link = null;
     // where to send the buyer after login (mocks => mock page; paper2 => paper2 reader)
@@ -45,8 +53,10 @@ export default async function handler(req, res) {
     if (book_id === 'paper2') redirect = 'https://www.agrividya.in/read.html?b=paper2';
     else if (book_id === 'mocks') redirect = 'https://www.agrividya.in/mock.html';
 
-    // 2) ensure an account exists for this email and get a one-tap login link
-    if (email && SERVICE) {
+    // 2) ensure an account exists for this email and get a one-tap login link.
+    //    Skip this for buyers who were already logged in when they paid (b.user_id set) —
+    //    we already know their account; no need to resolve one from email.
+    if (email && SERVICE && !b.user_id) {
       try {
         const gl = await fetch(SUPA + '/auth/v1/admin/generate_link', {
           method: 'POST', headers: H,
