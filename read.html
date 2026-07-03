@@ -30,6 +30,10 @@ body.light{--bg:#EAF3EF;--txt:#0D1F1A}
 .wrap{max-width:860px;margin:0 auto;padding:12px 12px 96px}
 .pg{position:relative;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 14px 40px -12px rgba(0,0,0,.55);touch-action:auto}
 canvas{display:block;width:100%;height:auto;pointer-events:none;transform-origin:center center;transition:transform .12s ease-out}
+#scrollWrap{max-width:860px;margin:0 auto;padding:12px 12px 40px}
+.pgSlot{position:relative;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 14px 40px -12px rgba(0,0,0,.55);margin-bottom:14px;min-height:300px}
+.pgSlot canvas{display:block;width:100%;height:auto;pointer-events:none}
+.pgLabel{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;padding:3px 8px;border-radius:6px;z-index:2;pointer-events:none}
 .nav{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#0F6E56,#085041);display:flex;align-items:center;justify-content:center;gap:14px;padding:11px;z-index:20;border-top:1px solid var(--ln)}
 .nav button{background:linear-gradient(135deg,var(--ac),#0F6E56);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 8px 20px -8px rgba(29,158,117,.8)}
 .nav button:active{transform:translateY(1px)}
@@ -85,6 +89,7 @@ canvas{display:block;width:100%;height:auto;pointer-events:none;transform-origin
     <button id="bmBtn" onclick="toggleBookmark()" title="Bookmark page">☆</button>
     <button onclick="openBookmarks()" title="My bookmarks">📑</button>
     <span class="sp"></span>
+    <button onclick="toggleMode()" id="modeBtn" title="Switch between page-by-page and continuous scroll">📜 Scroll</button>
     <button onclick="zoomBtn(1)" title="Zoom in">＋</button>
     <button onclick="zoomBtn(-1)" title="Zoom out">－</button>
     <button onclick="toggleFull()" title="Fullscreen">⛶</button>
@@ -93,7 +98,8 @@ canvas{display:block;width:100%;height:auto;pointer-events:none;transform-origin
   </div>
   <div class="prog"><i id="bar"></i></div>
   <div class="meta" id="meta">Loading...</div>
-  <div class="wrap"><div class="pg" id="pg"><canvas id="cv"></canvas></div></div>
+  <div class="wrap" id="wrap"><div class="pg" id="pg"><canvas id="cv"></canvas></div></div>
+  <div id="scrollWrap" class="hide"></div>
   <div class="nav">
     <button onclick="prev()">Prev</button>
     <input id="jump" type="number" min="1" onchange="jumpTo(this.value)">
@@ -166,17 +172,17 @@ async function start(u){
   document.getElementById('reader').classList.remove('hide');
   document.getElementById('jump').max=TOTAL;
   buildSwitcher(); buildJump(); initZoom();
-  render();
+  applyMode();
 }
 async function chkSession(){ var r=await sb.from('user_sessions').select('session_token').eq('user_id',user.id).maybeSingle(); if(r.data && r.data.session_token!==myTok){ alert('Opened on another device - logged out.'); logout(); } }
 
 /* ===== Book switcher ===== */
 function buildSwitcher(){ var el=document.getElementById('bookSw'); if(ownedBooks.length<2){ el.innerHTML=''; return; } el.innerHTML=ownedBooks.map(function(b){ return '<button class="'+(b===BOOK_ID?'on':'')+'" onclick="switchBook(\''+b+'\')">'+CFG[b].label+'</button>'; }).join(''); }
-async function switchBook(id){ if(id===BOOK_ID||ownedBooks.indexOf(id)<0) return; setBook(id); history.replaceState(null,'', id==='paper2'?'?b=paper2':location.pathname); buildSwitcher(); buildJump(); resetZoom(); document.getElementById('jump').max=TOTAL; var r2=await sb.from('reading_progress').select('last_page').eq('user_id',user.id).eq('book_id',BOOK_ID).maybeSingle(); var i=(r2.data&&r2.data.last_page)?ORDER.indexOf(r2.data.last_page):-1; pos=(i>=0)?i:0; render(); window.scrollTo(0,0); }
+async function switchBook(id){ if(id===BOOK_ID||ownedBooks.indexOf(id)<0) return; setBook(id); history.replaceState(null,'', id==='paper2'?'?b=paper2':location.pathname); buildSwitcher(); buildJump(); resetZoom(); document.getElementById('jump').max=TOTAL; var r2=await sb.from('reading_progress').select('last_page').eq('user_id',user.id).eq('book_id',BOOK_ID).maybeSingle(); var i=(r2.data&&r2.data.last_page)?ORDER.indexOf(r2.data.last_page):-1; pos=(i>=0)?i:0; refreshView(); }
 
 /* ===== Jump to section ===== */
 function buildJump(){ var s=document.getElementById('jumpSel'); var o='<option value="-1">Jump to…</option>'; for(var i=0;i<C.parts;i++){ var p=Math.round(i/C.parts*(TOTAL-1)); o+='<option value="'+p+'">'+C.plabel+' '+(i+1)+'</option>'; } s.innerHTML=o; }
-function jumpToPart(v){ v=parseInt(v); if(v>=0){ pos=Math.max(0,Math.min(TOTAL-1,v)); resetZoom(); render(); window.scrollTo(0,0);} document.getElementById('jumpSel').value="-1"; }
+function jumpToPart(v){ v=parseInt(v); if(v>=0){ pos=Math.max(0,Math.min(TOTAL-1,v)); goToCurrentPos(); } document.getElementById('jumpSel').value="-1"; }
 
 /* ===== Bookmarks (saved on this device) ===== */
 function bmKey(){ return 'av_bm_'+BOOK_ID; }
@@ -188,7 +194,7 @@ function openBookmarks(){ var a=getBm().sort(function(x,y){return x-y;}); var el
   else{ el.innerHTML='<div style="font-weight:700;margin-bottom:8px;color:#fff;font-family:Sora">Your bookmarks</div>'+a.map(function(p){ return '<a onclick="gotoPage('+p+')" style="display:inline-block;margin:4px;background:var(--ac);color:#fff;padding:7px 13px;border-radius:8px;cursor:pointer;font-size:13px">Page '+(ORDER.indexOf(p)+1)+'</a>'; }).join('')+'<div style="margin-top:10px"><button onclick="document.getElementById(\'bmPanel\').style.display=\'none\'" style="background:#0F6E56;color:#fff;border:none;border-radius:8px;padding:7px 14px;cursor:pointer">Close</button></div>'; }
   el.style.display='block';
 }
-function gotoPage(p){ var i=ORDER.indexOf(p); if(i>=0){ pos=i; resetZoom(); render(); window.scrollTo(0,0); document.getElementById('bmPanel').style.display='none'; } }
+function gotoPage(p){ var i=ORDER.indexOf(p); if(i>=0){ pos=i; goToCurrentPos(); document.getElementById('bmPanel').style.display='none'; } }
 
 /* ===== Reading streak ===== */
 function streak(){ var today=new Date().toDateString(), last=localStorage.getItem('av_lastday'), s=parseInt(localStorage.getItem('av_streak')||'0');
@@ -242,9 +248,106 @@ async function render(){
   im.src=s.data.signedUrl;
 }
 function saveProgress(pageNum){ clearTimeout(saveT); saveT=setTimeout(function(){ sb.from('reading_progress').upsert({user_id:user.id,book_id:BOOK_ID,last_page:pageNum,updated_at:new Date().toISOString()}); },700); }
-function next(){ if(pos<TOTAL-1){ pos++; render(); window.scrollTo(0,0); } }
-function prev(){ if(pos>0){ pos--; render(); window.scrollTo(0,0); } }
-function jumpTo(v){ v=parseInt(v); if(v>=1 && v<=TOTAL){ pos=v-1; render(); window.scrollTo(0,0); } }
+function next(){ if(pos<TOTAL-1){ pos++; goToCurrentPos(); } }
+function prev(){ if(pos>0){ pos--; goToCurrentPos(); } }
+function jumpTo(v){ v=parseInt(v); if(v>=1 && v<=TOTAL){ pos=v-1; goToCurrentPos(); } }
+
+/* ===== Reading mode: swipe (one page at a time) vs scroll (continuous) ===== */
+var mode=localStorage.getItem('av_readmode')||'swipe';
+var slotObserver=null, slotEls=[], slotState={}, scrollSaveT=null;
+function toggleMode(){ mode=(mode==='swipe')?'scroll':'swipe'; localStorage.setItem('av_readmode',mode); applyMode(); }
+function applyMode(){
+  var wrap=document.getElementById('wrap'), sw=document.getElementById('scrollWrap'), nav=document.querySelector('.nav'), btn=document.getElementById('modeBtn');
+  if(btn) btn.textContent=(mode==='swipe')?'📜 Scroll':'📖 Swipe';
+  if(mode==='scroll'){ wrap.classList.add('hide'); nav.classList.add('hide'); sw.classList.remove('hide'); }
+  else { sw.classList.add('hide'); nav.classList.remove('hide'); wrap.classList.remove('hide'); teardownScrollSlots(); }
+  refreshView();
+}
+function refreshView(){
+  if(mode==='scroll'){ buildScrollSlots(); scrollToPos(pos,true); }
+  else { resetZoom(); render(); window.scrollTo(0,0); }
+}
+function goToCurrentPos(){
+  if(mode==='scroll'){ scrollToPos(pos); }
+  else { resetZoom(); render(); window.scrollTo(0,0); }
+}
+function buildScrollSlots(){
+  var sw=document.getElementById('scrollWrap');
+  sw.innerHTML=''; slotState={};
+  slotEls=ORDER.map(function(pageNum,idx){
+    var d=document.createElement('div'); d.className='pgSlot'; d.dataset.idx=idx;
+    var lb=document.createElement('div'); lb.className='pgLabel'; lb.textContent='Page '+(idx+1)+' / '+TOTAL;
+    d.appendChild(lb); sw.appendChild(d); return d;
+  });
+  if(slotObserver) slotObserver.disconnect();
+  slotObserver=new IntersectionObserver(onSlotIntersect,{root:null,rootMargin:'700px 0px',threshold:0.01});
+  slotEls.forEach(function(el){ slotObserver.observe(el); });
+  window.addEventListener('scroll',onScrollUpdatePos,{passive:true});
+}
+function teardownScrollSlots(){
+  if(slotObserver){ slotObserver.disconnect(); slotObserver=null; }
+  window.removeEventListener('scroll',onScrollUpdatePos);
+  slotEls=[]; slotState={};
+}
+function onSlotIntersect(entries){
+  entries.forEach(function(e){
+    var idx=parseInt(e.target.dataset.idx);
+    if(e.isIntersecting) renderSlot(idx,e.target); else unrenderSlot(idx,e.target);
+  });
+}
+function renderSlot(idx,el){
+  var st=slotState[idx];
+  if(st && (st.rendered||st.loading)) return;
+  slotState[idx]=st={loading:true};
+  var pageNum=ORDER[idx];
+  sb.storage.from(BUCKET).createSignedUrl(pad(pageNum),120).then(function(s){
+    if(s.error||!s.data){ st.loading=false; return; }
+    var im=new Image(); im.crossOrigin='anonymous';
+    im.onload=function(){
+      if(!el.isConnected) return;
+      var cv=document.createElement('canvas'); cv.width=im.width; cv.height=im.height;
+      var ctx=cv.getContext('2d'); ctx.drawImage(im,0,0);
+      ctx.save(); ctx.globalAlpha=.14; ctx.fillStyle='#0F6E56'; ctx.font=Math.round(im.width/26)+'px sans-serif'; ctx.rotate(-.4);
+      for(var y=0;y<im.height*1.5;y+=240){ for(var x=-200;x<im.width;x+=540){ ctx.fillText(user.email,x,y); } }
+      ctx.restore();
+      var lb=el.querySelector('.pgLabel');
+      el.innerHTML=''; if(lb) el.appendChild(lb); el.appendChild(cv);
+      st.rendered=true; st.loading=false; st.h=el.offsetHeight;
+    };
+    im.src=s.data.signedUrl;
+  });
+}
+function unrenderSlot(idx,el){
+  var st=slotState[idx];
+  if(!st || !st.rendered) return;
+  var h=el.offsetHeight||st.h||400;
+  el.style.minHeight=h+'px';
+  var lb=el.querySelector('.pgLabel');
+  el.innerHTML=''; if(lb) el.appendChild(lb);
+  st.rendered=false;
+}
+function onScrollUpdatePos(){
+  clearTimeout(scrollSaveT);
+  scrollSaveT=setTimeout(function(){
+    var best=-1, bestDist=Infinity, cy=window.innerHeight/2;
+    slotEls.forEach(function(el,idx){
+      var r=el.getBoundingClientRect(), mid=r.top+r.height/2, d=Math.abs(mid-cy);
+      if(d<bestDist){ bestDist=d; best=idx; }
+    });
+    if(best>=0 && best!==pos){
+      pos=best;
+      var pageNum=ORDER[pos], pct=Math.round((pos+1)/TOTAL*100);
+      document.getElementById('bar').style.width=pct+'%';
+      document.getElementById('meta').textContent='🔥 '+streak()+'-day streak  ·  '+C.label+'  ·  Page '+(pos+1)+' / '+TOTAL+'  ·  '+pct+'% done  ·  '+(TOTAL-pos-1)+' left';
+      document.getElementById('jump').value=pos+1; updateBmBtn(); saveProgress(pageNum);
+    }
+  },250);
+}
+function scrollToPos(idx,instant){
+  if(mode!=='scroll') return;
+  var el=slotEls[idx]; if(!el) return;
+  el.scrollIntoView({behavior:instant?'auto':'smooth',block:'start'});
+}
 
 /* ===== AO/AAO AI tutor (₹100 add-on) ===== */
 function askAI(){ if(!hasBot){ unlockBot(); return; } document.getElementById('aiBox').style.display='block'; document.getElementById('aiQ').focus(); }
