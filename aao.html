@@ -390,6 +390,15 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
 
 <a href="https://wa.me/919492982424?text=Hi%2C%20I%20have%20a%20question%20about%20the%20AO%2FAAO%20material" target="_blank" style="position:fixed;bottom:18px;right:18px;z-index:500;display:flex;align-items:center;gap:9px;background:#25D366;color:#fff;font-weight:700;font-size:14px;padding:12px 18px;border-radius:30px;box-shadow:0 10px 26px -8px rgba(0,0,0,.4);text-decoration:none">💬 Questions? WhatsApp us</a>
 
+<!-- Scroll-past-pricing WhatsApp nudge — shows once per visit if someone scrolls past the
+     store section without buying or clicking WhatsApp; real, not a fake counter/testimonial. -->
+<div id="waNudge" style="display:none;position:fixed;bottom:78px;right:18px;z-index:499;max-width:270px;background:#fff;border:1px solid var(--gs);border-radius:16px;padding:14px 16px 14px;box-shadow:0 20px 50px -18px rgba(0,0,0,.4)">
+  <button onclick="dismissNudge()" aria-label="Close" style="position:absolute;top:4px;right:6px;background:none;border:none;font-size:17px;line-height:1;color:var(--tm);cursor:pointer;padding:4px 8px">×</button>
+  <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:13.5px;color:var(--tp);margin-bottom:4px">Still deciding?</div>
+  <div style="font-size:12.5px;color:var(--ts);line-height:1.45;margin-bottom:10px">Ask us anything before you buy — a real person replies on WhatsApp.</div>
+  <a href="https://wa.me/919492982424?text=Hi%2C%20I%20have%20a%20question%20about%20the%20AO%2FAAO%20material%20before%20I%20buy" target="_blank" onclick="dismissNudge()" style="display:flex;align-items:center;justify-content:center;gap:7px;background:#25D366;color:#fff;font-weight:700;font-size:13px;padding:9px;border-radius:10px;text-decoration:none">💬 Chat on WhatsApp</a>
+</div>
+
 <footer>
   <img src="/av-logo-white.png" alt="AgriVidya">
   <div class="links"><a href="/">Home</a><a href="/#page-ebooks">E-Books</a><a onclick="notifyMe('updates')" style="cursor:pointer">Get updates</a></div>
@@ -523,6 +532,8 @@ function paidSuccess(url){
 // since we already know their email.
 let pendingBuy=null;
 function buyMaterial(id,desc){
+  try{ sessionStorage.setItem('av_buy_clicked','1'); }catch(e){}
+  var n=document.getElementById('waNudge'); if(n) n.style.display='none';
   if(currentUser){ doBuy(id,desc,currentUser.email); return; }
   pendingBuy={id:id,desc:desc};
   document.getElementById('guestEmail').value='';
@@ -628,6 +639,29 @@ function updatePriceDisplay(){
   }
   (window.ResizeObserver?new ResizeObserver(size):{observe:()=>addEventListener('resize',size)}).observe(cv.parentElement);
   size(); step();
+})();
+/* Scroll-past-pricing WhatsApp nudge — one real, honest nudge, no fake counters/testimonials */
+function dismissNudge(){ var n=document.getElementById('waNudge'); if(n) n.style.display='none'; try{ sessionStorage.setItem('av_nudge_shown','1'); }catch(e){} }
+(function(){
+  try{ if(sessionStorage.getItem('av_nudge_shown')||sessionStorage.getItem('av_buy_clicked')) return; }catch(e){}
+  var store=document.getElementById('store');
+  if(!store) return;
+  var triggered=false;
+  window.addEventListener('scroll',function(){
+    if(triggered) return;
+    var already=false; try{ already=!!(sessionStorage.getItem('av_nudge_shown')||sessionStorage.getItem('av_buy_clicked')); }catch(e){}
+    if(already) return;
+    if(store.getBoundingClientRect().bottom < 0){
+      triggered=true;
+      setTimeout(function(){
+        var still=false; try{ still=!(sessionStorage.getItem('av_nudge_shown')||sessionStorage.getItem('av_buy_clicked')); }catch(e){ still=true; }
+        if(!still) return;
+        var n=document.getElementById('waNudge'); if(n) n.style.display='block';
+        try{ sessionStorage.setItem('av_nudge_shown','1'); }catch(e){}
+        setTimeout(function(){ if(n) n.style.display='none'; }, 15000);
+      },1200);
+    }
+  },{passive:true});
 })();
 </script>
 </body>
