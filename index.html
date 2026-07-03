@@ -1417,7 +1417,7 @@ function paidSuccess(url){
 /* promo code — codes are only ever given out manually (e.g. on WhatsApp), never advertised.
    This list is cosmetic (validates/shows a message); the real discount + any use-cap is
    enforced server-side in api/create-order.js — keep both lists in sync when adding a code. */
-const PROMOS={AAO15:{percent:15}, TAJUDDIN10:{fixed:{everything:1000,mocks:750}}};
+const PROMOS={AAO15:{percent:15}, TAJUDDIN10:{fixed:{everything:1000,mocks:750}}, RAMYA5:{fixed:{everything:1000,mocks:750}}};
 let appliedPromo=null;
 function togglePromo(n){ var f=document.getElementById(n?('promoForm'+n):'promoForm'); if(f) f.style.display = f.style.display==='none'?'flex':'none'; }
 function applyPromo(n){
