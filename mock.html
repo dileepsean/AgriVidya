@@ -237,10 +237,10 @@ h1{font-family:'Sora',sans-serif;font-size:22px;margin-bottom:4px}
     <input id="g_name" class="suOnly" type="text" placeholder="Full name" autocomplete="name">
     <input id="g_phone" class="suOnly" type="tel" placeholder="Phone / WhatsApp number" autocomplete="tel">
     <input id="g_email" type="email" placeholder="Email" autocomplete="email">
-    <input id="g_pw" type="password" placeholder="Password" autocomplete="current-password">
     <button id="g_go" onclick="doAuth()">Create free account</button>
     <div class="er" id="g_er"></div>
     <div class="sw" id="g_sw" onclick="tog()">Already have an account? Log in</div>
+    <div style="font-size:11px;color:var(--mint);opacity:.85;margin-top:10px;line-height:1.5">📌 No password — every login is via a fresh emailed link. Each link works <b>once only</b>, so never reuse an old email. One login unlocks both your material and your mock tests.</div>
   </div>
 
   <!-- ===== TEST LIST ===== -->
@@ -285,33 +285,44 @@ function tog(){
   mode=(mode==='signup')?'login':'signup';
   var su=document.querySelectorAll('.suOnly');
   su.forEach(e=>e.style.display=(mode==='signup')?'block':'none');
-  $('g_pw').style.display=(mode==='signup')?'block':'none';
   $('gT').textContent=(mode==='signup')?'Start your free mock':'Log in';
   $('gP').textContent=(mode==='signup')?'Create a free account to take AO/AAO mock tests with timer, rank and a personal SWOT analysis.':"Enter your email — we'll send a one-tap login link. No password needed.";
   $('g_go').textContent=(mode==='signup')?'Create free account':'Email me a login link';
   $('g_sw').textContent=(mode==='signup')?'Already have an account? Log in':'New here? Create a free account';
 }
 function ger(m){var e=$('g_er');e.style.color='';e.textContent=m;e.style.display='block';}
+
+// A dead/reused magic link redirects back here with #error=...&error_code=otp_expired etc.
+// Previously this was silently ignored — surface it plainly instead of a blank gate.
+(function(){
+  var raw=(location.hash||'').replace(/^#/,'');
+  if(!raw) return;
+  var h=new URLSearchParams(raw);
+  var errCode=h.get('error_code');
+  if(errCode){
+    var friendly=(errCode==='otp_expired')
+      ? "That login link was already used or has expired. Enter your email below and we'll send a brand-new one — tap it only once, and always use the newest email (never an old one)."
+      : "That login link is no longer valid. Enter your email below for a fresh one.";
+    setTimeout(function(){ show('gate'); if(mode!=='login') tog(); ger(friendly); },300);
+    history.replaceState(null,'',location.pathname+location.search);
+  }
+})();
 async function doAuth(){
   $('g_er').style.display='none';
-  var em=$('g_email').value.trim().toLowerCase(), pw=$('g_pw').value;
+  var em=$('g_email').value.trim().toLowerCase();
+  if(!em){ger('Enter your email');return;}
   if(mode==='signup'){
-    if(!em||!pw){ger('Enter email and password');return;}
     var nm=$('g_name').value.trim(), ph=$('g_phone').value.trim();
     if(!nm){ger('Please enter your name');return;}
     if(!ph||ph.replace(/\D/g,'').length<10){ger('Please enter a valid phone number');return;}
-    var r=await sb.auth.signUp({email:em,password:pw,options:{data:{name:nm,phone:ph}}});
+    var r=await sb.auth.signInWithOtp({email:em,options:{shouldCreateUser:true,data:{name:nm,phone:ph},emailRedirectTo:location.origin+'/mock.html'}});
     if(r.error){ger(r.error.message);return;}
     leadPhone=ph;
-    if(!r.data.session){ger('Account created. Please confirm via the email we sent, then log in.');tog();return;}
-    await saveLead(r.data.user,nm,em,ph);
-    start(r.data.user);
   }else{
-    if(!em){ger('Enter your email');return;}
     var r=await sb.auth.signInWithOtp({email:em,options:{emailRedirectTo:location.origin+'/mock.html',shouldCreateUser:false}});
     if(r.error){ger((r.error.code==='otp_disabled')?"We don't see an account for that email yet. Create a free account below to start.":r.error.message);return;}
-    var e=$('g_er'); e.style.color='#0F6E56'; e.textContent='Login link sent to '+em+' — check your email (and spam), then tap it on this device.'; e.style.display='block';
   }
+  var e=$('g_er'); e.style.color='#0F6E56'; e.textContent='Login link sent to '+em+' — check your email (and spam), then tap it once on this device.'; e.style.display='block';
 }
 async function saveLead(u,nm,em,ph){
   try{await sb.from('mock_leads').upsert({user_id:u.id,name:nm,email:em,phone:ph});}catch(e){}
@@ -325,7 +336,9 @@ async function start(u){
   var acc=await sb.from('book_access').select('book_id,active').eq('user_id',u.id);
   var rows=(acc.data||[]).filter(r=>r.active!==false).map(r=>r.book_id);
   owns=rows.indexOf('mocks')>=0;
-  leadPhone=(u.user_metadata&&u.user_metadata.phone)||'';
+  var meta=u.user_metadata||{};
+  leadPhone=meta.phone||leadPhone;
+  if(meta.name && meta.phone){ saveLead(u,meta.name,u.email,meta.phone); }
   // single-device session lock (anti-sharing): claim this session, then watch it
   try{ await sb.from('user_sessions').upsert({user_id:u.id,session_token:myTok,updated_at:new Date().toISOString()}); }catch(e){}
   clearInterval(sessTimer); sessTimer=setInterval(chkSession,8000);

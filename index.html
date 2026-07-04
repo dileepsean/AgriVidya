@@ -1092,6 +1092,7 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
       <div class="modal-error" id="loginError"></div>
       <div class="modal-success" id="loginSuccess">✓ Login link sent! Check your email (and spam folder).</div>
       <div class="modal-switch">No account? <a onclick="openModal('signup')">Sign up free</a></div>
+      <div style="font-size:11px;color:#7A9E94;opacity:.9;margin-top:10px;line-height:1.5">📌 No password — every login is via a fresh emailed link. Each link works once only, so never reuse an old email. One login unlocks your material and your mock tests together.</div>
     </div>
     <div id="modal-signup" style="display:none">
       <h2>Join AgriVidya</h2>
@@ -1108,12 +1109,12 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
         <option>Faculty / Researcher</option>
         <option>Farmer / Agri Professional</option>
       </select>
-      <input class="modal-input" id="signupPassword" type="password" placeholder="Create password (min 6 chars)"/>
       <button class="modal-btn" onclick="handleSignup()">Create free account</button>
       <div class="modal-loading" id="signupLoading">Creating account...</div>
       <div class="modal-error" id="signupError"></div>
-      <div class="modal-success" id="signupSuccess">✓ Account created! Check email to confirm.</div>
+      <div class="modal-success" id="signupSuccess">✓ Almost done! Check your email for a one-tap login link to finish setting up your account.</div>
       <div class="modal-switch">Have account? <a onclick="openModal('login')">Log in</a></div>
+      <div style="font-size:11px;color:#7A9E94;opacity:.9;margin-top:10px;line-height:1.5">📌 No password — we'll email you a one-tap login link instead. Each link works once only, so don't reuse an old email.</div>
     </div>
     <div id="modal-guestemail" style="display:none">
       <h2>One quick thing</h2>
@@ -1182,6 +1183,28 @@ let currentUser=null;
 // RPC in Supabase). This is now just a static label.
 function updateCounter(){}
 
+// A dead/reused magic link (including ones sent manually from the Supabase admin panel,
+// which redirect to this homepage rather than a specific page) comes back here with
+// #error=...&error_code=otp_expired etc. Previously nothing surfaced this — the visitor
+// just saw the ordinary homepage with no clue anything had gone wrong. Surface it and
+// open the login box right away so they can request a fresh link immediately.
+(function(){
+  var raw=(location.hash||'').replace(/^#/,'');
+  if(!raw) return;
+  var h=new URLSearchParams(raw);
+  var errCode=h.get('error_code');
+  if(errCode){
+    var friendly=(errCode==='otp_expired')
+      ? "That login link was already used or has expired. Enter your email below and we'll send a brand-new one — tap it only once, and always use the newest email (never an old one)."
+      : "That login link is no longer valid. Enter your email below for a fresh one.";
+    window.addEventListener('DOMContentLoaded',function(){
+      openModal('login');
+      showErr('login',friendly);
+    });
+    history.replaceState(null,'',location.pathname+location.search);
+  }
+})();
+
 function updateNav(user){
   currentUser=user;
   if(user){
@@ -1205,13 +1228,15 @@ async function loadLibrary(user){
     const {data}=await _supabase.from('book_access').select('book_id,active').eq('user_id',user.id);
     const owned=(data||[]).filter(r=>r.active!==false).map(r=>r.book_id);
     const hasCourse=owned.includes('paper1')||owned.includes('paper2');
+    const hasMocks=owned.includes('mocks');
     var nc=document.getElementById('nav-courses'); if(nc) nc.classList.toggle('hide',!hasCourse);
     var mnc=document.getElementById('mnav-courses'); if(mnc) mnc.classList.toggle('hide',!hasCourse);
     const B='style="background:#fff;color:#0E3A2C;font-weight:700;padding:9px 16px;border-radius:10px;text-decoration:none;font-size:14px;font-family:inherit"';
     let btns='';
     if(owned.includes('paper1')) btns+='<a href="/read.html" '+B+'>📘 Continue Paper 1 →</a>';
     if(owned.includes('paper2')) btns+='<a href="/read.html?b=paper2" '+B+'>📗 Continue Paper 2 →</a>';
-    if(btns){ lib.innerHTML='<div style="max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center"><span style="font-weight:700;font-size:14px">📚 Welcome back! Open your course:</span>'+btns+'</div>'; lib.style.display='block'; }
+    if(hasMocks) btns+='<a href="/mock.html" '+B+'>📝 Open Mock Tests →</a>';
+    if(btns){ lib.innerHTML='<div style="max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center"><span style="font-weight:700;font-size:14px">✅ Logged in — everything in one place:</span>'+btns+'</div>'; lib.style.display='block'; }
     else lib.style.display='none';
   }catch(e){ lib.style.display='none'; }
 }
@@ -1233,14 +1258,12 @@ async function handleLogin(){
 async function handleSignup(){
   const n=document.getElementById('signupName').value.trim();
   const e=document.getElementById('signupEmail').value.trim();
-  const p=document.getElementById('signupPassword').value;
   const r=document.getElementById('signupRole').value;
   const w=document.getElementById('signupWhatsapp').value.trim();
-  if(!n||!e||!p||!w){showErr('signup','Please fill all fields incl. WhatsApp');return;}
+  if(!n||!e||!w){showErr('signup','Please fill all fields incl. WhatsApp');return;}
   if(!/^[6-9]\d{9}$/.test(w)){showErr('signup','Enter a valid 10-digit WhatsApp number');return;}
-  if(p.length<6){showErr('signup','Password min 6 characters');return;}
   showLoad('signup',true);
-  const{error}=await _supabase.auth.signUp({email:e,password:p,options:{data:{full_name:n,role:r,whatsapp:w}}});
+  const{error}=await _supabase.auth.signInWithOtp({email:e,options:{shouldCreateUser:true,data:{full_name:n,role:r,whatsapp:w},emailRedirectTo:location.origin+'/read.html'}});
   showLoad('signup',false);
   if(error){showErr('signup',error.message);return;}
   document.getElementById('signupSuccess').style.display='block';

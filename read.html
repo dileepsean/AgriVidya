@@ -77,6 +77,7 @@ canvas{display:block;width:100%;height:auto;pointer-events:none;transform-origin
   <button id="go" onclick="sendMagicLink()">Email me a login link</button>
   <div class="er" id="er"></div>
   <div class="msg" id="msg" style="display:none;color:var(--mint);font-size:12px;margin-top:8px;line-height:1.4"></div>
+  <div style="font-size:11px;color:var(--mint);opacity:.85;margin-top:10px;line-height:1.5">📌 No password — every login is via a fresh emailed link. Each link works <b>once only</b>, so never reuse an old email — if a link fails, just request a new one above. One login unlocks both your material and your mock tests.</div>
 </div>
 
 <div id="reader" class="hide">
@@ -133,6 +134,23 @@ let user=null, pos=0, myTok=Math.random().toString(36).slice(2), saveT=null, has
 
 function showEr(m){ var e=document.getElementById('er'); e.textContent=m; e.style.display='block'; }
 async function logout(){ await sb.auth.signOut(); location.reload(); }
+
+// A dead/reused magic link redirects back here with #error=...&error_code=otp_expired etc.
+// Previously this was silently ignored — the gate just looked like a blank fresh login
+// screen with zero explanation, which is exactly what was confusing buyers. Surface it.
+(function(){
+  var raw=(location.hash||'').replace(/^#/,'');
+  if(!raw) return;
+  var h=new URLSearchParams(raw);
+  var errCode=h.get('error_code');
+  if(errCode){
+    var friendly=(errCode==='otp_expired')
+      ? "That login link was already used or has expired. Enter your email below and we'll send a brand-new one — tap it only once, and always use the newest email (never an old one)."
+      : "That login link is no longer valid. Enter your email below for a fresh one.";
+    showEr(friendly);
+    history.replaceState(null,'',location.pathname+location.search);
+  }
+})();
 
 async function sendMagicLink(){
   document.getElementById('er').style.display='none';
