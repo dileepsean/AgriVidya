@@ -1092,7 +1092,7 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
       <div class="modal-error" id="loginError"></div>
       <div class="modal-success" id="loginSuccess">✓ Login link sent! Check your email (and spam folder).</div>
       <div class="modal-switch">No account? <a onclick="openModal('signup')">Sign up free</a></div>
-      <div style="font-size:11px;color:#7A9E94;opacity:.9;margin-top:10px;line-height:1.5">📌 No password — every login is via a fresh emailed link. Each link works once only, so never reuse an old email. One login unlocks your material and your mock tests together.</div>
+      <div style="font-size:11px;color:#7A9E94;opacity:.9;margin-top:10px;line-height:1.5">📌 No password — every login is via a fresh emailed link. Each link works once only, so never reuse an old email. The same login works everywhere on the site — you'll see whichever of material or mock tests you've purchased.</div>
     </div>
     <div id="modal-signup" style="display:none">
       <h2>Join AgriVidya</h2>
@@ -1236,7 +1236,7 @@ async function loadLibrary(user){
     if(owned.includes('paper1')) btns+='<a href="/read.html" '+B+'>📘 Continue Paper 1 →</a>';
     if(owned.includes('paper2')) btns+='<a href="/read.html?b=paper2" '+B+'>📗 Continue Paper 2 →</a>';
     if(hasMocks) btns+='<a href="/mock.html" '+B+'>📝 Open Mock Tests →</a>';
-    if(btns){ lib.innerHTML='<div style="max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center"><span style="font-weight:700;font-size:14px">✅ Logged in — everything in one place:</span>'+btns+'</div>'; lib.style.display='block'; }
+    if(btns){ lib.innerHTML='<div style="max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center"><span style="font-weight:700;font-size:14px">✅ Logged in — here\'s what you can open:</span>'+btns+'</div>'; lib.style.display='block'; }
     else lib.style.display='none';
   }catch(e){ lib.style.display='none'; }
 }
