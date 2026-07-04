@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriVidya — Admin</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif}
+:root{--bg:#021E17;--bg2:#04342C;--bar:#085041;--ln:#0F6E56;--ac:#1D9E75;--ac2:#5DCAA5;--mint:#9FE1CB;--txt:#E1F5EE;--red:#ff8a7a;--amber:#ffce6b}
+body{background:var(--bg);color:var(--txt);min-height:100vh}
+.bar{background:linear-gradient(135deg,#0F6E56,#085041);padding:12px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:20}
+.bar h1{font-family:'Sora',sans-serif;font-size:16px;color:#fff}
+.bar .sp{flex:1}
+.bar button,.bar input{background:rgba(255,255,255,.13);color:#fff;border:1px solid rgba(159,225,203,.25);border-radius:9px;padding:8px 12px;font-size:13px}
+.bar button{cursor:pointer;font-weight:600}
+.bar button:hover{background:rgba(255,255,255,.24)}
+.wrap{max-width:1200px;margin:0 auto;padding:18px}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.stat{background:rgba(255,255,255,.05);border:1px solid var(--ln);border-radius:12px;padding:12px 18px;min-width:120px}
+.stat .v{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:#fff}
+.stat .l{font-size:11.5px;color:var(--mint)}
+.stat.warn{border-color:var(--amber)}
+.stat.warn .v{color:var(--amber)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:9px 10px;color:var(--mint);font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--ln)}
+td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.06);vertical-align:top}
+tr.mismatch{background:rgba(255,138,122,.08)}
+.badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;margin:1px 3px 1px 0;background:rgba(255,255,255,.1);color:var(--mint)}
+.badge.owned{background:rgba(29,158,117,.35);color:#fff}
+.badge.none{background:rgba(255,255,255,.05);color:var(--mint);font-style:italic}
+.badge.miss{background:rgba(255,138,122,.25);color:var(--red)}
+.btn{background:linear-gradient(135deg,var(--ac),#0F6E56);color:#fff;border:none;border-radius:8px;padding:6px 11px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn.wa{background:#25D366;color:#05270f}
+.btn.fix{background:var(--amber);color:#3a2600}
+.btn.grant{background:rgba(255,255,255,.12);color:#fff;border:1px solid var(--ln)}
+.actions{display:flex;gap:6px;flex-wrap:wrap;align-items:flex-start}
+.grantBox{display:none;margin-top:6px;background:rgba(0,0,0,.2);border-radius:8px;padding:8px;border:1px solid var(--ln)}
+.grantBox.open{display:block}
+.grantBox label{font-size:11.5px;margin-right:8px;color:var(--mint)}
+.gate{max-width:340px;margin:12vh auto;background:linear-gradient(160deg,rgba(15,110,86,.55),rgba(8,80,65,.85));border:1px solid var(--ln);border-radius:18px;padding:26px;text-align:center}
+.gate input{width:100%;padding:11px;margin:12px 0;border-radius:10px;border:1px solid var(--ln);background:rgba(255,255,255,.08);color:#fff}
+.gate button{width:100%;padding:11px;border:none;border-radius:10px;background:var(--ac);color:#fff;font-weight:700;cursor:pointer}
+.gate .er{color:var(--red);font-size:12px;margin-top:8px;display:none}
+.hide{display:none!important}
+.muted{color:var(--mint);font-size:11.5px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#04342C;border:1px solid var(--ln);color:var(--txt);padding:11px 18px;border-radius:10px;font-size:13px;z-index:60}
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <h2 style="font-family:'Sora',sans-serif;margin-bottom:4px">Admin login</h2>
+  <p class="muted">Enter the admin password to view signups, purchases and grant access.</p>
+  <input id="pw" type="password" placeholder="Admin password">
+  <button onclick="tryLogin()">Enter</button>
+  <div class="er" id="pwEr">Wrong password.</div>
+</div>
+
+<div id="app" class="hide">
+  <div class="bar">
+    <h1>🌾 AgriVidya Admin</h1>
+    <span class="sp"></span>
+    <input id="search" placeholder="Search email..." oninput="render()">
+    <button onclick="load()">↻ Refresh</button>
+  </div>
+  <div class="wrap">
+    <div class="stats" id="stats"></div>
+    <table>
+      <thead><tr><th>Signed up</th><th>Email</th><th>WhatsApp</th><th>Owns</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+const API_BASE = location.origin;
+let DATA = [];
+
+function pw(){ return sessionStorage.getItem('av_admin_pw') || ''; }
+function tryLogin(){
+  const v = document.getElementById('pw').value.trim();
+  if (!v) return;
+  sessionStorage.setItem('av_admin_pw', v);
+  document.getElementById('pwEr').style.display = 'none';
+  load();
+}
+async function api(path, opts){
+  opts = opts || {};
+  opts.headers = Object.assign({ 'x-admin-secret': pw(), 'Content-Type': 'application/json' }, opts.headers || {});
+  const r = await fetch(API_BASE + path, opts);
+  if (r.status === 401) { document.getElementById('gate').classList.remove('hide'); document.getElementById('app').classList.add('hide'); document.getElementById('pwEr').style.display = 'block'; sessionStorage.removeItem('av_admin_pw'); throw new Error('unauthorized'); }
+  return r.json();
+}
+async function load(){
+  try{
+    const d = await api('/api/admin-data');
+    DATA = d.users || [];
+    document.getElementById('gate').classList.add('hide');
+    document.getElementById('app').classList.remove('hide');
+    render();
+  }catch(e){}
+}
+
+const LABELS = { paper1: 'Paper 1', paper2: 'Paper 2', mocks: 'Mocks', bot: 'AI Tutor' };
+function fmtDate(s){ if(!s) return '—'; const d = new Date(s); return d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }); }
+
+function nudgeMessage(){
+  return "Hi! Saw you signed up on AgriVidya but haven't grabbed your material yet — with the KPSC AO/AAO exam on 26 July, time's short. Paper 1 or 2 material is ₹249 each, both papers ₹459, or go all-in with Everything (material + 20 full mock tests) for ₹1299. Whatever you choose, prepare smart and go get that job — you've got this. Reply here if you want the combo link.";
+}
+function fixMessage(){
+  return "Hi, this is AgriVidya support — we noticed your payment went through but your access wasn't fully activated. Sorry about that! We've just fixed it on our end — please try logging in again (use the login link option on agrividya.in) and you should see your material/mock tests now. Let us know if it's still not working.";
+}
+function waLink(phone, msg){
+  const digits = (phone||'').replace(/\D/g,'');
+  const withCountry = digits.length === 10 ? '91' + digits : digits;
+  return 'https://wa.me/' + withCountry + '?text=' + encodeURIComponent(msg);
+}
+
+function render(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const list = DATA.filter(u => !q || u.email.toLowerCase().includes(q));
+
+  const total = DATA.length;
+  const paid = DATA.filter(u => u.owns.length).length;
+  const noPurchase = DATA.filter(u => !u.owns.length).length;
+  const mismatches = DATA.filter(u => u.mismatch).length;
+  document.getElementById('stats').innerHTML = [
+    ['Total signups', total, ''],
+    ['Paid / owns something', paid, ''],
+    ['Signed up, no purchase', noPurchase, ''],
+    ['⚠️ Payment/access mismatch', mismatches, mismatches ? 'warn' : '']
+  ].map(([l,v,cls]) => '<div class="stat '+cls+'"><div class="v">'+v+'</div><div class="l">'+l+'</div></div>').join('');
+
+  document.getElementById('rows').innerHTML = list.map(u => {
+    const ownsBadges = u.owns.length
+      ? u.owns.map(b => '<span class="badge owned">'+(LABELS[b]||b)+'</span>').join('')
+      : '<span class="badge none">no purchase</span>';
+    const missBadges = u.mismatch ? u.missing_books.map(b => '<span class="badge miss">missing '+(LABELS[b]||b)+'</span>').join('') : '';
+    const status = u.mismatch
+      ? '<span style="color:var(--amber);font-weight:700">⚠️ paid, access incomplete</span>'
+      : (u.owns.length ? '<span style="color:var(--ac2)">✅ ok</span>' : '<span class="muted">—</span>');
+    const wa = u.whatsapp
+      ? '<button class="btn wa" onclick=\'window.open(waLink("'+u.whatsapp+'", '+ (u.mismatch ? 'fixMessage()' : (u.owns.length ? '"Hi from AgriVidya! Just checking in — let us know if you need any help with your material or mock tests."' : 'nudgeMessage()')) +'),"_blank")\'>💬 WhatsApp</button>'
+      : '<span class="muted">no phone on file</span>';
+    const fixBtn = u.mismatch ? '<button class="btn fix" onclick="grant(\''+u.email+'\', '+JSON.stringify(u.missing_books)+')">⚡ Fix now</button>' : '';
+    const rowId = 'g_' + u.id.replace(/[^a-zA-Z0-9]/g,'');
+    return '<tr class="'+(u.mismatch?'mismatch':'')+'">'
+      + '<td>'+fmtDate(u.created_at)+'</td>'
+      + '<td>'+u.email+'</td>'
+      + '<td>'+(u.whatsapp || '<span class="muted">—</span>')+'</td>'
+      + '<td>'+ownsBadges+missBadges+'</td>'
+      + '<td>'+status+'</td>'
+      + '<td><div class="actions">'+wa+fixBtn+'<button class="btn grant" onclick="toggleGrant(\''+rowId+'\')">+ Grant</button></div>'
+      + '<div class="grantBox" id="'+rowId+'">'
+      + ['paper1','paper2','mocks','bot'].map(b => '<label><input type="checkbox" value="'+b+'"> '+LABELS[b]+'</label>').join('')
+      + '<div style="margin-top:6px"><button class="btn" onclick="grantFromBox(\''+rowId+'\',\''+u.email+'\')">Grant selected</button></div>'
+      + '</div></td>'
+      + '</tr>';
+  }).join('');
+}
+function toggleGrant(id){ document.getElementById(id).classList.toggle('open'); }
+function grantFromBox(id, email){
+  const box = document.getElementById(id);
+  const books = Array.from(box.querySelectorAll('input:checked')).map(x => x.value);
+  if (!books.length) { toast('Pick at least one item first'); return; }
+  grant(email, books);
+}
+async function grant(email, book_ids){
+  try{
+    const r = await api('/api/admin-grant', { method: 'POST', body: JSON.stringify({ email, book_ids }) });
+    if (r.error) { toast('Failed: ' + r.error); return; }
+    toast('Granted ' + book_ids.join(', ') + ' to ' + email);
+    load();
+  }catch(e){}
+}
+function toast(m){ const t = document.createElement('div'); t.className='toast'; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(), 3200); }
+
+if (pw()) load();
+document.getElementById('pw').addEventListener('keydown', e => { if (e.key==='Enter') tryLogin(); });
+</script>
+</body>
+</html>
