@@ -449,10 +449,15 @@ function reportMistake(){
    Summaries live in static /lessons-paper1.json & /lessons-paper2.json keyed by the REAL
    page number (e.g. "5" = p1-005.jpg). No APIs, no keys, fully free. Long text is split
    into sentence chunks because many mobile TTS engines cut off long utterances. */
-var LESSONS={}, lessonsLoading={}, vSpeaking=false, vQueue=[], knVoice=null, vStarted=false, vKeepAlive=null, vToastT=null;
-function pickKnVoice(){ try{ var vs=speechSynthesis.getVoices()||[]; knVoice=null; for(var i=0;i<vs.length;i++){ if(/^kn([-_]|$)/i.test(vs[i].lang)){ knVoice=vs[i]; break; } } }catch(e){} }
+var LESSONS={}, lessonsLoading={}, vSpeaking=false, vQueue=[], knVoice=null, vKeepAlive=null, vToastT=null, voicesReady=false;
+// Find a real Kannada voice. CRITICAL: if the device has none, we must NOT speak — a non-Kannada
+// fallback voice silently skips every Kannada letter and reads out only the digits (and "—" as
+// "minus"), which sounds broken. So knVoice===null means "cannot speak Kannada on this device".
+function pickKnVoice(){ try{ var vs=speechSynthesis.getVoices()||[]; knVoice=null; for(var i=0;i<vs.length;i++){ var lg=(vs[i].lang||'').toLowerCase(); var nm=(vs[i].name||'').toLowerCase(); if(/^kn([-_]|$)/.test(lg) || lg==='kn' || nm.indexOf('kannada')>=0){ knVoice=vs[i]; break; } } if(vs.length) voicesReady=true; }catch(e){} }
 if('speechSynthesis' in window){ pickKnVoice(); try{ speechSynthesis.onvoiceschanged=pickKnVoice; }catch(e){} }
-function voiceToast(msg,ms){ var t=document.getElementById('voiceToast'); t.textContent=msg; t.style.display='block'; clearTimeout(vToastT); vToastT=setTimeout(function(){ t.style.display='none'; },ms||5000); }
+// Voices load async on some browsers; wait briefly for them before deciding "no Kannada voice".
+function ensureVoices(){ return new Promise(function(res){ pickKnVoice(); if(voicesReady) return res(); var done=false; var f=function(){ if(done) return; done=true; pickKnVoice(); res(); }; try{ speechSynthesis.onvoiceschanged=function(){ pickKnVoice(); f(); }; }catch(e){} setTimeout(f,1500); }); }
+function voiceToast(msg,ms){ var t=document.getElementById('voiceToast'); t.textContent=msg; t.style.display='block'; clearTimeout(vToastT); vToastT=setTimeout(function(){ t.style.display='none'; },ms||6000); }
 function setVoiceUI(on){ var b=document.getElementById('voiceBtn'); if(!b) return; b.classList.toggle('playing',on); b.innerHTML=on?'⏹ <span id="voiceLbl">ನಿಲ್ಲಿಸಿ</span>':'🔊 <span id="voiceLbl">AI ಪಾಠ ಕೇಳಿ</span>'; }
 function loadLessons(book){
   if(LESSONS[book]) return Promise.resolve(LESSONS[book]);
@@ -460,14 +465,16 @@ function loadLessons(book){
   lessonsLoading[book]=fetch('/lessons-'+book+'.json').then(function(r){ return r.ok?r.json():{}; }).catch(function(){ return {}; }).then(function(j){ LESSONS[book]=j||{}; return LESSONS[book]; });
   return lessonsLoading[book];
 }
+// Clean text so even a working Kannada voice never says "minus"/"dash" for punctuation.
+function cleanForSpeech(txt){ return txt.replace(/[‒-―−]/g,', ').replace(/[–—-]/g,', ').replace(/\s*,\s*,\s*/g,', ').replace(/\s+/g,' ').trim(); }
 function splitChunks(txt){
-  var parts=txt.replace(/\s+/g,' ').split(/(?<=[.!?।])\s/), out=[], cur='';
+  var parts=cleanForSpeech(txt).split(/(?<=[.!?।])\s/), out=[], cur='';
   for(var i=0;i<parts.length;i++){ if((cur+' '+parts[i]).length>200 && cur){ out.push(cur); cur=parts[i]; } else { cur=cur?cur+' '+parts[i]:parts[i]; } }
   if(cur) out.push(cur);
   return out;
 }
 function voiceStop(){
-  vQueue=[]; vSpeaking=false; vStarted=false;
+  vQueue=[]; vSpeaking=false;
   clearInterval(vKeepAlive); vKeepAlive=null;
   try{ speechSynthesis.cancel(); }catch(e){}
   setVoiceUI(false);
@@ -477,27 +484,25 @@ function speakNext(){
   if(!vQueue.length){ voiceStop(); return; }
   var chunk=vQueue.shift();
   var ut=new SpeechSynthesisUtterance(chunk);
-  ut.lang='kn-IN'; if(knVoice) ut.voice=knVoice; ut.rate=0.95;
-  ut.onstart=function(){ vStarted=true; };
+  ut.lang='kn-IN'; ut.voice=knVoice; ut.rate=0.92;
   ut.onend=function(){ if(vSpeaking) speakNext(); };
   ut.onerror=function(){ voiceStop(); };
   try{ speechSynthesis.speak(ut); }catch(e){ voiceStop(); }
 }
+var NO_KN_MSG='📢 ಈ ಸಾಧನದಲ್ಲಿ ಕನ್ನಡ ಧ್ವನಿ (Kannada voice) ಇಲ್ಲ, ಆದ್ದರಿಂದ ಪಾಠ ಕೇಳಿಸಲು ಆಗುತ್ತಿಲ್ಲ. ANDROID: Settings → System → Languages → Text-to-speech → Google Speech Services ಆಯ್ಕೆಮಾಡಿ → Install voice data → ಕನ್ನಡ (Kannada) download ಮಾಡಿ. iPhone: Settings → Accessibility → Spoken Content → Voices → ಕನ್ನಡ add ಮಾಡಿ. ನಂತರ ಈ ಪುಟ refresh ಮಾಡಿ ಮತ್ತೆ 🔊 ಒತ್ತಿ.';
 function toggleVoice(){
   if(vSpeaking){ voiceStop(); return; }
-  if(!('speechSynthesis' in window)){ voiceToast('ಕ್ಷಮಿಸಿ — ನಿಮ್ಮ ಬ್ರೌಸರ್ ಧ್ವನಿ ಪಾಠವನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ. Chrome ಬ್ರೌಸರ್ ಬಳಸಿ ನೋಡಿ.'); return; }
-  var b=document.getElementById('voiceBtn'); b.innerHTML='⏳ <span id="voiceLbl">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span>';
-  loadLessons(BOOK_ID).then(function(L){
-    setVoiceUI(false);
+  if(!('speechSynthesis' in window)){ voiceToast('ಕ್ಷಮಿಸಿ, ನಿಮ್ಮ ಬ್ರೌಸರ್ ಧ್ವನಿ ಪಾಠವನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ. Chrome ಬ್ರೌಸರ್ ಬಳಸಿ ನೋಡಿ.',9000); return; }
+  var b=document.getElementById('voiceBtn'); b.innerHTML='⏳ <span id="voiceLbl">ಲೋಡ್...</span>';
+  Promise.all([loadLessons(BOOK_ID), ensureVoices()]).then(function(r){
+    var L=r[0]; setVoiceUI(false);
     var txt=L[String(ORDER[pos])];
     if(!txt){ voiceToast('ಈ ಪುಟಕ್ಕೆ AI ಪಾಠ ಶೀಘ್ರದಲ್ಲಿ ಬರಲಿದೆ 🙏'); return; }
-    pickKnVoice();
-    vQueue=splitChunks(txt); vSpeaking=true; vStarted=false; setVoiceUI(true);
+    // Hard gate: no real Kannada voice => show install steps, never read number-only gibberish.
+    if(!knVoice){ voiceToast(NO_KN_MSG,15000); return; }
+    vQueue=splitChunks(txt); vSpeaking=true; setVoiceUI(true);
     speakNext();
-    // Some desktop Chrome builds silently pause long speech — keep-alive nudge.
     vKeepAlive=setInterval(function(){ if(vSpeaking){ try{ speechSynthesis.resume(); }catch(e){} } },5000);
-    // If nothing started within 4s, the device likely has no Kannada voice installed.
-    setTimeout(function(){ if(vSpeaking && !vStarted){ voiceStop(); voiceToast('ನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲಿ ಕನ್ನಡ ಧ್ವನಿ (Kannada voice) ಇಲ್ಲದಂತಿದೆ. Settings → Text-to-speech ನಲ್ಲಿ Google Speech Services + ಕನ್ನಡ install ಮಾಡಿ, ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',9000); } },4000);
   });
 }
 document.addEventListener('keydown',function(e){ if((e.ctrlKey||e.metaKey) && ['s','p','u'].indexOf(e.key.toLowerCase())>=0){ e.preventDefault(); } if(e.key==='ArrowRight') next(); if(e.key==='ArrowLeft') prev(); });
