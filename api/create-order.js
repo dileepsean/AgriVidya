@@ -4,14 +4,14 @@
 // Optional promo_code applies a discount. Promo codes are only ever handed out
 // manually (e.g. on WhatsApp when someone asks) — never advertised on the site —
 // so keep this list short and only add codes you're actively giving out.
-const PRICES = {           // in paise
-  paper1: 24900,
-  paper2: 24900,
-  combo: 45900,
-  mocks: 99900,
-  everything: 129900,
-  bot: 10000
-};
+// Date-gated launch pricing (in paise). Prices rise at CUTOVER (midnight IST, start of 6 Jul 2026)
+// to reflect the newly added bilingual AI Voice Tutor. Buyers before then get the launch price;
+// this is computed SERVER-SIDE per request so it can't be tampered with, and it makes the
+// "price goes up tomorrow" promise self-executing (no manual change needed).
+const PRICE_CUTOVER = Date.parse('2026-07-06T00:00:00+05:30');
+const PRICES_OLD = { paper1: 24900, paper2: 24900, combo: 45900, mocks: 99900, everything: 129900, bot: 10000 };
+const PRICES_NEW = { paper1: 29900, paper2: 29900, combo: 54900, mocks: 99900, everything: 149900, bot: 10000 };
+function currentPrices() { return Date.now() < PRICE_CUTOVER ? PRICES_OLD : PRICES_NEW; }
 const PROMOS = {           // CODE -> either { percent: N } off every product, or
                             // { fixed: {book_id: paise}, maxUses: N } overriding specific product prices
                             // with a redemption cap enforced via public.promo_redemptions
@@ -34,6 +34,7 @@ export default async function handler(req, res) {
     let b = req.body; if (typeof b === 'string') b = JSON.parse(b || '{}'); if (!b) b = {};
     const id = process.env.RAZORPAY_KEY_ID, secret = process.env.RAZORPAY_KEY_SECRET;
     const bookId = b.book_id;
+    const PRICES = currentPrices();
     if (!PRICES[bookId]) { res.status(400).json({ error: 'Invalid product' }); return; }
 
     let amount = PRICES[bookId];
