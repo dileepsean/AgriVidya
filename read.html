@@ -494,37 +494,61 @@ function splitChunks(txt){
   if(cur) out.push(cur);
   return out;
 }
-function voiceStop(){
-  vQueue=[]; vSpeaking=false;
+var lessonAudio=null, vBusy=false;
+function stopAll(){
+  vQueue=[]; vSpeaking=false; vBusy=false;
   clearInterval(vKeepAlive); vKeepAlive=null;
   try{ speechSynthesis.cancel(); }catch(e){}
+  if(lessonAudio){ try{ lessonAudio.pause(); }catch(e){} try{ lessonAudio.src=''; }catch(e){} lessonAudio=null; }
   setVoiceUI(false);
 }
+function voiceStop(){ stopAll(); }
 function speakNext(){
   if(!vSpeaking) return;
-  if(!vQueue.length){ voiceStop(); return; }
+  if(!vQueue.length){ stopAll(); return; }
   var chunk=vQueue.shift();
   var ut=new SpeechSynthesisUtterance(chunk);
   if(vLang==='en'){ ut.lang=(enVoice&&enVoice.lang)||'en-IN'; ut.voice=enVoice; ut.rate=0.96; }
   else { ut.lang='kn-IN'; ut.voice=knVoice; ut.rate=0.92; }
   ut.onend=function(){ if(vSpeaking) speakNext(); };
-  ut.onerror=function(){ voiceStop(); };
-  try{ speechSynthesis.speak(ut); }catch(e){ voiceStop(); }
+  ut.onerror=function(){ stopAll(); };
+  try{ speechSynthesis.speak(ut); }catch(e){ stopAll(); }
 }
-var NO_KN_MSG='📢 ಈ ಸಾಧನದಲ್ಲಿ ಕನ್ನಡ ಧ್ವನಿ (Kannada voice) ಇಲ್ಲ. 🌐 ಬಟನ್ ಒತ್ತಿ English ಗೆ ಬದಲಾಯಿಸಿ (ಎಲ್ಲಾ ಫೋನ್/ಲ್ಯಾಪ್‌ಟಾಪ್‌ನಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತದೆ), ಅಥವಾ ಕನ್ನಡ ಧ್ವನಿ install ಮಾಡಿ — ANDROID: Settings → System → Languages → Text-to-speech → Google Speech Services → Install voice data → ಕನ್ನಡ. iPhone: Settings → Accessibility → Spoken Content → Voices → ಕನ್ನಡ. ನಂತರ refresh ಮಾಡಿ.';
-function toggleVoice(){
-  if(vSpeaking){ voiceStop(); return; }
-  if(!('speechSynthesis' in window)){ voiceToast('Sorry, your browser does not support voice. Try Chrome.',9000); return; }
-  var b=document.getElementById('voiceBtn'); b.innerHTML='⏳ <span id="voiceLbl">…</span>';
-  Promise.all([loadLessons(BOOK_ID,vLang), ensureVoices()]).then(function(r){
-    var L=r[0]; setVoiceUI(false);
-    var txt=L[String(ORDER[pos])];
-    if(!txt){ voiceToast(vLang==='en'?'This page\'s English lesson is coming soon 🙏':'ಈ ಪುಟಕ್ಕೆ AI ಪಾಠ ಶೀಘ್ರದಲ್ಲಿ ಬರಲಿದೆ 🙏'); return; }
-    if(vLang==='kn' && !knVoice){ voiceToast(NO_KN_MSG,15000); return; }
-    if(vLang==='en' && !enVoice){ voiceToast('No English voice found on this device. Please use Chrome.',9000); return; }
+// Robotic browser-voice fallback — ONLY used if the neural service fails.
+function speakBrowserFallback(txt){
+  ensureVoices().then(function(){
+    if(vLang==='kn' && !knVoice){ voiceToast(NO_KN_MSG,15000); setVoiceUI(false); return; }
+    if(vLang==='en' && !enVoice){ voiceToast('No English voice on this device. Please use Chrome.',9000); setVoiceUI(false); return; }
     vQueue=splitChunks(txt); vSpeaking=true; setVoiceUI(true);
     speakNext();
     vKeepAlive=setInterval(function(){ if(vSpeaking){ try{ speechSynthesis.resume(); }catch(e){} } },5000);
+  });
+}
+// Natural HUMAN voice: fetch neural audio from our /api/tts and play it. Falls back if it fails.
+function playPage(txt){
+  var voice=(vLang==='en')?'neerja':'sapna';
+  vBusy=true; setVoiceUI(true);
+  fetch('/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:cleanForSpeech(txt),voice:voice})})
+    .then(function(r){ if(!r.ok) throw new Error('tts'+r.status); return r.blob(); })
+    .then(function(b){
+      if(!vBusy) return;                         // user hit stop while loading
+      if(!b || b.size<800) throw new Error('empty');
+      lessonAudio=new Audio(URL.createObjectURL(b));
+      lessonAudio.onended=function(){ stopAll(); };
+      lessonAudio.onerror=function(){ stopAll(); };
+      vBusy=false; vSpeaking=true;
+      var p=lessonAudio.play(); if(p&&p.catch) p.catch(function(){ stopAll(); });
+    })
+    .catch(function(){ vBusy=false; speakBrowserFallback(txt); });   // neural down → robotic backup
+}
+var NO_KN_MSG='📢 ಈ ಸಾಧನದಲ್ಲಿ ಕನ್ನಡ ಧ್ವನಿ (Kannada voice) ಇಲ್ಲ. 🌐 ಬಟನ್ ಒತ್ತಿ English ಗೆ ಬದಲಾಯಿಸಿ (ಎಲ್ಲಾ ಫೋನ್/ಲ್ಯಾಪ್‌ಟಾಪ್‌ನಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತದೆ), ಅಥವಾ ಕನ್ನಡ ಧ್ವನಿ install ಮಾಡಿ — ANDROID: Settings → System → Languages → Text-to-speech → Google Speech Services → Install voice data → ಕನ್ನಡ. iPhone: Settings → Accessibility → Spoken Content → Voices → ಕನ್ನಡ. ನಂತರ refresh ಮಾಡಿ.';
+function toggleVoice(){
+  if(vSpeaking || vBusy || (lessonAudio && !lessonAudio.paused)){ stopAll(); return; }
+  var b=document.getElementById('voiceBtn'); b.innerHTML='⏳ <span id="voiceLbl">…</span>';
+  loadLessons(BOOK_ID,vLang).then(function(L){
+    var txt=L[String(ORDER[pos])];
+    if(!txt){ setVoiceUI(false); voiceToast(vLang==='en'?'This page\'s English lesson is coming soon 🙏':'ಈ ಪುಟಕ್ಕೆ AI ಪಾಠ ಶೀಘ್ರದಲ್ಲಿ ಬರಲಿದೆ 🙏'); return; }
+    playPage(txt);
   });
 }
 setTimeout(setLangUI,0);
