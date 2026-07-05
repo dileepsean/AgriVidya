@@ -190,6 +190,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
   <div class="eyebrow"><span class="d"></span>Karnataka KPSC · AO / AAO 2026</div>
   <h1 class="disp">Everything to clear <em>AO / AAO</em> — in one place.</h1>
   <p>Paper 1, Paper 2 and full-length online mock tests — built around the negative-marking strategy that decides who passes.</p>
+  <p style="margin-top:8px;font-weight:600;color:#DDF3EA">🔊 NEW: every page now has an AI Voice Tutor — listen to each lesson aloud in English &amp; ಕನ್ನಡ.</p>
   <div class="hero-cta">
     <button class="btn btn-solid btn-lg" onclick="scrollTo({top:document.getElementById('store').offsetTop-40,behavior:'smooth'})">View materials →</button>
     <button class="btn btn-ghost btn-lg" style="color:#fff;border-color:rgba(255,255,255,.4)" onclick="getSample()">Free sample</button>
@@ -209,6 +210,12 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
       <h2 class="sec-t disp">Pick what you need</h2>
       <p class="sec-s">Secure, online-only access. No downloads to lose, no PDFs to leak. Instant access the moment you pay.</p>
     </div>
+    <!-- NEW: AI Voice Tutor announcement + honest launch-price-ends-tonight urgency -->
+    <div class="rv" style="margin:0 0 14px;background:linear-gradient(135deg,#1D9E75,#0F6E56);border-radius:16px;padding:16px 20px;text-align:center;color:#fff;box-shadow:0 20px 50px -26px rgba(15,110,86,.7)">
+      <div style="font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(16px,2.4vw,20px)">🔊 NEW — AI Voice Tutor on every page!</div>
+      <div style="font-size:13px;margin-top:6px;line-height:1.55;color:#DDF3EA">Every study page is now taught aloud in a natural human voice — <b>English &amp; ಕನ್ನಡ</b>. Listen while you commute, cook or revise. Works on any phone or laptop, no extra cost. 🎧</div>
+      <div id="priceRiseBox" style="margin-top:10px;font-size:13.5px;font-weight:700;color:#FFE9A8">🔔 Launch price ends tonight — price rises in <span id="riseCd">--:--:--</span>. Buy today &amp; save.</div>
+    </div>
     <div class="rv" style="margin:0 0 14px;background:linear-gradient(135deg,#04342C,#021E17);border-radius:16px;padding:18px 20px;text-align:center;box-shadow:0 20px 50px -26px rgba(4,52,44,.7)">
       <div style="color:var(--gp);font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px">⏳ Time left to your KPSC AO/AAO exam · 26 July 2026</div>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
@@ -226,6 +233,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
         <div class="disp" style="color:#1A1205;font-size:24px;font-weight:800;line-height:1.2">EVERYTHING — Material + Mock Tests</div>
         <div style="color:#3A2A05;font-size:13.5px;margin-top:6px;line-height:1.5">Both papers <b>plus</b> all 10 + 10 mock tests, in one account. Reading tells you what you know — mocks tell you what you'll actually get wrong on exam day. One payment covers your whole prep, start to finish.</div>
         <div style="color:#3A2A05;font-size:13px;margin-top:8px;font-weight:700">🤖 + FREE AI doubt-solving bot inside the reader — ask any syllabus doubt, get an instant answer in ಕನ್ನಡ</div>
+        <div style="color:#3A2A05;font-size:13px;margin-top:6px;font-weight:700">🔊 + NEW AI Voice Tutor — every page taught aloud in English &amp; ಕನ್ನಡ</div>
         <div style="margin-top:12px">
           <a href="javascript:void(0)" onclick="togglePromo('everything')" style="font-size:12px;color:#5A3A00;text-decoration:underline;cursor:pointer;font-weight:600">🏷️ Have a promo code for this plan?</a>
           <div id="promoFormeverything" style="display:none;gap:8px;margin-top:8px;flex-wrap:wrap">
@@ -312,6 +320,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
         <button class="btn btn-solid act" id="btnPaper1" onclick="buyMaterial('paper1','AAO Paper 1 Study Material')">Buy Now — ₹249 →</button>
         <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20AO%2FAAO%20Paper%201%20(%E2%82%B9249)" target="_blank">💬 Buy via WhatsApp</a>
         <div class="samp" onclick="getSample()">Get the free sample (PDF) →</div>
+        <div style="font-size:11.5px;color:var(--gb);margin-top:5px;font-weight:600">🔊 Full version: every page taught aloud in English &amp; ಕನ್ನಡ</div>
         <div class="sub" style="margin-top:8px">💡 Need Paper 2 as well? The <a onclick="document.querySelector('#store').scrollIntoView({behavior:'smooth'})" style="color:var(--gb);cursor:pointer;font-weight:600">Material Combo</a> gets you both for just ₹210 more.</div>
       </div>
 
@@ -332,6 +341,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
         <button class="btn btn-solid act" id="btnPaper2" onclick="buyMaterial('paper2','AAO Paper 2 Study Material')">Buy Now — ₹249 →</button>
         <a class="samp" style="display:block" href="https://wa.me/919492982424?text=Hi%2C%20I%20want%20to%20buy%20AO%2FAAO%20Paper%202%20(%E2%82%B9249)" target="_blank">💬 Buy via WhatsApp</a>
         <div class="samp" onclick="getSampleP2()">Get the free sample (PDF) →</div>
+        <div style="font-size:11.5px;color:var(--gb);margin-top:5px;font-weight:600">🔊 Full version: every page taught aloud in English &amp; ಕನ್ನಡ</div>
         <div class="sub" style="margin-top:8px">💡 Need Paper 1 as well? The <a onclick="document.querySelector('#store').scrollIntoView({behavior:'smooth'})" style="color:var(--gb);cursor:pointer;font-weight:600">Material Combo</a> gets you both for just ₹210 more.</div>
       </div>
 
@@ -377,12 +387,13 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
       <div class="step rv"><div class="num">📚</div><h4>Both papers, full syllabus</h4><p>Paper 1 + Paper 2 in one place. No scattered PDFs, no missing topics.</p></div>
       <div class="step rv"><div class="num">⚡</div><h4>Start in 60 seconds</h4><p>Pay by UPI/card and your material opens instantly — automatically.</p></div>
       <div class="step rv"><div class="num">🔒</div><h4>Secure &amp; always safe</h4><p>Online-only reader. Your material can never be lost, deleted or leaked.</p></div>
-      <div class="step rv"><div class="num">👀</div><h4>Try before you pay</h4><p>Free sample of every book — see the quality before spending a rupee.</p></div>
-      <div class="step rv"><div class="num">💸</div><h4>Less than one coaching class</h4><p>₹249 for the complete paper — and it's yours for your whole preparation.</p></div>
+      <div class="step rv"><div class="num">👀</div><h4>Try before you pay</h4><p>Free sample of every book — see the quality first. Every page you buy also comes with the AI Voice Tutor.</p></div>
+      <div class="step rv"><div class="num">🔊</div><h4>NEW: AI Voice Tutor</h4><p>Every page taught aloud in a natural voice — English &amp; ಕನ್ನಡ. Learn on the go, on any device.</p></div>
+      <div class="step rv"><div class="num">💸</div><h4>Less than one coaching class</h4><p>A fraction of tuition fees for the complete paper — yours for your whole preparation.</p></div>
     </div>
     <div class="rv" style="margin-top:24px;text-align:center;background:linear-gradient(135deg,#0F6E56,#04342C);border-radius:16px;padding:1.6rem;color:#fff">
       <div class="disp" style="font-size:clamp(18px,2.6vw,24px);font-weight:800">⏳ Karnataka AO/AAO exam: 26 July 2026 — every day counts.</div>
-      <div style="color:var(--gp);font-size:14px;margin-top:6px">Launch price ₹249 (50% off ₹499). Start now and study the smart way.</div>
+      <div style="color:var(--gp);font-size:14px;margin-top:6px">Now with the AI Voice Tutor 🔊 — every page in English &amp; ಕನ್ನಡ. Start now and study the smart way.</div>
       <button class="btn btn-solid btn-lg" style="margin-top:16px" onclick="scrollTo({top:document.getElementById('store').offsetTop-40,behavior:'smooth'})">See the materials →</button>
     </div>
   </div>
@@ -573,7 +584,33 @@ async function doBuy(id,desc,email){
    This list is cosmetic (updates the displayed price); the real discount is enforced
    server-side in api/create-order.js — keep both lists in sync when adding a code. */
 const PROMOS={AAO15:{percent:15}, TAJUDDIN10:{fixed:{everything:1000,mocks:750}}, RAMYA5:{fixed:{everything:1000,mocks:750}}};
-const BASE_PRICES={paper1:249,paper2:249,combo:459,mocks:999,everything:1299};
+/* Date-gated launch pricing — rises at midnight IST (start of 6 Jul 2026) with the new AI Voice
+   Tutor. MUST stay in sync with api/create-order.js (which is server-authoritative). */
+const PRICE_CUTOVER=Date.parse('2026-07-06T00:00:00+05:30');
+const PRICES_OLD={paper1:249,paper2:249,combo:459,mocks:999,everything:1299};
+const PRICES_NEW={paper1:299,paper2:299,combo:549,mocks:999,everything:1499};
+const BASE_PRICES = Date.now()<PRICE_CUTOVER ? PRICES_OLD : PRICES_NEW;
+function renderBasePrices(){
+  var p=BASE_PRICES;
+  [['price-everything',p.everything],['price-combo',p.combo],['price-mocks',p.mocks],['price-paper1',p.paper1],['price-paper2',p.paper2]].forEach(function(x){ var e=document.getElementById(x[0]); if(e) e.textContent='₹'+x[1]; });
+  var btns={btnEverything:'Get everything — ₹'+p.everything+' →', btnCombo:'Get both — ₹'+p.combo+' →', btnMocks:'Buy Now — ₹'+p.mocks+' →', btnPaper1:'Buy Now — ₹'+p.paper1+' →', btnPaper2:'Buy Now — ₹'+p.paper2+' →', btnWhyPaper1:'Start with Paper 1 — ₹'+p.paper1+' →'};
+  Object.keys(btns).forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent=btns[id]; });
+}
+renderBasePrices();
+/* live countdown to tonight's price rise (hides itself after cutover) */
+(function(){
+  var box=document.getElementById('priceRiseBox'), cd=document.getElementById('riseCd');
+  if(!box) return;
+  function pad(n){ return n<10?'0'+n:''+n; }
+  function tick(){
+    var diff=PRICE_CUTOVER-Date.now();
+    if(diff<=0){ box.innerHTML='✅ AI Voice Tutor now included — prices updated.'; return; }
+    var h=Math.floor(diff/3600000), m=Math.floor(diff%3600000/60000), s=Math.floor(diff%60000/1000);
+    if(cd) cd.textContent=pad(h)+':'+pad(m)+':'+pad(s);
+    setTimeout(tick,1000);
+  }
+  tick();
+})();
 let appliedPromo=null, appliedPromoObj=null;
 function togglePromo(n){ var f=document.getElementById(n?('promoForm'+n):'promoForm'); if(f) f.style.display = f.style.display==='none'?'flex':'none'; }
 function applyPromo(n){
