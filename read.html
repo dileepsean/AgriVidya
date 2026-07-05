@@ -57,12 +57,14 @@ canvas{display:block;width:100%;height:auto;pointer-events:none;transform-origin
 .botbubble{position:fixed;bottom:80px;right:16px;z-index:40;display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#1D9E75,#0F6E56);color:#fff;border:none;border-radius:30px;padding:12px 18px;font-family:'Sora',sans-serif;font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 12px 28px -8px rgba(29,158,117,.85);animation:bbpulse 2.6s infinite}
 .botbubble:hover{filter:brightness(1.08)}
 @keyframes bbpulse{0%,100%{transform:translateY(0);box-shadow:0 12px 28px -8px rgba(29,158,117,.85)}50%{transform:translateY(-2px);box-shadow:0 16px 34px -8px rgba(29,158,117,1)}}
+.langtog{position:fixed;bottom:168px;left:16px;z-index:40;display:flex;align-items:center;gap:5px;background:rgba(4,52,44,.92);color:var(--mint);border:1px solid rgba(159,225,203,.35);border-radius:20px;padding:8px 13px;font-family:'Sora',sans-serif;font-weight:700;font-size:12px;cursor:pointer;box-shadow:0 8px 20px -8px rgba(0,0,0,.6)}
+.langtog:hover{background:rgba(4,52,44,1)}
 .voicebtn{position:fixed;bottom:126px;left:16px;z-index:40;display:flex;align-items:center;gap:7px;background:linear-gradient(135deg,#B7791F,#8a5a12);color:#fff;border:none;border-radius:30px;padding:12px 16px;font-family:'Sora',sans-serif;font-weight:700;font-size:13.5px;cursor:pointer;box-shadow:0 12px 28px -8px rgba(183,121,31,.85)}
 .voicebtn.playing{background:linear-gradient(135deg,#C53030,#7a1d1d);box-shadow:0 12px 28px -8px rgba(197,48,48,.85)}
 .voicebtn:hover{filter:brightness(1.08)}
 .reportbtn{position:fixed;bottom:84px;left:16px;z-index:40;display:flex;align-items:center;gap:5px;background:rgba(2,30,23,.75);color:var(--mint);border:1px solid rgba(159,225,203,.3);border-radius:20px;padding:7px 12px;font-size:11.5px;font-weight:600;cursor:pointer;backdrop-filter:blur(4px)}
 .reportbtn:hover{background:rgba(2,30,23,.95)}
-#voiceToast{position:fixed;bottom:186px;left:16px;right:16px;max-width:420px;margin:0 auto;background:rgba(2,30,23,.96);border:1px solid var(--ln);color:var(--mint);font-size:13px;line-height:1.5;padding:12px 14px;border-radius:12px;z-index:45;display:none;box-shadow:0 18px 44px -18px rgba(0,0,0,.8)}
+#voiceToast{position:fixed;bottom:212px;left:16px;right:16px;max-width:420px;margin:0 auto;background:rgba(2,30,23,.96);border:1px solid var(--ln);color:var(--mint);font-size:13px;line-height:1.5;padding:12px 14px;border-radius:12px;z-index:45;display:none;box-shadow:0 18px 44px -18px rgba(0,0,0,.8)}
 </style>
 </head>
 <body oncontextmenu="return false" ondragstart="return false">
@@ -122,7 +124,8 @@ canvas{display:block;width:100%;height:auto;pointer-events:none;transform-origin
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.6-.8L3 21l1.9-5.4A8.38 8.38 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <span>Ask me any doubt</span>
   </button>
-  <button class="voicebtn" id="voiceBtn" onclick="toggleVoice()" title="AI voice lesson — this page taught aloud in Kannada">🔊 <span id="voiceLbl">AI ಪಾಠ ಕೇಳಿ</span></button>
+  <button class="langtog" id="langToggle" onclick="switchLang()" title="Switch voice language / ಧ್ವನಿ ಭಾಷೆ ಬದಲಿಸಿ">🌐 English ⇄ ಕನ್ನಡ</button>
+  <button class="voicebtn" id="voiceBtn" onclick="toggleVoice()" title="AI voice lesson — this page taught aloud">🔊 <span id="voiceLbl">Listen (English)</span></button>
   <button class="reportbtn" onclick="reportMistake()" title="Report a mistake on this page via WhatsApp">⚠️ ತಪ್ಪು ಕಂಡಿತಾ? Report</button>
   <div id="voiceToast"></div>
 </div>
@@ -444,28 +447,46 @@ function reportMistake(){
   window.open('https://wa.me/919492982424?text='+encodeURIComponent(msg),'_blank');
 }
 
-/* ===== AI Voice Lesson (🔊 AI ಪಾಠ ಕೇಳಿ) =====
-   Speaks a per-page teaching summary using the browser's built-in speechSynthesis (kn-IN).
-   Summaries live in static /lessons-paper1.json & /lessons-paper2.json keyed by the REAL
-   page number (e.g. "5" = p1-005.jpg). No APIs, no keys, fully free. Long text is split
-   into sentence chunks because many mobile TTS engines cut off long utterances. */
-var LESSONS={}, lessonsLoading={}, vSpeaking=false, vQueue=[], knVoice=null, vKeepAlive=null, vToastT=null, voicesReady=false;
-// Find a real Kannada voice. CRITICAL: if the device has none, we must NOT speak — a non-Kannada
-// fallback voice silently skips every Kannada letter and reads out only the digits (and "—" as
-// "minus"), which sounds broken. So knVoice===null means "cannot speak Kannada on this device".
-function pickKnVoice(){ try{ var vs=speechSynthesis.getVoices()||[]; knVoice=null; for(var i=0;i<vs.length;i++){ var lg=(vs[i].lang||'').toLowerCase(); var nm=(vs[i].name||'').toLowerCase(); if(/^kn([-_]|$)/.test(lg) || lg==='kn' || nm.indexOf('kannada')>=0){ knVoice=vs[i]; break; } } if(vs.length) voicesReady=true; }catch(e){} }
-if('speechSynthesis' in window){ pickKnVoice(); try{ speechSynthesis.onvoiceschanged=pickKnVoice; }catch(e){} }
-// Voices load async on some browsers; wait briefly for them before deciding "no Kannada voice".
-function ensureVoices(){ return new Promise(function(res){ pickKnVoice(); if(voicesReady) return res(); var done=false; var f=function(){ if(done) return; done=true; pickKnVoice(); res(); }; try{ speechSynthesis.onvoiceschanged=function(){ pickKnVoice(); f(); }; }catch(e){} setTimeout(f,1500); }); }
-function voiceToast(msg,ms){ var t=document.getElementById('voiceToast'); t.textContent=msg; t.style.display='block'; clearTimeout(vToastT); vToastT=setTimeout(function(){ t.style.display='none'; },ms||6000); }
-function setVoiceUI(on){ var b=document.getElementById('voiceBtn'); if(!b) return; b.classList.toggle('playing',on); b.innerHTML=on?'⏹ <span id="voiceLbl">ನಿಲ್ಲಿಸಿ</span>':'🔊 <span id="voiceLbl">AI ಪಾಠ ಕೇಳಿ</span>'; }
-function loadLessons(book){
-  if(LESSONS[book]) return Promise.resolve(LESSONS[book]);
-  if(lessonsLoading[book]) return lessonsLoading[book];
-  lessonsLoading[book]=fetch('/lessons-'+book+'.json').then(function(r){ return r.ok?r.json():{}; }).catch(function(){ return {}; }).then(function(j){ LESSONS[book]=j||{}; return LESSONS[book]; });
-  return lessonsLoading[book];
+/* ===== AI Voice Lesson (🔊) — BILINGUAL (English + Kannada) =====
+   Speaks a per-page teaching summary via the browser's built-in speechSynthesis.
+   English uses lessons-en-paper{1,2}.json (an English voice exists on ~every device, so it
+   always works — this is the default). Kannada uses lessons-paper{1,2}.json and the device's
+   kn-IN voice if present; if absent we show install steps instead of number-gibberish.
+   Keyed by REAL page number ("5" = p1-005.jpg). No APIs, no keys, fully free. */
+var LESSONS={}, lessonsLoading={}, vSpeaking=false, vQueue=[], knVoice=null, enVoice=null, vKeepAlive=null, vToastT=null, voicesReady=false;
+var vLang=(function(){ try{ return localStorage.getItem('av_voicelang')||'en'; }catch(e){ return 'en'; } })();
+function pickVoices(){
+  try{
+    var vs=speechSynthesis.getVoices()||[]; knVoice=null; enVoice=null;
+    var enIN=null, enGB=null, enUS=null, enAny=null;
+    for(var i=0;i<vs.length;i++){
+      var lg=(vs[i].lang||'').toLowerCase().replace('_','-'), nm=(vs[i].name||'').toLowerCase();
+      if(!knVoice && (/^kn(-|$)/.test(lg) || lg==='kn' || nm.indexOf('kannada')>=0)) knVoice=vs[i];
+      if(lg==='en-in' && !enIN) enIN=vs[i];
+      else if(lg==='en-gb' && !enGB) enGB=vs[i];
+      else if(lg==='en-us' && !enUS) enUS=vs[i];
+      else if(lg.indexOf('en')===0 && !enAny) enAny=vs[i];
+    }
+    enVoice=enIN||enGB||enUS||enAny||null;   // prefer Indian English for names/terms
+    if(vs.length) voicesReady=true;
+  }catch(e){}
 }
-// Clean text so even a working Kannada voice never says "minus"/"dash" for punctuation.
+if('speechSynthesis' in window){ pickVoices(); try{ speechSynthesis.onvoiceschanged=pickVoices; }catch(e){} }
+function ensureVoices(){ return new Promise(function(res){ pickVoices(); if(voicesReady) return res(); var done=false; var f=function(){ if(done) return; done=true; pickVoices(); res(); }; try{ speechSynthesis.onvoiceschanged=function(){ pickVoices(); f(); }; }catch(e){} setTimeout(f,1500); }); }
+function voiceToast(msg,ms){ var t=document.getElementById('voiceToast'); t.textContent=msg; t.style.display='block'; clearTimeout(vToastT); vToastT=setTimeout(function(){ t.style.display='none'; },ms||6000); }
+function voiceMainLabel(){ return vLang==='en' ? '🔊 <span id="voiceLbl">Listen (English)</span>' : '🔊 <span id="voiceLbl">AI ಪಾಠ ಕೇಳಿ</span>'; }
+function setVoiceUI(on){ var b=document.getElementById('voiceBtn'); if(!b) return; b.classList.toggle('playing',on); b.innerHTML=on?(vLang==='en'?'⏹ <span id="voiceLbl">Stop</span>':'⏹ <span id="voiceLbl">ನಿಲ್ಲಿಸಿ</span>'):voiceMainLabel(); }
+function setLangUI(){ var t=document.getElementById('langToggle'); if(t) t.innerHTML=vLang==='en'?'🌐 English ⇄ ಕನ್ನಡ':'🌐 ಕನ್ನಡ ⇄ English'; var b=document.getElementById('voiceBtn'); if(b && !vSpeaking) b.innerHTML=voiceMainLabel(); }
+function switchLang(){ vLang=(vLang==='en')?'kn':'en'; try{ localStorage.setItem('av_voicelang',vLang); }catch(e){} if(vSpeaking) voiceStop(); setLangUI(); }
+function lessonFile(book,lang){ return '/lessons-'+(lang==='en'?'en-':'')+book+'.json'; }
+function loadLessons(book,lang){
+  var key=lang+':'+book;
+  if(LESSONS[key]) return Promise.resolve(LESSONS[key]);
+  if(lessonsLoading[key]) return lessonsLoading[key];
+  lessonsLoading[key]=fetch(lessonFile(book,lang)).then(function(r){ return r.ok?r.json():{}; }).catch(function(){ return {}; }).then(function(j){ LESSONS[key]=j||{}; return LESSONS[key]; });
+  return lessonsLoading[key];
+}
+// Clean text so no voice ever says "minus"/"dash" for punctuation.
 function cleanForSpeech(txt){ return txt.replace(/[‒-―−]/g,', ').replace(/[–—-]/g,', ').replace(/\s*,\s*,\s*/g,', ').replace(/\s+/g,' ').trim(); }
 function splitChunks(txt){
   var parts=cleanForSpeech(txt).split(/(?<=[.!?।])\s/), out=[], cur='';
@@ -484,27 +505,29 @@ function speakNext(){
   if(!vQueue.length){ voiceStop(); return; }
   var chunk=vQueue.shift();
   var ut=new SpeechSynthesisUtterance(chunk);
-  ut.lang='kn-IN'; ut.voice=knVoice; ut.rate=0.92;
+  if(vLang==='en'){ ut.lang=(enVoice&&enVoice.lang)||'en-IN'; ut.voice=enVoice; ut.rate=0.96; }
+  else { ut.lang='kn-IN'; ut.voice=knVoice; ut.rate=0.92; }
   ut.onend=function(){ if(vSpeaking) speakNext(); };
   ut.onerror=function(){ voiceStop(); };
   try{ speechSynthesis.speak(ut); }catch(e){ voiceStop(); }
 }
-var NO_KN_MSG='📢 ಈ ಸಾಧನದಲ್ಲಿ ಕನ್ನಡ ಧ್ವನಿ (Kannada voice) ಇಲ್ಲ, ಆದ್ದರಿಂದ ಪಾಠ ಕೇಳಿಸಲು ಆಗುತ್ತಿಲ್ಲ. ANDROID: Settings → System → Languages → Text-to-speech → Google Speech Services ಆಯ್ಕೆಮಾಡಿ → Install voice data → ಕನ್ನಡ (Kannada) download ಮಾಡಿ. iPhone: Settings → Accessibility → Spoken Content → Voices → ಕನ್ನಡ add ಮಾಡಿ. ನಂತರ ಈ ಪುಟ refresh ಮಾಡಿ ಮತ್ತೆ 🔊 ಒತ್ತಿ.';
+var NO_KN_MSG='📢 ಈ ಸಾಧನದಲ್ಲಿ ಕನ್ನಡ ಧ್ವನಿ (Kannada voice) ಇಲ್ಲ. 🌐 ಬಟನ್ ಒತ್ತಿ English ಗೆ ಬದಲಾಯಿಸಿ (ಎಲ್ಲಾ ಫೋನ್/ಲ್ಯಾಪ್‌ಟಾಪ್‌ನಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತದೆ), ಅಥವಾ ಕನ್ನಡ ಧ್ವನಿ install ಮಾಡಿ — ANDROID: Settings → System → Languages → Text-to-speech → Google Speech Services → Install voice data → ಕನ್ನಡ. iPhone: Settings → Accessibility → Spoken Content → Voices → ಕನ್ನಡ. ನಂತರ refresh ಮಾಡಿ.';
 function toggleVoice(){
   if(vSpeaking){ voiceStop(); return; }
-  if(!('speechSynthesis' in window)){ voiceToast('ಕ್ಷಮಿಸಿ, ನಿಮ್ಮ ಬ್ರೌಸರ್ ಧ್ವನಿ ಪಾಠವನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ. Chrome ಬ್ರೌಸರ್ ಬಳಸಿ ನೋಡಿ.',9000); return; }
-  var b=document.getElementById('voiceBtn'); b.innerHTML='⏳ <span id="voiceLbl">ಲೋಡ್...</span>';
-  Promise.all([loadLessons(BOOK_ID), ensureVoices()]).then(function(r){
+  if(!('speechSynthesis' in window)){ voiceToast('Sorry, your browser does not support voice. Try Chrome.',9000); return; }
+  var b=document.getElementById('voiceBtn'); b.innerHTML='⏳ <span id="voiceLbl">…</span>';
+  Promise.all([loadLessons(BOOK_ID,vLang), ensureVoices()]).then(function(r){
     var L=r[0]; setVoiceUI(false);
     var txt=L[String(ORDER[pos])];
-    if(!txt){ voiceToast('ಈ ಪುಟಕ್ಕೆ AI ಪಾಠ ಶೀಘ್ರದಲ್ಲಿ ಬರಲಿದೆ 🙏'); return; }
-    // Hard gate: no real Kannada voice => show install steps, never read number-only gibberish.
-    if(!knVoice){ voiceToast(NO_KN_MSG,15000); return; }
+    if(!txt){ voiceToast(vLang==='en'?'This page\'s English lesson is coming soon 🙏':'ಈ ಪುಟಕ್ಕೆ AI ಪಾಠ ಶೀಘ್ರದಲ್ಲಿ ಬರಲಿದೆ 🙏'); return; }
+    if(vLang==='kn' && !knVoice){ voiceToast(NO_KN_MSG,15000); return; }
+    if(vLang==='en' && !enVoice){ voiceToast('No English voice found on this device. Please use Chrome.',9000); return; }
     vQueue=splitChunks(txt); vSpeaking=true; setVoiceUI(true);
     speakNext();
     vKeepAlive=setInterval(function(){ if(vSpeaking){ try{ speechSynthesis.resume(); }catch(e){} } },5000);
   });
 }
+setTimeout(setLangUI,0);
 document.addEventListener('keydown',function(e){ if((e.ctrlKey||e.metaKey) && ['s','p','u'].indexOf(e.key.toLowerCase())>=0){ e.preventDefault(); } if(e.key==='ArrowRight') next(); if(e.key==='ArrowLeft') prev(); });
 sb.auth.getSession().then(function(o){ if(o.data.session) start(o.data.session.user); });
 sb.auth.onAuthStateChange(function(_evt,session){ if(session) start(session.user); });
