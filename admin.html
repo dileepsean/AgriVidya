@@ -23,6 +23,8 @@ body{background:var(--bg);color:var(--txt);min-height:100vh}
 .stat .l{font-size:11.5px;color:var(--mint)}
 .stat.warn{border-color:var(--amber)}
 .stat.warn .v{color:var(--amber)}
+.stat.sales{border-color:var(--ac2);background:rgba(93,202,165,.1)}
+.stat.sales .v{color:var(--ac2)}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{text-align:left;padding:9px 10px;color:var(--mint);font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--ln)}
 td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.06);vertical-align:top}
@@ -136,11 +138,13 @@ function render(){
   const paid = DATA.filter(u => u.owns.length).length;
   const noPurchase = DATA.filter(u => !u.owns.length).length;
   const mismatches = DATA.filter(u => u.mismatch).length;
+  const totalSales = DATA.reduce((s,u) => s + (u.paid_amount_total || 0), 0);
   document.getElementById('stats').innerHTML = [
     ['Total signups', total, ''],
     ['Paid / owns something', paid, ''],
     ['Signed up, no purchase', noPurchase, ''],
-    ['⚠️ Payment/access mismatch', mismatches, mismatches ? 'warn' : '']
+    ['⚠️ Payment/access mismatch', mismatches, mismatches ? 'warn' : ''],
+    ['💰 Total sales', '₹'+totalSales.toLocaleString('en-IN'), 'sales']
   ].map(([l,v,cls]) => '<div class="stat '+cls+'"><div class="v">'+v+'</div><div class="l">'+l+'</div></div>').join('');
 
   document.getElementById('rows').innerHTML = list.map(u => {
