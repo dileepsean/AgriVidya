@@ -63,12 +63,13 @@ tr.mismatch{background:rgba(255,138,122,.08)}
     <h1>🌾 AgriVidya Admin</h1>
     <span class="sp"></span>
     <input id="search" placeholder="Search email..." oninput="render()">
+    <span class="muted" id="lastUpd" style="white-space:nowrap"></span>
     <button onclick="load()">↻ Refresh</button>
   </div>
   <div class="wrap">
     <div class="stats" id="stats"></div>
     <table>
-      <thead><tr><th>Signed up</th><th>Email</th><th>WhatsApp</th><th>Owns</th><th>Status</th><th>Actions</th></tr></thead>
+      <thead><tr><th>Signed up</th><th>Email</th><th>WhatsApp</th><th>Owns</th><th>Paid</th><th>Status</th><th>Actions</th></tr></thead>
       <tbody id="rows"></tbody>
     </table>
   </div>
@@ -93,6 +94,7 @@ async function api(path, opts){
   if (r.status === 401) { document.getElementById('gate').classList.remove('hide'); document.getElementById('app').classList.add('hide'); document.getElementById('pwEr').style.display = 'block'; sessionStorage.removeItem('av_admin_pw'); throw new Error('unauthorized'); }
   return r.json();
 }
+let autoTimer = null;
 async function load(){
   try{
     const d = await api('/api/admin-data');
@@ -100,7 +102,15 @@ async function load(){
     document.getElementById('gate').classList.add('hide');
     document.getElementById('app').classList.remove('hide');
     render();
+    const t = document.getElementById('lastUpd');
+    if (t) t.textContent = 'Updated ' + new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+    startAutoRefresh();
   }catch(e){}
+}
+function startAutoRefresh(){
+  if (autoTimer) return;
+  autoTimer = setInterval(load, 30000); // auto-refresh every 30s so new signups/payments show without manual clicking
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
 }
 
 const LABELS = { paper1: 'Paper 1', paper2: 'Paper 2', mocks: 'Mocks', bot: 'AI Tutor' };
@@ -146,11 +156,15 @@ function render(){
       : '<span class="muted">no phone on file</span>';
     const fixBtn = u.mismatch ? '<button class="btn fix" onclick="grant(\''+u.email+'\', '+JSON.stringify(u.missing_books)+')">⚡ Fix now</button>' : '';
     const rowId = 'g_' + u.id.replace(/[^a-zA-Z0-9]/g,'');
+    const paidCell = u.paid_amount_total
+      ? '₹'+u.paid_amount_total.toLocaleString('en-IN')+(u.payment_count>1 ? ' <span class="muted">('+u.payment_count+'x)</span>' : '')
+      : '<span class="muted">—</span>';
     return '<tr class="'+(u.mismatch?'mismatch':'')+'">'
       + '<td>'+fmtDate(u.created_at)+'</td>'
       + '<td>'+u.email+'</td>'
       + '<td>'+(u.whatsapp || '<span class="muted">—</span>')+'</td>'
       + '<td>'+ownsBadges+missBadges+'</td>'
+      + '<td>'+paidCell+'</td>'
       + '<td>'+status+'</td>'
       + '<td><div class="actions">'+wa+fixBtn+'<button class="btn grant" onclick="toggleGrant(\''+rowId+'\')">+ Grant</button></div>'
       + '<div class="grantBox" id="'+rowId+'">'
