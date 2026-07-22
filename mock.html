@@ -188,7 +188,7 @@ h1{font-family:'Sora',sans-serif;font-size:22px;margin-bottom:4px}
       <div class="hero-note">No payment to try a sample — just see how good it is first.</div>
     </div>
 
-    <div class="deal">⏳ <span id="examDaysM">25</span> days to your exam (26 Jul 2026) · ಪರೀಕ್ಷೆಗೆ <span id="examDaysMK">25</span> ದಿನಗಳು ಬಾಕಿ: Unlock <b>all 20 full-length mock tests + practice sets</b> — 3,000+ exam-ready questions. Get the Mock Combo (₹999) or Everything (₹1299).</div>
+    <div class="deal">⏳ <span id="examDaysM">25</span> days to your exam (26 Jul 2026) · ಪರೀಕ್ಷೆಗೆ <span id="examDaysMK">25</span> ದಿನಗಳು ಬಾಕಿ: Unlock <b>all 20 full-length mock tests + practice sets</b> — 3,000+ exam-ready questions. Get the Mock Combo (₹999) or <span id="mockDealEverything">MAHA PACK (₹499)</span>.</div>
 
     <div class="psec" style="text-align:center">Choose your plan</div>
     <div class="price-row">
@@ -199,16 +199,17 @@ h1{font-family:'Sora',sans-serif;font-size:22px;margin-bottom:4px}
         <button class="btn" style="width:100%" onclick="location.href='/aao.html'">Get Mock Combo →</button>
       </div>
       <div class="price-card best">
-        <div class="pc-flag">★ BEST VALUE</div>
-        <div class="pc-name">EVERYTHING — Material + Mocks</div>
-        <div class="pc-price"><s>₹2997</s> <b>₹1299</b></div>
-        <ul class="pc-list"><li>✅ Paper 1 + Paper 2 complete material</li><li>✅ <b>ALL 20</b> full mock tests</li><li>✅ Mind maps + rank + SWOT + solutions</li><li>✅ Everything in one — save ₹1698</li></ul>
-        <button class="btn" style="width:100%" onclick="location.href='/aao.html'">Get Everything →</button>
+        <div class="pc-flag" id="mockEverythingFlag">🔥 MAHA PACK</div>
+        <div class="pc-name">MAHA PACK — Everything Included</div>
+        <div class="pc-price"><s id="mockEverythingWas">₹1499</s> <b id="mockEverythingNow">₹499</b></div>
+        <ul class="pc-list"><li>✅ Paper 1 + Paper 2 complete material</li><li>✅ <b>ALL 20</b> full mock tests</li><li>✅ Mind maps + rank + SWOT + solutions</li><li>✅ Everything in one, flash price</li></ul>
+        <div id="mockEverythingCd" style="font-size:11.5px;color:var(--amber);font-weight:700;margin-bottom:10px">⏳ Flash price ends in --:--:--</div>
+        <button class="btn" style="width:100%" onclick="location.href='/aao.html'">Get MAHA PACK →</button>
       </div>
       <div class="price-card">
         <div class="pc-name">Study Material only</div>
-        <div class="pc-price"><s>₹998</s> <b>from ₹249</b></div>
-        <ul class="pc-list"><li>✅ Paper 1 or Paper 2 — ₹249 each</li><li>✅ Both papers (material combo) — ₹459</li><li>ℹ️ Material only — mock tests not included</li></ul>
+        <div class="pc-price"><s>₹998</s> <b>from ₹299</b></div>
+        <ul class="pc-list"><li>✅ Paper 1 or Paper 2 — ₹299 each</li><li>✅ Both papers (material combo) — ₹549</li><li>ℹ️ Material only — mock tests not included</li></ul>
         <button class="btn" style="width:100%" onclick="location.href='/aao.html'">View Material →</button>
       </div>
     </div>
@@ -266,6 +267,36 @@ const WHATSAPP='919492982424';
 const NEG=0.25;   // negative marking: marks deducted per wrong answer
 let mode='signup', user=null, owns=false, leadPhone='', myTok=Math.random().toString(36).slice(2), sessTimer=null, pendingTest=null;
 let T=null, Q=[], ans={}, marks={}, cur=0, endAt=0, tick=null, started=0;
+
+/* MAHA PACK flash offer (added 2026-07-22): "everything" is a flat ₹499 through end of
+   25 Jul IST, then reverts to ₹1,499. MUST stay in sync with api/create-order.js /
+   aao.html — this copy is cosmetic display only, checkout price is server-authoritative. */
+const MAHA_OFFER_END=Date.parse('2026-07-26T00:00:00+05:30');
+const EVERYTHING_PRICE = Date.now()<MAHA_OFFER_END ? 499 : 1499;
+const EVERYTHING_LABEL = Date.now()<MAHA_OFFER_END ? ('MAHA PACK (₹'+EVERYTHING_PRICE+')') : ('Everything plan (₹'+EVERYTHING_PRICE+')');
+(function(){
+  if(Date.now()>=MAHA_OFFER_END){
+    var flag=$('mockEverythingFlag'); if(flag) flag.textContent='★ BEST VALUE';
+    var nm=document.querySelector('.price-card.best .pc-name'); if(nm) nm.textContent='EVERYTHING — Material + Mocks';
+    var was=$('mockEverythingWas'); if(was) was.textContent='₹2997';
+    var now=$('mockEverythingNow'); if(now) now.textContent='₹'+EVERYTHING_PRICE;
+    var cdBox=$('mockEverythingCd'); if(cdBox) cdBox.style.display='none';
+    var btn=document.querySelector('.price-card.best .btn'); if(btn) btn.textContent='Get Everything →';
+    var deal=$('mockDealEverything'); if(deal) deal.textContent='Everything (₹'+EVERYTHING_PRICE+')';
+  } else {
+    var cd=$('mockEverythingCd');
+    if(cd){
+      function pad(n){return n<10?'0'+n:''+n;}
+      (function tick(){
+        var diff=MAHA_OFFER_END-Date.now();
+        if(diff<=0){ cd.style.display='none'; return; }
+        var d=Math.floor(diff/86400000), h=Math.floor(diff%86400000/3600000), m=Math.floor(diff%3600000/60000), s=Math.floor(diff%60000/1000);
+        cd.textContent='⏳ Flash price ends in '+(d>0?d+'d ':'')+pad(h)+':'+pad(m)+':'+pad(s);
+        setTimeout(tick,1000);
+      })();
+    }
+  }
+})();
 
 /* exam countdown — honest, always-accurate */
 (function(){
@@ -383,10 +414,10 @@ async function loadList(){
   $('cards').innerHTML=html;
   $('listSub').innerHTML=owns
     ?'You have full access — all mock tests are unlocked. Each runs on a real exam timer, then shows your score, rank and a SWOT analysis.'
-    :'Free samples are open to everyone. Unlock all 10 + 10 full-length mocks with the <a href="/aao.html" style="color:var(--ac2)">Mock-Test Combo (₹999)</a> or the <a href="/aao.html" style="color:var(--ac2)">Everything plan (₹1299)</a>.';
+    :('Free samples are open to everyone. Unlock all 10 + 10 full-length mocks with the <a href="/aao.html" style="color:var(--ac2)">Mock-Test Combo (₹999)</a> or the <a href="/aao.html" style="color:var(--ac2)">'+EVERYTHING_LABEL+'</a>.');
 }
 function lockedMsg(){
-  if(confirm('Unlock all 10 + 10 full-length mock tests.\n\nGet the Mock-Test Combo (₹999) or the Everything plan (₹1299). Open the store now?'))location.href='/aao.html';
+  if(confirm('Unlock all 10 + 10 full-length mock tests.\n\nGet the Mock-Test Combo (₹999) or the '+EVERYTHING_LABEL+'. Open the store now?'))location.href='/aao.html';
 }
 
 /* ---------- open a test ---------- */
