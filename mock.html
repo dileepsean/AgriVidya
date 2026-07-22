@@ -178,7 +178,7 @@ h1{font-family:'Sora',sans-serif;font-size:22px;margin-bottom:4px}
   <!-- ===== PUBLIC SALES LANDING ===== -->
   <div id="landing">
     <div class="hero">
-      <div class="hero-badge">⏳ Final sprint — exam on 26 July 2026</div>
+      <div class="hero-badge">⏳ Final sprint — exam on 8 August 2026</div>
       <h1 class="hero-h1">20 Full Mock Tests.<br>3,000 Exam-Ready Questions.</h1>
       <p class="hero-sub">Real exam timer · negative marking · All-India rank · personal SWOT analysis · instant solutions. Built straight from the AO/AAO syllabus — practise like it's the real paper.</p>
       <div class="hero-cta">
@@ -188,7 +188,7 @@ h1{font-family:'Sora',sans-serif;font-size:22px;margin-bottom:4px}
       <div class="hero-note">No payment to try a sample — just see how good it is first.</div>
     </div>
 
-    <div class="deal">⏳ <span id="examDaysM">25</span> days to your exam (26 Jul 2026) · ಪರೀಕ್ಷೆಗೆ <span id="examDaysMK">25</span> ದಿನಗಳು ಬಾಕಿ: Unlock <b>all 20 full-length mock tests + practice sets</b> — 3,000+ exam-ready questions. Get the Mock Combo (₹999) or <span id="mockDealEverything">MAHA PACK (₹499)</span>.</div>
+    <div class="deal">⏳ <span id="examDaysM">17</span> days to your exam (8 Aug 2026) · ಪರೀಕ್ಷೆಗೆ <span id="examDaysMK">17</span> ದಿನಗಳು ಬಾಕಿ: Unlock <b>all 20 full-length mock tests + practice sets</b> — 3,000+ exam-ready questions. Get the Mock Combo (₹999) or <span id="mockDealEverything">MAHA PACK (₹499)</span>.</div>
 
     <div class="psec" style="text-align:center">Choose your plan</div>
     <div class="price-row">
@@ -268,10 +268,11 @@ const NEG=0.25;   // negative marking: marks deducted per wrong answer
 let mode='signup', user=null, owns=false, leadPhone='', myTok=Math.random().toString(36).slice(2), sessTimer=null, pendingTest=null;
 let T=null, Q=[], ans={}, marks={}, cur=0, endAt=0, tick=null, started=0;
 
-/* MAHA PACK flash offer (added 2026-07-22): "everything" is a flat ₹499 through end of
-   25 Jul IST, then reverts to ₹1,499. MUST stay in sync with api/create-order.js /
-   aao.html — this copy is cosmetic display only, checkout price is server-authoritative. */
-const MAHA_OFFER_END=Date.parse('2026-07-26T00:00:00+05:30');
+/* MAHA PACK flash offer (added 2026-07-22, extended 2026-07-22 when exam was postponed
+   25 Jul → 8 Aug): "everything" is a flat ₹499 through end of 7 Aug IST, then reverts to
+   ₹1,499. MUST stay in sync with api/create-order.js / aao.html — this copy is cosmetic
+   display only, checkout price is server-authoritative. */
+const MAHA_OFFER_END=Date.parse('2026-08-08T00:00:00+05:30');
 const EVERYTHING_PRICE = Date.now()<MAHA_OFFER_END ? 499 : 1499;
 const EVERYTHING_LABEL = Date.now()<MAHA_OFFER_END ? ('MAHA PACK (₹'+EVERYTHING_PRICE+')') : ('Everything plan (₹'+EVERYTHING_PRICE+')');
 (function(){
@@ -300,7 +301,7 @@ const EVERYTHING_LABEL = Date.now()<MAHA_OFFER_END ? ('MAHA PACK (₹'+EVERYTHIN
 
 /* exam countdown — honest, always-accurate */
 (function(){
-  var EXAM=new Date('2026-07-26T00:00:00+05:30');
+  var EXAM=new Date('2026-08-08T00:00:00+05:30');
   var days=Math.max(0,Math.ceil((EXAM-new Date())/86400000));
   document.querySelectorAll('#examDaysM,#examDaysMK').forEach(function(el){ el.textContent=days; });
 })();

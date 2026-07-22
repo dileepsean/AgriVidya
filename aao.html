@@ -217,7 +217,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
       <div id="priceRiseBox" style="margin-top:10px;font-size:13.5px;font-weight:700;color:#FFE9A8">🔔 Launch price ends tonight — price rises in <span id="riseCd">--:--:--</span>. Buy today &amp; save.</div>
     </div>
     <div class="rv" style="margin:0 0 14px;background:linear-gradient(135deg,#04342C,#021E17);border-radius:16px;padding:18px 20px;text-align:center;box-shadow:0 20px 50px -26px rgba(4,52,44,.7)">
-      <div style="color:var(--gp);font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px">⏳ Time left to your KPSC AO/AAO exam · 26 July 2026</div>
+      <div style="color:var(--gp);font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px">⏳ Time left to your KPSC AO/AAO exam · 8 August 2026</div>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
         <div class="cd-unit"><span class="cd-n" id="cdD">--</span><span class="cd-l">Days</span></div>
         <div class="cd-unit"><span class="cd-n" id="cdH">--</span><span class="cd-l">Hrs</span></div>
@@ -229,7 +229,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
     <!-- MAHA PACK BANNER (was "EVERYTHING") — moved to top: the single best-value option, shown first -->
     <div class="rv" style="margin:0 0 16px;background:linear-gradient(135deg,#F4B63F,#D68616);border-radius:18px;padding:1.8rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;box-shadow:0 22px 50px -28px rgba(214,134,22,.7)">
       <div style="max-width:520px">
-        <div style="font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:#5A3A00;margin-bottom:6px">🔥 MAHA PACK · flash offer, ends 25 July</div>
+        <div style="font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:#5A3A00;margin-bottom:6px">🔥 MAHA PACK · flash offer, ends 7 August</div>
         <div class="disp" style="color:#1A1205;font-size:24px;font-weight:800;line-height:1.2">MAHA PACK — Everything Included</div>
         <div style="color:#3A2A05;font-size:13.5px;margin-top:6px;line-height:1.5">Both papers <b>plus</b> all 10 + 10 mock tests, in one account. Reading tells you what you know — mocks tell you what you'll actually get wrong on exam day. One payment covers your whole prep, start to finish.</div>
         <div style="color:#3A2A05;font-size:13px;margin-top:8px;font-weight:700">🤖 + FREE AI doubt-solving bot inside the reader — ask any syllabus doubt, get an instant answer in ಕನ್ನಡ</div>
@@ -393,7 +393,7 @@ footer .cp{font-size:11px;color:var(--g);margin-top:10px}
       <div class="step rv"><div class="num">💸</div><h4>Less than one coaching class</h4><p>A fraction of tuition fees for the complete paper — yours for your whole preparation.</p></div>
     </div>
     <div class="rv" style="margin-top:24px;text-align:center;background:linear-gradient(135deg,#0F6E56,#04342C);border-radius:16px;padding:1.6rem;color:#fff">
-      <div class="disp" style="font-size:clamp(18px,2.6vw,24px);font-weight:800">⏳ Karnataka AO/AAO exam: 26 July 2026 — every day counts.</div>
+      <div class="disp" style="font-size:clamp(18px,2.6vw,24px);font-weight:800">⏳ Karnataka AO/AAO exam: 8 August 2026 — every day counts.</div>
       <div style="color:var(--gp);font-size:14px;margin-top:6px">Now with the AI Voice Tutor 🔊 — every page in English &amp; ಕನ್ನಡ. Start now and study the smart way.</div>
       <button class="btn btn-solid btn-lg" style="margin-top:16px" onclick="scrollTo({top:document.getElementById('store').offsetTop-40,behavior:'smooth'})">See the materials →</button>
     </div>
@@ -590,13 +590,14 @@ const PROMOS={AAO15:{percent:15}, TAJUDDIN10:{fixed:{everything:1000,mocks:750}}
 const PRICE_CUTOVER=Date.parse('2026-07-06T00:00:00+05:30');
 const PRICES_OLD={paper1:249,paper2:249,combo:459,mocks:999,everything:1299};
 const PRICES_NEW={paper1:299,paper2:299,combo:549,mocks:999,everything:1499};
-/* MAHA PACK flash offer (added 2026-07-22): "everything" drops to a flat ₹499 through the
-   end of 25 Jul IST — Dr Sean's call, single price for the whole kit for the final push
-   before the 26 Jul exam. Combo/Mocks stay at normal prices. MUST stay in sync with
-   MAHA_OFFER_END / MAHA_EVERYTHING_PRICE in api/create-order.js (server-authoritative —
-   this copy is cosmetic only). Auto-reverts after the offer ends; ask Dr Sean before
-   extending it, he said he'd decide the after-25th price later. */
-const MAHA_OFFER_END=Date.parse('2026-07-26T00:00:00+05:30');
+/* MAHA PACK flash offer (added 2026-07-22, extended 2026-07-22 when exam was postponed
+   25 Jul → 8 Aug): "everything" drops to a flat ₹499 through the end of 7 Aug IST — Dr
+   Sean's call, single price for the whole kit for the final push before the 8 Aug exam.
+   Combo/Mocks stay at normal prices. MUST stay in sync with MAHA_OFFER_END /
+   MAHA_EVERYTHING_PRICE in api/create-order.js (server-authoritative — this copy is
+   cosmetic only). Auto-reverts after the offer ends; ask Dr Sean before extending it
+   further, he said he'd decide the after-offer price later. */
+const MAHA_OFFER_END=Date.parse('2026-08-08T00:00:00+05:30');
 const MAHA_EVERYTHING_PRICE=499;
 const BASE_PRICES = Object.assign({}, Date.now()<PRICE_CUTOVER ? PRICES_OLD : PRICES_NEW);
 if(Date.now()<MAHA_OFFER_END) BASE_PRICES.everything=MAHA_EVERYTHING_PRICE;
@@ -665,7 +666,7 @@ function updatePriceDisplay(){
 
 /* exam countdown — honest, always-accurate, ticks live */
 (function(){
-  var EXAM=new Date('2026-07-26T00:00:00+05:30');
+  var EXAM=new Date('2026-08-08T00:00:00+05:30');
   var dEl=document.getElementById('cdD'), hEl=document.getElementById('cdH'), mEl=document.getElementById('cdM'), sEl=document.getElementById('cdS');
   if(!dEl) return;
   function pad(n){ return n<10?'0'+n:''+n; }
