@@ -12,13 +12,14 @@ const PRICE_CUTOVER = Date.parse('2026-07-06T00:00:00+05:30');
 const PRICES_OLD = { paper1: 24900, paper2: 24900, combo: 45900, mocks: 99900, everything: 129900, bot: 10000 };
 const PRICES_NEW = { paper1: 29900, paper2: 29900, combo: 54900, mocks: 99900, everything: 149900, bot: 10000 };
 function currentPrices() { return Date.now() < PRICE_CUTOVER ? PRICES_OLD : PRICES_NEW; }
-// MAHA PACK flash offer (added 2026-07-22): "everything" (Paper1+Paper2+Mocks) drops to a
-// flat ₹499 for the final push before the 26 Jul exam — decided by Dr Sean, single price
-// covering the whole kit instead of ₹1,499. Combo (papers-only) and Mocks-only are
-// deliberately left at their normal prices per his call. Valid through end of 25 Jul IST;
-// after that this reverts to the normal currentPrices().everything (₹1,499) automatically —
-// ask Dr Sean before extending, he said he'd decide the after-25th price later.
-const MAHA_OFFER_END = Date.parse('2026-07-26T00:00:00+05:30');
+// MAHA PACK flash offer (added 2026-07-22, extended 2026-07-22 when the exam was postponed
+// 25 Jul -> 8 Aug): "everything" (Paper1+Paper2+Mocks) drops to a flat ₹499 for the final
+// push before the 8 Aug exam — decided by Dr Sean, single price covering the whole kit
+// instead of ₹1,499. Combo (papers-only) and Mocks-only are deliberately left at their
+// normal prices per his call. Valid through end of 7 Aug IST; after that this reverts to
+// the normal currentPrices().everything (₹1,499) automatically — ask Dr Sean before
+// extending further, he said he'd decide the after-offer price later.
+const MAHA_OFFER_END = Date.parse('2026-08-08T00:00:00+05:30');
 const MAHA_EVERYTHING_PRICE = 49900;
 const PROMOS = {           // CODE -> either { percent: N } off every product, or
                             // { fixed: {book_id: paise}, maxUses: N } overriding specific product prices
