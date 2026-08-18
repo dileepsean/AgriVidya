@@ -38,6 +38,7 @@ src="https://www.facebook.com/tr?id=2048078339156059&ev=PageView&noscript=1"
 body{font-family:'DM Sans',sans-serif;color:var(--tp);background:var(--w);line-height:1.6}
 
 /* ===== NAV ===== */
+.hide{display:none!important}
 nav{display:flex;justify-content:space-between;align-items:center;padding:0.75rem 1.5rem;border-bottom:1px solid var(--gs);background:var(--w);position:sticky;top:0;z-index:200;gap:12px}
 .logo-wrap{display:flex;align-items:center;gap:8px;cursor:pointer;text-decoration:none;flex-shrink:0}
 .logo-icon{width:34px;height:34px;background:var(--gm);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -52,10 +53,28 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:0.75re
 .btn-signup{background:var(--gm);color:white;border:none;padding:6px 12px;border-radius:7px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;white-space:nowrap}
 .btn-user{background:var(--gs);color:var(--gm);border:1.5px solid var(--gm);padding:6px 12px;border-radius:7px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;display:none;white-space:nowrap}
 
+/* Nav dropdown (desktop "Exams" sub-nav) */
+.nav-drop{position:relative}
+.nav-drop>a{display:inline-flex;align-items:center;gap:3px}
+.nav-drop>a .chev{display:inline-block;transition:transform .18s ease;font-size:10px}
+.nav-drop-menu{opacity:0;visibility:hidden;transform:translateY(-6px);pointer-events:none;position:absolute;top:calc(100% + 8px);left:0;background:#fff;border:1px solid var(--gs);border-radius:12px;box-shadow:0 18px 40px -16px rgba(4,52,44,.28);padding:6px;min-width:220px;z-index:250;transition:opacity .16s ease,transform .16s ease}
+.nav-drop-menu.open{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+.nav-drop-menu a{display:block;padding:9px 12px;font-size:12.5px;border-radius:7px;color:var(--ts);white-space:normal;font-weight:500}
+.nav-drop-menu a:hover{background:var(--gs);color:var(--gb)}
+.nav-tag-new{display:inline-block;margin-left:6px;font-size:9px;font-weight:800;padding:1.5px 6px;border-radius:10px;background:linear-gradient(135deg,#1D9E75,#0F6E56);color:#fff;vertical-align:middle}
+.nav-tag-sm{display:inline-block;margin-left:6px;font-size:9px;font-weight:700;padding:1.5px 6px;border-radius:10px;background:var(--gs);color:var(--gm);vertical-align:middle}
+.nav-drop-menu-wide{min-width:480px;display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;padding:10px}
+.nav-drop-head{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gm);padding:6px 10px 4px}
+.nav-drop-footer{grid-column:1/-1;border-top:1px solid var(--gs);margin-top:6px;padding-top:6px}
+
 /* Mobile nav */
 .mobile-nav{display:none;background:var(--w);border-top:1px solid var(--gs);padding:0.5rem}
 .mobile-nav a{display:block;padding:10px 1rem;font-size:14px;color:var(--ts);cursor:pointer;font-weight:500;border-radius:8px;margin-bottom:2px}
 .mobile-nav a:hover,.mobile-nav a.nav-active-m{color:var(--gb);background:var(--gs)}
+.mnav-sub{display:none;padding-left:.75rem}
+.mnav-sub.open{display:block}
+.mnav-sub a{font-size:13px}
+.mnav-sub-head{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gm);padding:8px 0 4px}
 .hamburger{display:none;background:none;border:none;cursor:pointer;padding:4px;flex-shrink:0}
 .hamburger span{display:block;width:22px;height:2px;background:var(--gm);margin:5px 0;border-radius:2px;transition:all 0.3s}
 
@@ -93,6 +112,19 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:0.75re
 .card{background:var(--w);border:1px solid var(--gs);border-radius:12px;padding:1.25rem;cursor:pointer;transition:all 0.2s}
 .card:hover{border-color:var(--gb);transform:translateY(-2px)}
 .card-icon{width:38px;height:38px;border-radius:8px;background:var(--gs);display:flex;align-items:center;justify-content:center;margin-bottom:0.75rem;font-size:18px}
+.card-icon svg{width:20px;height:20px;stroke:var(--gm);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+/* ===== CARD ILLUSTRATION BANNERS ===== */
+.card-banner{width:100%;height:104px;border-radius:10px;margin-bottom:14px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.card-banner::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 18% 20%,rgba(255,255,255,.38) 0,transparent 42%),radial-gradient(circle at 88% 82%,rgba(255,255,255,.22) 0,transparent 48%)}
+.card-banner::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.16) 1.4px,transparent 1.4px);background-size:14px 14px;opacity:.5}
+.card-banner .cb-badge{position:relative;z-index:1;width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,.14);transition:transform .3s ease}
+.card:hover .card-banner .cb-badge{transform:scale(1.08) translateY(-2px)}
+.card-banner svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.cb-green{background:linear-gradient(135deg,#0F6E56,#085041)}
+.cb-teal{background:linear-gradient(135deg,#0E7C8C,#0A5560)}
+.cb-amber{background:linear-gradient(135deg,#C9862E,#9C641E)}
+.cb-violet{background:linear-gradient(135deg,#5B4B9E,#3B2F68)}
+.cb-navy{background:linear-gradient(135deg,#25436B,#152B47)}
 .card h3{font-size:14px;font-weight:500;margin-bottom:5px}
 .card p{font-size:12px;color:var(--ts);line-height:1.5}
 .card-tag{display:inline-block;font-size:10px;background:var(--gs);color:var(--gm);padding:2px 8px;border-radius:4px;margin-top:8px;font-weight:500}
@@ -219,6 +251,11 @@ footer{background:var(--gd);padding:1.75rem 1.5rem;text-align:center}
 .bubble-input-row button{background:#085041;color:white;border:none;padding:6px 10px;border-radius:7px;font-size:11px;cursor:pointer;font-family:inherit}
 .bubble-btn{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .bubble-label{font-size:10px;padding:5px 10px;border-radius:16px;white-space:nowrap;cursor:pointer}
+.wa-fab-wrap{position:fixed;bottom:20px;left:14px;z-index:9999;display:flex;align-items:center;gap:7px}
+.bubble-bounce{animation:bubbleJump 2.6s ease-in-out infinite}
+.bubble-bounce:hover{animation-play-state:paused}
+@keyframes bubbleJump{0%,100%{transform:translateY(0)}8%{transform:translateY(-11px)}16%{transform:translateY(0)}22%{transform:translateY(-5px)}28%{transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.bubble-bounce{animation:none}}
 
 /* PRICING (hidden) */
 #page-pricing{display:none !important}
@@ -332,6 +369,7 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
 #page-ebooks .grid-2 .card{border:1px solid rgba(29,158,117,0.25);box-shadow:0 24px 60px -30px rgba(15,110,86,0.55);background:
   radial-gradient(420px 180px at 100% 0,rgba(93,202,165,0.14),transparent 60%),linear-gradient(180deg,#fff,#fbfdfc)}
 #page-ebooks .grid-2 .card .card-icon{width:48px;height:48px;font-size:24px}
+#page-ebooks .grid-2 .card .card-icon svg{width:26px;height:26px}
 #page-ebooks .grid-2 .card h3{font-family:'Syne',sans-serif;font-size:17px}
 
 /* --- Banners glow --- */
@@ -418,6 +456,11 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
 @media(max-width:620px){.hc::after{background:linear-gradient(180deg,rgba(2,24,19,.7) 0%,rgba(2,24,19,.55) 40%,rgba(2,22,18,.82) 100%)}}
 @media(prefers-reduced-motion:reduce){.hc .s{animation:none}}
 @keyframes kenburns{from{transform:scale(1.06)}to{transform:scale(1.2)}}
+.hc-dots{position:absolute;left:clamp(1.5rem,7vw,5.5rem);bottom:22px;z-index:2;display:flex;gap:9px}
+.hc-dot{width:8px;height:8px;padding:0;border:none;border-radius:50%;background:rgba(225,245,238,.35);cursor:pointer;transition:all .35s ease}
+.hc-dot:hover{background:rgba(225,245,238,.65)}
+.hc-dot.on{width:26px;border-radius:5px;background:var(--gl)}
+@media(max-width:620px){.hc-dots{left:1.4rem;bottom:16px}}
 #page-home .hero .hero-badge{margin-top:0}
 .trust-strip{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin-top:26px;opacity:.9}
 .trust-strip .ti{display:flex;align-items:center;gap:8px;color:var(--gp);font-size:12.5px;font-weight:500}
@@ -506,14 +549,41 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
   </a>
   <div class="nav-links">
     <a id="nav-home" onclick="showPage('home')">Home</a>
-    <a id="nav-courses" href="/read.html" class="hide" style="color:var(--gb);font-weight:700">📚 My Courses</a>
-    <a href="/aao.html" style="color:var(--gb);font-weight:700">AO/AAO Exam</a>
-    <a href="/mock.html" style="color:var(--gb);font-weight:700">📝 Mock Tests</a>
-    <a id="nav-ebooks" onclick="showPage('ebooks')">E-Books</a>
-    <a id="nav-bot" onclick="showPage('bot')">VidyaBot</a>
-    <a id="nav-services" onclick="showPage('services')">Services</a>
-    <a id="nav-about" onclick="showPage('about')">About</a>
-    <a id="nav-contact" onclick="showPage('contact')">Contact</a>
+    <a id="nav-courses" href="/read.html" class="hide" style="color:var(--gb);font-weight:700">My Courses</a>
+    <div class="nav-drop" id="navExamsDrop">
+      <a onclick="toggleNavDrop(event,'navExamsMenu')">Exams <span class="chev">▾</span></a>
+      <div class="nav-drop-menu nav-drop-menu-wide" id="navExamsMenu">
+        <div>
+          <div class="nav-drop-head">Food Technology</div>
+          <a onclick="goExam('gate-foodtech')">GATE (XL)</a>
+          <a onclick="goExam('gate-foodtech')">ICAR-JRF — Food Science</a>
+          <a onclick="goExam('gate-foodtech')">Govt Jobs — NABARD, FCI</a>
+        </div>
+        <div>
+          <div class="nav-drop-head">Agricultural Engineering</div>
+          <a onclick="goExam('gate-agrieng')">GATE (AG)</a>
+          <a onclick="goExam('gate-agrieng')">ICAR-JRF — Ag Engineering</a>
+          <a onclick="goExam('gate-agrieng')">Govt Jobs — SBI/RBI AO</a>
+          <a href="/aao.html">Karnataka AO/AAO<span class="nav-tag-sm">Postponed</span></a>
+        </div>
+        <div class="nav-drop-footer">
+          <a onclick="goExam('gate-research')">🎓 PG → Research Support</a>
+        </div>
+      </div>
+    </div>
+    <div class="nav-drop" id="navResourcesDrop">
+      <a onclick="toggleNavDrop(event,'navResourcesMenu')">Resources <span class="chev">▾</span></a>
+      <div class="nav-drop-menu" id="navResourcesMenu">
+        <a id="nav-ebooks" onclick="showPage('ebooks');closeNavDrops()">E-Books / Study Material</a>
+        <a id="nav-bot" onclick="showPage('bot');closeNavDrops()">VidyaBot AI</a>
+        <a href="/mock.html">Mock Tests</a>
+        <a onclick="showPage('assignment');closeNavDrops()">Assignment Help</a>
+        <a id="nav-ai" onclick="showPage('ai');closeNavDrops()">AI &amp; ML Certificate Course<span class="nav-tag-new">New</span></a>
+        <a id="nav-services" onclick="showPage('services');closeNavDrops()">All Services</a>
+        <a id="nav-about" onclick="showPage('about');closeNavDrops()">About</a>
+        <a id="nav-contact" onclick="showPage('contact');closeNavDrops()">Contact</a>
+      </div>
+    </div>
   </div>
   <div class="nav-right">
     <button class="btn-login" id="btnLogin" onclick="openModal('login')">Log in</button>
@@ -528,14 +598,32 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
 <!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobileNav">
   <a id="mnav-home" onclick="showPage('home');closeMobileNav()">Home</a>
-  <a id="mnav-courses" href="/read.html" class="hide" style="color:var(--gb);font-weight:700">📚 My Courses</a>
-  <a href="/aao.html" style="color:var(--gb);font-weight:700">AO/AAO Exam</a>
-  <a href="/mock.html" style="color:var(--gb);font-weight:700">📝 Mock Tests</a>
-  <a id="mnav-ebooks" onclick="showPage('ebooks');closeMobileNav()">E-Books</a>
-  <a id="mnav-bot" onclick="showPage('bot');closeMobileNav()">VidyaBot</a>
-  <a id="mnav-services" onclick="showPage('services');closeMobileNav()">Services</a>
-  <a id="mnav-about" onclick="showPage('about');closeMobileNav()">About</a>
-  <a id="mnav-contact" onclick="showPage('contact');closeMobileNav()">Contact</a>
+  <a id="mnav-courses" href="/read.html" class="hide" style="color:var(--gb);font-weight:700">My Courses</a>
+  <a onclick="toggleMnavSub('mnavExamsSub','mnavExamsChevron')" style="display:flex;justify-content:space-between;align-items:center">Exams <span id="mnavExamsChevron">▾</span></a>
+  <div class="mnav-sub" id="mnavExamsSub">
+    <div class="mnav-sub-head">Food Technology</div>
+    <a onclick="goExam('gate-foodtech');closeMobileNav()">GATE (XL)</a>
+    <a onclick="goExam('gate-foodtech');closeMobileNav()">ICAR-JRF — Food Science</a>
+    <a onclick="goExam('gate-foodtech');closeMobileNav()">Govt Jobs — NABARD, FCI</a>
+    <div class="mnav-sub-head">Agricultural Engineering</div>
+    <a onclick="goExam('gate-agrieng');closeMobileNav()">GATE (AG)</a>
+    <a onclick="goExam('gate-agrieng');closeMobileNav()">ICAR-JRF — Ag Engineering</a>
+    <a onclick="goExam('gate-agrieng');closeMobileNav()">Govt Jobs — SBI/RBI AO</a>
+    <a href="/aao.html">Karnataka AO/AAO <span class="nav-tag-sm">Postponed</span></a>
+    <div class="mnav-sub-head">After You Get In</div>
+    <a onclick="goExam('gate-research');closeMobileNav()">🎓 PG → Research Support</a>
+  </div>
+  <a onclick="toggleMnavSub('mnavResourcesSub','mnavResourcesChevron')" style="display:flex;justify-content:space-between;align-items:center">Resources <span id="mnavResourcesChevron">▾</span></a>
+  <div class="mnav-sub" id="mnavResourcesSub">
+    <a id="mnav-ebooks" onclick="showPage('ebooks');closeMobileNav()">E-Books / Study Material</a>
+    <a id="mnav-bot" onclick="showPage('bot');closeMobileNav()">VidyaBot AI</a>
+    <a href="/mock.html">Mock Tests</a>
+    <a onclick="showPage('assignment');closeMobileNav()">Assignment Help</a>
+    <a id="mnav-ai" onclick="showPage('ai');closeMobileNav()">AI &amp; ML Certificate Course</a>
+    <a id="mnav-services" onclick="showPage('services');closeMobileNav()">All Services</a>
+    <a id="mnav-about" onclick="showPage('about');closeMobileNav()">About</a>
+    <a id="mnav-contact" onclick="showPage('contact');closeMobileNav()">Contact</a>
+  </div>
 </div>
 
 <div id="myLib" style="display:none;background:linear-gradient(135deg,#0F6E56,#04342C);color:#fff;padding:13px 1.3rem"></div>
@@ -550,6 +638,14 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
       <div class="s" style="background-image:url('/av-hero-4.jpg')"></div>
       <div class="s" style="background-image:url('/av-hero-2.jpg')"></div>
       <div class="s" style="background-image:url('/av-hero-5.jpg')"></div>
+    </div>
+    <div class="hc-dots" id="hcDots">
+      <button class="hc-dot on" onclick="hcGo(0)" aria-label="Slide 1"></button>
+      <button class="hc-dot" onclick="hcGo(1)" aria-label="Slide 2"></button>
+      <button class="hc-dot" onclick="hcGo(2)" aria-label="Slide 3"></button>
+      <button class="hc-dot" onclick="hcGo(3)" aria-label="Slide 4"></button>
+      <button class="hc-dot" onclick="hcGo(4)" aria-label="Slide 5"></button>
+      <button class="hc-dot" onclick="hcGo(5)" aria-label="Slide 6"></button>
     </div>
     <canvas id="heroFx"></canvas>
     <div class="hero-badge"><div class="hero-dot"></div>India's AI platform for Agri & Food Engineering</div>
@@ -577,98 +673,31 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
     </div>
   </div>
 
-  <!-- FEATURED AO/AAO OFFER -->
-  <div class="feat">
-    <div class="feat-wrap">
-      <div class="feat-grid">
-        <div class="feat-copy">
-          <div class="feat-eyebrow"><span class="d"></span>Karnataka KPSC · AO / AAO 2026</div>
-          <h2 class="feat-h">Clear AO/AAO with the <em>negative-marking strategy</em> no one teaches.</h2>
-          <p class="feat-p">Most aspirants don't fail because they studied less — they lose marks they already earned. Our Paper 1 material tells you exactly which questions to attempt and which to skip.</p>
-          <div class="feat-bul">
-            <div class="b"><span class="ic">&#10003;</span>All 8 units — full syllabus coverage</div>
-            <div class="b"><span class="ic">&#10003;</span>200+ MCQs with trap explanations</div>
-            <div class="b"><span class="ic">&#10003;</span>SAFE / RISKY / SKIP tag on every topic</div>
-            <div class="b"><span class="ic">&#10003;</span>Instant online access — read on any device</div>
-          </div>
-          <div class="feat-price"><span class="now">&#8377;299</span><span class="was">&#8377;499</span><span class="off">40% OFF · launch</span></div>
-          <div class="feat-cta">
-            <button class="btn-pay" style="width:auto;padding:13px 26px" onclick="buyMaterial('paper1',29900,'AAO Paper 1 Study Material')">Buy Now &mdash; &#8377;299 &rarr;</button>
-            <button class="ghost" onclick="getSample()">Get free sample (PDF)</button>
-          </div>
-          <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(29,158,117,.18)">
-            <div style="font-size:11px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Also available</div>
-            <div style="display:flex;flex-direction:column;gap:8px;max-width:480px">
-              <div onclick="buyMaterial('paper2',29900,'AAO Paper 2 Study Material')" style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--gs);border-radius:10px;padding:10px 14px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='var(--gb)'" onmouseout="this.style.borderColor='var(--gs)'">
-                <span style="font-size:13px;font-weight:500;color:var(--tp)">Paper 2 &mdash; Complete Material</span>
-                <span style="font-size:13px;font-weight:700;color:var(--gm);white-space:nowrap">&#8377;299 &rarr;</span>
-              </div>
-              <div onclick="buyMaterial('combo',54900,'AO/AAO Material Combo (Paper 1 + Paper 2)')" style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--gs);border-radius:10px;padding:10px 14px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='var(--gb)'" onmouseout="this.style.borderColor='var(--gs)'">
-                <span style="font-size:13px;font-weight:500;color:var(--tp)">Material Combo &mdash; Paper 1 + Paper 2</span>
-                <span style="font-size:13px;font-weight:700;color:var(--gm);white-space:nowrap">&#8377;549 &rarr;</span>
-              </div>
-              <div onclick="buyMaterial('mocks',99900,'AO/AAO Mock-Test Combo (10+10)')" style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--gs);border-radius:10px;padding:10px 14px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='var(--gb)'" onmouseout="this.style.borderColor='var(--gs)'">
-                <span style="font-size:13px;font-weight:500;color:var(--tp)">Mock-Test Combo &mdash; 10 + 10</span>
-                <span style="font-size:13px;font-weight:700;color:var(--gm);white-space:nowrap">&#8377;999 &rarr;</span>
-              </div>
-              <div onclick="buyMaterial('everything',49900,'AO/AAO MAHA PACK — Everything Included')" id="idxHeroEverythingRow" style="display:flex;justify-content:space-between;align-items:center;background:var(--gs);border:1.5px solid var(--gb);border-radius:10px;padding:10px 14px;cursor:pointer">
-                <span style="font-size:13px;font-weight:700;color:var(--gm)" id="idxHeroEverythingLabel">&#128293; MAHA PACK &mdash; Everything Included</span>
-                <span style="font-size:13px;font-weight:700;color:var(--gm);white-space:nowrap" id="idxHeroEverythingPrice">&#8377;499 &rarr;</span>
-              </div>
-            </div>
-            <div style="margin-top:10px">
-              <a href="javascript:void(0)" onclick="togglePromo()" style="font-size:12px;color:var(--ts);text-decoration:underline">Have a promo code for combos above?</a>
-              <div id="promoForm" style="display:none;gap:8px;margin-top:8px;max-width:280px">
-                <input id="promoInput" placeholder="Enter code" style="flex:1;padding:8px 10px;border:1px solid var(--gs);border-radius:8px;font-size:13px">
-                <button onclick="applyPromo()" style="padding:8px 14px;border-radius:8px;background:var(--gb);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer">Apply</button>
-              </div>
-              <div id="promoMsg" style="display:none;font-size:12px;margin-top:6px"></div>
-            </div>
-          </div>
-        </div>
-        <div class="feat-visual">
-          <div class="book-card">
-            <div class="net"></div>
-            <div class="in">
-              <span class="tag">Complete Paper 1 Material</span>
-              <h4>Karnataka AO / AAO<br>Paper 1 — Complete Material</h4>
-              <p style="font-size:13px;color:#9FE1CB;line-height:1.6">8 units · full syllabus · negative-marking strategy · instant digital access.</p>
-              <div class="meta">
-                <div class="m"><div class="n">8</div><div class="l">Units covered</div></div>
-                <div class="m"><div class="n">200+</div><div class="l">MCQs + traps</div></div>
-                <div class="m"><div class="n">348</div><div class="l">Pages</div></div>
-                <div class="m"><div class="n">&#8377;249</div><div class="l">Launch price</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- WHAT WE OFFER (moved before How it Works — a cold visitor needs to know what's on offer before the sign-up steps) -->
+  <div class="section section-alt">
+    <div class="section-label">What we offer</div>
+    <div class="section-title">Everything you need — one platform</div>
+    <div class="section-sub">For Food & Agricultural Engineering students, researchers & professionals across India</div>
+    <div class="offer-grid">
+      <div class="offer-card" onclick="window.location.href='/aao.html'"><div class="offer-media"><img src="/av-prod-1.jpg" alt="" loading="lazy"><span class="offer-badge"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5z"/><path d="M4 18.5A2.5 2.5 0 0 0 6.5 21H19"/><path d="M9 7.5h6M9 11h5"/></svg></span></div><h3>Karnataka AO/AAO Exam</h3><p>Complete study material &amp; mock tests for Paper 1 &amp; Paper 2. Exam date postponed — material stays valid.</p><span class="card-tag">From ₹299</span><span class="card-arrow">View details →</span></div>
+      <div class="offer-card" onclick="showPage('bot')"><div class="offer-media"><img src="/av-card-1.jpg" alt="" loading="lazy"><span class="offer-badge"><svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4.5"/><circle cx="12" cy="3.3" r="1.1"/><path d="M9 13h.01M15 13h.01"/><path d="M9.5 16s1 .8 2.5.8S14.5 16 14.5 16"/></svg></span></div><h3>VidyaBot AI</h3><p>Chat with a 24/7 AI tutor for Food &amp; Agri Engineering — Indian syllabus focused.</p><span class="card-tag">5 free questions</span><span class="card-arrow">Ask now →</span></div>
+      <div class="offer-card" onclick="showPage('gate')"><div class="offer-media"><img src="/av-card-2.jpg" alt="" loading="lazy"><span class="offer-badge"><svg viewBox="0 0 24 24"><path d="M2 9l10-4 10 4-10 4L2 9z"/><path d="M6 11v4.5c0 1.4 2.7 2.7 6 2.7s6-1.3 6-2.7V11"/><path d="M22 9v5"/></svg></span></div><h3>GATE / ICAR Prep</h3><p>MCQs, previous-year papers &amp; formula sheets for XL &amp; AG streams.</p><span class="card-tag">GATE · ICAR-JRF</span><span class="card-arrow">Start prep →</span></div>
+      <div class="offer-card" onclick="showPage('assignment')"><div class="offer-media"><img src="/av-card-3.jpg" alt="" loading="lazy"><span class="offer-badge"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/><path d="M9 12h5M9 16h4"/><path d="M17.5 3.5l3 3L14 13h-3v-3l6.5-6.5z"/></svg></span></div><h3>Assignment Help</h3><p>AI-powered help for calculations, problems &amp; research writing.</p><span class="card-tag">3 free answers</span><span class="card-arrow">Get help →</span></div>
+      <div class="offer-card" onclick="showPage('ai')"><div class="offer-media"><img src="/av-card-4.jpg" alt="" loading="lazy"><span class="offer-badge"><svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M9.5 3v2.5M14.5 3v2.5M9.5 18.5V21M14.5 18.5V21M3 9.5h2.5M3 14.5h2.5M18.5 9.5H21M18.5 14.5H21"/></svg></span></div><h3>AI &amp; ML Certificate Course</h3><p>Apply AI &amp; ML in food processing, precision farming &amp; agri research. Certificate on completion.</p><span class="card-tag card-tag-soon">Coming soon</span><span class="card-arrow">Explore →</span></div>
+      <div class="offer-card" onclick="showPage('gate')"><div class="offer-media"><img src="/av-card-5.jpg" alt="" loading="lazy"><span class="offer-badge"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V10.5M9.5 21V10.5M14.5 21V10.5M19 21V10.5"/><path d="M12 3L3.5 8h17L12 3z"/></svg></span></div><h3>Bank &amp; Govt Exams</h3><p>NABARD, FCI, SBI Agriculture Officer — complete preparation.</p><span class="card-tag">NABARD · FCI · SBI</span><span class="card-arrow">View exams →</span></div>
+      <div class="offer-card" onclick="showPage('services')"><div class="offer-media"><img src="/av-card-6.jpg" alt="" loading="lazy"><span class="offer-badge"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5z"/><path d="M4 18.5A2.5 2.5 0 0 0 6.5 21H19"/><path d="M9 7.5h6M9 11h5"/></svg></span></div><h3>Study Material</h3><p>Notes, formula sheets &amp; e-books for Food &amp; Agri Engineering.</p><span class="card-tag">Free downloads</span><span class="card-arrow">Browse →</span></div>
     </div>
   </div>
 
   <!-- HOW IT WORKS -->
-  <div class="section section-alt">
+  <div class="section">
     <div class="section-label">How it works</div>
     <div class="section-title">From sign-up to studying — in under a minute</div>
     <div class="section-sub">Secure, online-only access. No downloads to lose, no PDFs to leak.</div>
     <div class="steps">
       <div class="step"><div class="num">1</div><h4>Create a free account</h4><p>Sign up with your email and WhatsApp number. See a free sample before you buy.</p></div>
-      <div class="step"><div class="num">2</div><h4>Pay securely</h4><p>Pay &#8377;249 via UPI or card through Razorpay. Access is granted instantly — automatically.</p></div>
+      <div class="step"><div class="num">2</div><h4>Pay securely</h4><p>Pay via UPI or card through Razorpay. Access is granted instantly — automatically.</p></div>
       <div class="step"><div class="num">3</div><h4>Read online, anytime</h4><p>Open your material in the secure reader. Resume where you left off, on any device.</p></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">What we offer</div>
-    <div class="section-title">Everything you need — one platform</div>
-    <div class="section-sub">For Food & Agricultural Engineering students, researchers & professionals across India</div>
-    <div class="offer-grid">
-      <div class="offer-card" onclick="showPage('bot')"><div class="offer-media"><img src="/av-card-1.jpg" alt="" loading="lazy"><span class="offer-badge"><svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4.5"/><circle cx="12" cy="3.3" r="1.1"/><path d="M9 13h.01M15 13h.01"/><path d="M9.5 16s1 .8 2.5.8S14.5 16 14.5 16"/></svg></span></div><h3>VidyaBot AI</h3><p>Chat with a 24/7 AI tutor for Food &amp; Agri Engineering — Indian syllabus focused.</p><span class="card-tag">5 free questions</span><span class="card-arrow">Ask now →</span></div>
-      <div class="offer-card" onclick="showPage('gate')"><div class="offer-media"><img src="/av-card-2.jpg" alt="" loading="lazy"><span class="offer-badge"><svg viewBox="0 0 24 24"><path d="M2 9l10-4 10 4-10 4L2 9z"/><path d="M6 11v4.5c0 1.4 2.7 2.7 6 2.7s6-1.3 6-2.7V11"/><path d="M22 9v5"/></svg></span></div><h3>GATE / ICAR Prep</h3><p>MCQs, previous-year papers &amp; formula sheets for XL &amp; AG streams.</p><span class="card-tag">GATE · ICAR-JRF</span><span class="card-arrow">Start prep →</span></div>
-      <div class="offer-card" onclick="showPage('assignment')"><div class="offer-media"><img src="/av-card-3.jpg" alt="" loading="lazy"><span class="offer-badge"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/><path d="M9 12h5M9 16h4"/><path d="M17.5 3.5l3 3L14 13h-3v-3l6.5-6.5z"/></svg></span></div><h3>Assignment Help</h3><p>AI-powered help for calculations, problems &amp; research writing.</p><span class="card-tag">3 free answers</span><span class="card-arrow">Get help →</span></div>
-      <div class="offer-card" onclick="showPage('ai')"><div class="offer-media"><img src="/av-card-4.jpg" alt="" loading="lazy"><span class="offer-badge"><svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M9.5 3v2.5M14.5 3v2.5M9.5 18.5V21M14.5 18.5V21M3 9.5h2.5M3 14.5h2.5M18.5 9.5H21M18.5 14.5H21"/></svg></span></div><h3>Learn AI</h3><p>Apply AI &amp; ML in food processing, precision farming &amp; agri research.</p><span class="card-tag card-tag-soon">Coming soon</span><span class="card-arrow">Explore →</span></div>
-      <div class="offer-card" onclick="showPage('gate')"><div class="offer-media"><img src="/av-card-5.jpg" alt="" loading="lazy"><span class="offer-badge"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V10.5M9.5 21V10.5M14.5 21V10.5M19 21V10.5"/><path d="M12 3L3.5 8h17L12 3z"/></svg></span></div><h3>Bank &amp; Govt Exams</h3><p>NABARD, FCI, SBI Agriculture Officer — complete preparation.</p><span class="card-tag">NABARD · FCI · SBI</span><span class="card-arrow">View exams →</span></div>
-      <div class="offer-card" onclick="showPage('services')"><div class="offer-media"><img src="/av-card-6.jpg" alt="" loading="lazy"><span class="offer-badge"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5z"/><path d="M4 18.5A2.5 2.5 0 0 0 6.5 21H19"/><path d="M9 7.5h6M9 11h5"/></svg></span></div><h3>Study Material</h3><p>Notes, formula sheets &amp; e-books for Food &amp; Agri Engineering.</p><span class="card-tag">Free downloads</span><span class="card-arrow">Browse →</span></div>
     </div>
   </div>
   <div class="section section-alt">
@@ -716,7 +745,7 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
   <!-- CTA BAND -->
   <div class="ctaband" style="background-image:url('https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1400&q=80')">
     <h2>Start preparing the smart way</h2>
-    <p>Create a free account, see a sample, and unlock the complete AO/AAO Paper 1 material — instantly.</p>
+    <p>Create a free account, see a sample, and unlock your exam prep material — instantly.</p>
     <div class="hero-btns" style="margin-bottom:0">
       <button class="btn-hero" onclick="showPage('ebooks')">View E-Books &rarr;</button>
       <button class="btn-hero-out" onclick="openModal('signup')">Create free account</button>
@@ -731,15 +760,17 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
     <div class="section-title">Complete learning ecosystem</div>
     <div class="section-sub">From undergraduate to PhD — and professional certification</div>
     <div class="grid-3">
-      <div class="card" onclick="showPage('bot')"><div class="card-icon">🤖</div><h3>VidyaBot AI</h3><p>Expert answers on Food & Agri Engineering — 24/7, Indian syllabus aligned.</p><span class="card-tag">5 free questions</span></div>
-      <div class="card" onclick="showPage('gate')"><div class="card-icon">📚</div><h3>GATE / ICAR Prep</h3><p>MCQs, mock tests, previous year papers for XL and AG streams.</p><span class="card-tag">GATE · ICAR-JRF</span></div>
-      <div class="card" onclick="showPage('gate')"><div class="card-icon">🏦</div><h3>Bank & Govt Exams</h3><p>NABARD, FCI AGM, SBI Agriculture Officer, RBI preparation.</p><span class="card-tag">NABARD · FCI · SBI</span></div>
-      <div class="card" onclick="showPage('ai')"><div class="card-icon">🧠</div><h3>Learn AI</h3><p>AI & ML for food & agri — computer vision, sensors, data analysis.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
-      <div class="card" onclick="showPage('assignment')"><div class="card-icon">📝</div><h3>Assignment Help</h3><p>Guided solutions for engineering calculations, problems & lab reports.</p><span class="card-tag">3 free answers</span></div>
-      <div class="card"><div class="card-icon">🔬</div><h3>Research Guidance</h3><p>PhD thesis support, literature review, paper writing & methodology.</p><span class="card-tag">Research scholars</span></div>
-      <div class="card"><div class="card-icon">📖</div><h3>Study Material</h3><p>Notes, formula sheets, e-books for Food & Agri Engineering.</p><span class="card-tag">Free downloads</span></div>
-      <div class="card"><div class="card-icon">🌾</div><h3>Farmer Advisory</h3><p>AI advisory for post harvest losses, food processing & value addition.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
-      <div class="card"><div class="card-icon">🏛️</div><h3>Institutional Access</h3><p>Custom AI tools for colleges & universities with admin panel.</p><span class="card-tag">Contact us</span></div>
+      <div class="card" onclick="window.location.href='/aao.html'"><div class="card-banner cb-green"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5z"/><path d="M4 18.5A2.5 2.5 0 0 0 6.5 21H19"/><path d="M9 7.5h6M9 11h5"/></svg></div></div><h3>Karnataka AO/AAO Exam</h3><p>Complete Paper 1 &amp; Paper 2 material with mock tests. Exam date postponed — material stays valid.</p><span class="card-tag">From ₹299</span></div>
+      <div class="card" onclick="showPage('gate')"><div class="card-banner cb-green"><div class="cb-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></svg></div></div><h3>GATE / ICAR Prep</h3><p>MCQs, mock tests, previous year papers for XL and AG streams.</p><span class="card-tag">GATE · ICAR-JRF</span></div>
+      <div class="card" onclick="showPage('gate')"><div class="card-banner cb-green"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V10.5M9.5 21V10.5M14.5 21V10.5M19 21V10.5"/><path d="M12 3L3.5 8h17L12 3z"/></svg></div></div><h3>Bank & Govt Exams</h3><p>NABARD, FCI AGM, SBI Agriculture Officer, RBI preparation.</p><span class="card-tag">NABARD · FCI · SBI</span></div>
+      <div class="card" onclick="window.location.href='/mock.html'"><div class="card-banner cb-green"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8.5 9.5l1.5 1.5 3-3M8.5 15.5l1.5 1.5 3-3"/></svg></div></div><h3>Mock Tests</h3><p>Full-length, negative-marking mock tests with instant rank &amp; SWOT report.</p><span class="card-tag">AO/AAO mocks live</span></div>
+      <div class="card" onclick="showPage('bot')"><div class="card-banner cb-violet"><div class="cb-badge"><svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4.5"/><circle cx="12" cy="3.3" r="1.1"/><path d="M9 13h.01M15 13h.01"/><path d="M9.5 16s1 .8 2.5.8S14.5 16 14.5 16"/></svg></div></div><h3>VidyaBot AI</h3><p>Expert answers on Food & Agri Engineering — 24/7, Indian syllabus aligned.</p><span class="card-tag">5 free questions</span></div>
+      <div class="card" onclick="showPage('ai')"><div class="card-banner cb-violet"><div class="cb-badge"><svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M9.5 3v2.5M14.5 3v2.5M9.5 18.5V21M14.5 18.5V21M3 9.5h2.5M3 14.5h2.5M18.5 9.5H21M18.5 14.5H21"/></svg></div></div><h3>AI &amp; ML Certificate Course</h3><p>Computer vision, sensors, data analysis for food &amp; agri — certificate on completion.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card" onclick="showPage('assignment')"><div class="card-banner cb-green"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/><path d="M9 12h5M9 16h4"/><path d="M17.5 3.5l3 3L14 13h-3v-3l6.5-6.5z"/></svg></div></div><h3>Assignment Help</h3><p>Guided solutions for engineering calculations, problems & lab reports.</p><span class="card-tag">3 free answers</span></div>
+      <div class="card"><div class="card-banner cb-navy"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M2 9l10-4 10 4-10 4L2 9z"/><path d="M6 11v4.5c0 1.4 2.7 2.7 6 2.7s6-1.3 6-2.7V11"/><path d="M22 9v5"/></svg></div></div><h3>Research Guidance</h3><p>PhD thesis support, literature review, paper writing & methodology.</p><span class="card-tag">Research scholars</span></div>
+      <div class="card"><div class="card-banner cb-green"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5z"/><path d="M4 18.5A2.5 2.5 0 0 0 6.5 21H19"/><path d="M9 7.5h6M9 11h5"/></svg></div></div><h3>Study Material</h3><p>Notes, formula sheets, e-books for Food & Agri Engineering.</p><span class="card-tag">Free downloads</span></div>
+      <div class="card"><div class="card-banner cb-green"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M4 20c8 0 15-7 16-16C11 5 4 12 4 20z"/><path d="M4 20c3-3 6-6 12-12"/></svg></div></div><h3>Farmer Advisory</h3><p>AI advisory for post harvest losses, food processing & value addition.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-banner cb-navy"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M4 9h16M5 9v10M9.5 9v10M14.5 9v10M19 9v10M3 21h18M12 3 3 8h18L12 3z"/></svg></div></div><h3>Institutional Access</h3><p>Custom AI tools for colleges & universities with admin panel.</p><span class="card-tag">Contact us</span></div>
     </div>
   </div>
 </div>
@@ -749,19 +780,42 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
   <div class="hero" style="padding:2.5rem 1.5rem">
     <div class="hero-badge"><div class="hero-dot"></div>GATE & ICAR-JRF Preparation</div>
     <h1>Crack <em>GATE & ICAR</em><br>with AI-powered prep</h1>
-    <p class="hero-sub">MCQs, previous year papers, formula sheets — for Food Technology & Agricultural Engineering.</p>
+    <p class="hero-sub">Pick your field, then your path — PG entrance, a government job, or research support once you're in. MCQs, previous year papers &amp; formula sheets for all of it.</p>
     <div class="hero-btns"><button class="btn-hero" onclick="openModal('signup')">Start free prep</button></div>
   </div>
-  <div class="section">
-    <div class="section-label">Exam streams</div>
-    <div class="section-title">All exams we cover</div>
+  <div class="section" id="gate-foodtech">
+    <div class="section-label">Food Technology</div>
+    <div class="section-title">Your path after Food Technology</div>
     <div class="grid-2">
-      <div class="card"><div class="card-icon">🍱</div><h3>GATE Food Technology (XL)</h3><p>Food Chemistry, Microbiology, Technology, Engineering — complete coverage.</p><span class="card-tag">XL stream</span></div>
-      <div class="card"><div class="card-icon">⚙️</div><h3>GATE Agricultural Engineering (AG)</h3><p>Farm Machinery, Soil & Water, Processing, Irrigation & Drainage.</p><span class="card-tag">AG stream</span></div>
-      <div class="card"><div class="card-icon">🏫</div><h3>ICAR-JRF / SRF</h3><p>Food Science, Post Harvest Technology, Agricultural Engineering.</p><span class="card-tag">ICAR</span></div>
-      <div class="card"><div class="card-icon">🏦</div><h3>NABARD Grade A</h3><p>Agri Economics, Rural Development, NABARD schemes.</p><span class="card-tag">NABARD</span></div>
-      <div class="card"><div class="card-icon">🌾</div><h3>FCI — Agri Graduate</h3><p>Food grains, storage, procurement, supply chain.</p><span class="card-tag">FCI</span></div>
-      <div class="card"><div class="card-icon">🏛️</div><h3>SBI / RBI Agriculture Officer</h3><p>Banking + agri combined preparation.</p><span class="card-tag">SBI · RBI</span></div>
+      <div class="card"><div class="card-banner cb-amber"><div class="cb-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></svg></div></div><h3>GATE Food Technology (XL)</h3><p>Food Chemistry, Microbiology, Technology, Engineering — complete coverage.</p><span class="card-tag">XL stream · PG entrance</span></div>
+      <div class="card"><div class="card-banner cb-amber"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M2 9l10-4 10 4-10 4L2 9z"/><path d="M6 11v4.5c0 1.4 2.7 2.7 6 2.7s6-1.3 6-2.7V11"/><path d="M22 9v5"/></svg></div></div><h3>ICAR-JRF / SRF — Food Science</h3><p>Food Science, Post Harvest Technology — for master's &amp; PhD entrance.</p><span class="card-tag">ICAR · PG entrance</span></div>
+      <div class="card"><div class="card-banner cb-amber"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V10.5M9.5 21V10.5M14.5 21V10.5M19 21V10.5"/><path d="M12 3L3.5 8h17L12 3z"/></svg></div></div><h3>NABARD Grade A</h3><p>Agri Economics, Rural Development, NABARD schemes.</p><span class="card-tag">Govt Job</span></div>
+      <div class="card"><div class="card-banner cb-amber"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M12 21V9"/><path d="M12 9c-3-1-3-4 0-6 3 2 3 5 0 6z"/><path d="M12 13c-2.6-.5-3.8-2.6-3.4-4.8 2.6.2 4 2 3.4 4.8z"/><path d="M12 13c2.6-.5 3.8-2.6 3.4-4.8-2.6.2-4 2-3.4 4.8z"/><path d="M12 17c-2.6-.5-3.8-2.6-3.4-4.8 2.6.2 4 2 3.4 4.8z"/><path d="M12 17c2.6-.5 3.8-2.6 3.4-4.8-2.6.2-4 2-3.4 4.8z"/></svg></div></div><h3>FCI — Agri/Food Graduate</h3><p>Food grains, storage, procurement, supply chain.</p><span class="card-tag">Govt Job</span></div>
+    </div>
+  </div>
+  <div class="section section-alt" id="gate-agrieng">
+    <div class="section-label">Agricultural Engineering</div>
+    <div class="section-title">Your path after Agricultural Engineering</div>
+    <div class="grid-2">
+      <div class="card"><div class="card-banner cb-teal"><div class="cb-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.4M12 18.6V21M21 12h-2.4M5.4 12H3M18.1 5.9l-1.7 1.7M7.6 16.4l-1.7 1.7M18.1 18.1l-1.7-1.7M7.6 7.6L5.9 5.9"/></svg></div></div><h3>GATE Agricultural Engineering (AG)</h3><p>Farm Machinery, Soil & Water, Processing, Irrigation & Drainage.</p><span class="card-tag">AG stream · PG entrance</span></div>
+      <div class="card"><div class="card-banner cb-teal"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M2 9l10-4 10 4-10 4L2 9z"/><path d="M6 11v4.5c0 1.4 2.7 2.7 6 2.7s6-1.3 6-2.7V11"/><path d="M22 9v5"/></svg></div></div><h3>ICAR-JRF / SRF — Ag Engineering</h3><p>Agricultural Engineering specializations — for master's &amp; PhD entrance.</p><span class="card-tag">ICAR · PG entrance</span></div>
+      <div class="card"><div class="card-banner cb-teal"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V10.5M9.5 21V10.5M14.5 21V10.5M19 21V10.5"/><path d="M12 3L3.5 8h17L12 3z"/></svg></div></div><h3>SBI / RBI Agriculture Officer</h3><p>Banking + agri combined preparation.</p><span class="card-tag">Govt Job</span></div>
+      <div class="card" onclick="window.location.href='/aao.html'"><div class="card-banner cb-teal"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5z"/><path d="M4 18.5A2.5 2.5 0 0 0 6.5 21H19"/><path d="M9 7.5h6M9 11h5"/></svg></div></div><h3>Karnataka AO/AAO</h3><p>State PSC Agricultural/Assistant Agricultural Officer — material &amp; mock tests.</p><span class="card-tag">Govt Job · Postponed</span></div>
+    </div>
+  </div>
+
+  <!-- PG -> RESEARCH SUPPORT (for students already admitted into a Master's/PhD, from either field) -->
+  <div class="section" id="gate-research">
+    <div class="section-label">After you get in</div>
+    <div class="section-title">PG → Research Support</div>
+    <div class="section-sub">Cleared GATE or ICAR-JRF? Here's what most Master's/PhD students get stuck on next — for both Food Technology &amp; Agricultural Engineering.</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-banner cb-navy"><div class="cb-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></svg></div></div><h3>Research Objective Finder</h3><p>Describe your interest area — get back thesis-worthy problem statements &amp; objectives matched to Indian ag-university norms.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-banner cb-navy"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5z"/><path d="M4 18.5A2.5 2.5 0 0 0 6.5 21H19"/><path d="M9 7.5h6M9 11h5"/></svg></div></div><h3>Literature Review Support</h3><p>Find, summarize &amp; organize relevant papers into a review draft, with citation management guidance.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-banner cb-navy"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/><path d="M9 12h5M9 16h4"/><path d="M17.5 3.5l3 3L14 13h-3v-3l6.5-6.5z"/></svg></div></div><h3>Thesis &amp; Article Writing</h3><p>Drafting &amp; editing support matched to journal/thesis formats, plus a pre-submission plagiarism check.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-banner cb-navy"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M3 16.5 16.5 3l4.5 4.5L7.5 21 3 16.5z"/><path d="M13 6.5 15 8.5M10 9.5l2 2M7 12.5l2 2"/></svg></div></div><h3>AutoCAD &amp; Diagram Support</h3><p>Ready CAD blocks (farm ponds, drip layouts, structures) &amp; tutorials for Agricultural Engineering project drawings.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-banner cb-navy"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M4 20V10M11 20V4M18 20v-7"/><path d="M2 20h20"/></svg></div></div><h3>Statistical Analysis Guidance</h3><p>Which test fits your experiment — ANOVA, DMRT, regression — with worked agri examples.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-banner cb-navy"><div class="cb-badge"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0"/><path d="M12 17v4M9 21h6"/></svg></div></div><h3>Viva-Voce Prep</h3><p>Mock viva questions &amp; model answers generated from your own thesis topic.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
     </div>
   </div>
 </div>
@@ -770,20 +824,20 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
 <div id="page-ai" class="page">
   <div class="hero" style="padding:2.5rem 1.5rem">
     <div class="hero-badge"><div class="hero-dot"></div>Coming Soon</div>
-    <h1>Apply <em>AI & ML</em> in<br>Food & Agri Engineering</h1>
-    <p class="hero-sub">Computer vision for crops, sensor data, food quality AI. Practical, hands-on, industry relevant. Launching soon!</p>
+    <h1><em>AI &amp; ML</em> Certificate Course<br>for Food &amp; Agri Engineering</h1>
+    <p class="hero-sub">Computer vision for crops, sensor data, food quality AI — practical, hands-on, industry relevant. 🎓 Certificate on completion. Launching soon!</p>
     <div class="hero-btns"><button class="btn-hero" onclick="openModal('signup')">Get notified when live</button></div>
   </div>
   <div class="section">
     <div class="section-label">Coming soon</div>
     <div class="section-title">What you will learn</div>
     <div class="grid-3">
-      <div class="card"><div class="card-icon">🤖</div><h3>AI basics for engineers</h3><p>What is AI, ML, Deep Learning — no coding background needed.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
-      <div class="card"><div class="card-icon">👁️</div><h3>Computer vision in agri</h3><p>Fruit quality detection, crop disease identification, grading.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
-      <div class="card"><div class="card-icon">📡</div><h3>Sensor & IoT analysis</h3><p>E-nose, e-tongue, smart sensors — AI modelling for food quality.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
-      <div class="card"><div class="card-icon">🌾</div><h3>Precision farming AI</h3><p>Crop monitoring, yield prediction, irrigation AI, drone data.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
-      <div class="card"><div class="card-icon">🍱</div><h3>Food quality & safety AI</h3><p>Adulteration detection, shelf life prediction, HACCP automation.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
-      <div class="card"><div class="card-icon">🛠️</div><h3>Build your AI project</h3><p>From idea to working prototype for final year & thesis.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-banner cb-violet"><div class="cb-badge"><svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M9.5 3v2.5M14.5 3v2.5M9.5 18.5V21M14.5 18.5V21M3 9.5h2.5M3 14.5h2.5M18.5 9.5H21M18.5 14.5H21"/></svg></div></div><h3>AI basics for engineers</h3><p>What is AI, ML, Deep Learning — no coding background needed.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-banner cb-violet"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div></div><h3>Computer vision in agri</h3><p>Fruit quality detection, crop disease identification, grading.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-banner cb-violet"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 20v-4M12 20V9M17 20V4"/></svg></div></div><h3>Sensor & IoT analysis</h3><p>E-nose, e-tongue, smart sensors — AI modelling for food quality.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-banner cb-violet"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M4 20c8 0 15-7 16-16C11 5 4 12 4 20z"/><path d="M4 20c3-3 6-6 12-12"/></svg></div></div><h3>Precision farming AI</h3><p>Crop monitoring, yield prediction, irrigation AI, drone data.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-banner cb-violet"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M12 21V9"/><path d="M12 9c-3-1-3-4 0-6 3 2 3 5 0 6z"/><path d="M12 13c-2.6-.5-3.8-2.6-3.4-4.8 2.6.2 4 2 3.4 4.8z"/><path d="M12 13c2.6-.5 3.8-2.6 3.4-4.8-2.6.2-4 2-3.4 4.8z"/><path d="M12 17c-2.6-.5-3.8-2.6-3.4-4.8 2.6.2 4 2 3.4 4.8z"/><path d="M12 17c2.6-.5 3.8-2.6 3.4-4.8-2.6.2-4 2-3.4 4.8z"/></svg></div></div><h3>Food quality & safety AI</h3><p>Adulteration detection, shelf life prediction, HACCP automation.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
+      <div class="card"><div class="card-banner cb-violet"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M14.5 3.5a4.5 4.5 0 0 0-5.9 5.9L3 15l3 3 5.6-5.6a4.5 4.5 0 0 0 5.9-5.9l-3 3-2.5-2.5 3-3z"/></svg></div></div><h3>Build your AI project</h3><p>From idea to working prototype for final year & thesis.</p><span class="card-tag card-tag-soon">Coming soon</span></div>
     </div>
   </div>
 </div>
@@ -941,54 +995,15 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
     <div class="section-title">Study Material</div>
     <div class="section-sub">Secure digital material. Instant access after payment.</div>
     <div class="grid-2">
-      <div class="card" style="cursor:default">
-        <div class="card-icon">📘</div>
-        <h3>Karnataka AO/AAO Paper 1 — Complete Material</h3>
-        <p>8 units, 200+ MCQs with trap explanations, full syllabus coverage with the negative-marking strategy. Instant digital access.</p>
-        <div style="margin:14px 0;font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gm)">₹299 <span style="font-size:13px;color:var(--tm);text-decoration:line-through;font-weight:400">₹499</span></div>
-        <button class="btn-pay" style="width:auto;padding:11px 26px" onclick="buyMaterial('paper1',29900,'AAO Paper 1 Study Material')">Buy Now &mdash; ₹299 &rarr;</button>
-        <div style="margin-top:10px"><a onclick="getSample()" style="font-size:12px;color:var(--gb);cursor:pointer">Get the free sample (PDF) →</a></div>
-      </div>
-      <div class="card" style="cursor:default">
-        <div class="card-icon">📗</div>
-        <h3>Karnataka AO/AAO Paper 2 — Complete Material</h3>
-        <p>617 pages — Agriculture &amp; allied subjects in depth, full Paper 2 syllabus with MCQs, concept notes and exam strategy. Online-only secure access.</p>
-        <div style="margin:14px 0;font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gm)">₹299 <span style="font-size:13px;color:var(--tm);text-decoration:line-through;font-weight:400">₹499</span></div>
-        <button class="btn-pay" style="width:auto;padding:11px 26px" onclick="buyMaterial('paper2',29900,'AAO Paper 2 Study Material')">Buy Now &mdash; ₹299 &rarr;</button>
-        <div style="margin-top:10px"><a onclick="window.open('/AgriVidya_AAO_Paper2_FREE_SAMPLE.pdf','_blank')" style="font-size:12px;color:var(--gb);cursor:pointer">Get the free sample (PDF) →</a></div>
-      </div>
-      <div class="card" style="cursor:default">
-        <div class="card-icon">📝</div>
-        <h3>AO/AAO Mock-Test Combo — 10 + 10</h3>
-        <p>10 + 10 full-length mock tests on the exact exam pattern — live timer, −0.25 negative marking, instant rank, SWOT &amp; detailed solutions.</p>
-        <div style="margin:14px 0;font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gm)">₹999 <span style="font-size:13px;color:var(--tm);text-decoration:line-through;font-weight:400">₹1999</span></div>
-        <button class="btn-pay" style="width:auto;padding:11px 26px" onclick="buyMaterial('mocks',99900,'AO/AAO Mock-Test Combo (10+10)')">Buy Now &mdash; ₹999 &rarr;</button>
-        <div style="margin-top:10px"><a href="/mock.html" style="font-size:12px;color:var(--gb);cursor:pointer">Try a free sample test →</a></div>
-      </div>
-      <div class="card" style="cursor:default">
-        <div class="card-icon">📚</div>
-        <h3>Material Combo — Paper 1 + Paper 2</h3>
-        <p>Both complete study materials in one purchase — the full AO/AAO study library, one secure account. (Material only — mock tests not included.)</p>
-        <div style="margin:14px 0;font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gm)">₹549 <span style="font-size:13px;color:var(--tm);text-decoration:line-through;font-weight:400">₹998</span></div>
-        <button class="btn-pay" style="width:auto;padding:11px 26px" onclick="buyMaterial('combo',54900,'AO/AAO Material Combo (Paper 1 + Paper 2)')">Get both &mdash; ₹549 &rarr;</button>
-      </div>
-      <div class="card" style="cursor:default;border:2px solid var(--gb)">
-        <div class="card-icon">🔥</div>
-        <h3 id="idxEverythingTitle">MAHA PACK — Everything Included</h3>
-        <p>Both papers + all 10 + 10 mock tests. The complete AO/AAO kit in one purchase — flash price, ends 7 August.</p>
-        <div style="margin:14px 0;font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gm)"><span id="idxEverythingNow">₹499</span> <span id="idxEverythingWas" style="font-size:13px;color:var(--tm);text-decoration:line-through;font-weight:400">₹1499</span></div>
-        <div id="idxEverythingCd" style="font-size:12px;color:#B8860B;font-weight:700;margin-bottom:8px">⏳ Flash price ends in --:--:--</div>
-        <button class="btn-pay" id="idxEverythingBtn" style="width:auto;padding:11px 26px" onclick="buyMaterial('everything',49900,'AO/AAO MAHA PACK — Everything Included')">Get everything &mdash; ₹499 &rarr;</button>
+      <div class="card" onclick="window.location.href='/aao.html'">
+        <div class="card-banner cb-green"><div class="cb-badge"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5z"/><path d="M4 18.5A2.5 2.5 0 0 0 6.5 21H19"/><path d="M9 7.5h6M9 11h5"/></svg></div></div>
+        <h3>Karnataka AO/AAO — Study Material &amp; Mock Tests</h3>
+        <p>Paper 1 &amp; Paper 2 complete material, 10 + 10 mock tests, and the AI doubt-solving bot — all in one place. Exam date postponed; material stays valid.</p>
+        <span class="card-tag">From ₹299</span>
+        <div style="margin-top:14px"><span style="font-size:13px;font-weight:700;color:var(--gb)">View material &amp; pricing →</span></div>
       </div>
     </div>
-    <div style="margin-top:14px">
-      <a href="javascript:void(0)" onclick="togglePromo('2')" style="font-size:12px;color:var(--ts);text-decoration:underline">Have a promo code for the Mock-Test Combo or EVERYTHING?</a>
-      <div id="promoForm2" style="display:none;gap:8px;margin-top:8px;max-width:280px">
-        <input id="promoInput2" placeholder="Enter code" style="flex:1;padding:8px 10px;border:1px solid var(--gs);border-radius:8px;font-size:13px">
-        <button onclick="applyPromo('2')" style="padding:8px 14px;border-radius:8px;background:var(--gb);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer">Apply</button>
-      </div>
-      <div id="promoMsg2" style="display:none;font-size:12px;margin-top:6px"></div>
-    </div>
+    <p style="margin-top:18px;font-size:13px;color:var(--tm)">More subjects — GATE, ICAR-JRF, NABARD &amp; other Govt exams — coming soon.</p>
   </div>
 </div>
 
@@ -1161,16 +1176,18 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
   </div>
   <div style="display:flex;align-items:center;gap:7px;justify-content:flex-end">
     <div class="bubble-label" style="background:#085041;color:white;box-shadow:0 2px 6px rgba(8,80,65,0.3)" onclick="togglePopup()" id="vidyaLabel">VidyaBot — Your AI Companion</div>
-    <button class="bubble-btn" onclick="togglePopup()" style="background:#085041;box-shadow:0 2px 10px rgba(8,80,65,0.35)">
+    <button class="bubble-btn bubble-bounce" onclick="togglePopup()" style="background:#085041;box-shadow:0 2px 10px rgba(8,80,65,0.35)">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.477 2 2 6.077 2 11c0 2.09.7 4.02 1.87 5.57L3 22l5.47-.88C9.89 21.67 10.93 22 12 22c5.523 0 10-4.077 10-9s-4.477-9-10-9z" fill="white"/><circle cx="8" cy="11" r="1.2" fill="#085041"/><circle cx="12" cy="11" r="1.2" fill="#085041"/><circle cx="16" cy="11" r="1.2" fill="#085041"/></svg>
     </button>
   </div>
-  <div style="display:flex;align-items:center;gap:7px;justify-content:flex-end">
-    <div class="bubble-label" style="background:#25D366;color:white;box-shadow:0 2px 6px rgba(37,211,102,0.3)" onclick="window.open('https://wa.me/919492982424?text=Hello AgriVidya!','_blank')">Chat on WhatsApp</div>
-    <button class="bubble-btn" onclick="window.open('https://wa.me/919492982424?text=Hello AgriVidya!','_blank')" style="background:#25D366;box-shadow:0 2px 10px rgba(37,211,102,0.35)">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.083.535 4.04 1.472 5.747L.057 23.882l6.29-1.648A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.802 9.802 0 01-5.001-1.368l-.359-.213-3.733.978.994-3.63-.234-.373A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182c5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
-    </button>
-  </div>
+</div>
+
+<!-- WHATSAPP FAB (left side) -->
+<div class="wa-fab-wrap">
+  <button class="bubble-btn bubble-bounce" onclick="window.open('https://wa.me/919492982424?text=Hello AgriVidya!','_blank')" style="background:#25D366;box-shadow:0 2px 10px rgba(37,211,102,0.35)">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.083.535 4.04 1.472 5.747L.057 23.882l6.29-1.648A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.802 9.802 0 01-5.001-1.368l-.359-.213-3.733.978.994-3.63-.234-.373A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182c5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
+  </button>
+  <div class="bubble-label" style="background:#25D366;color:white;box-shadow:0 2px 6px rgba(37,211,102,0.3)" onclick="window.open('https://wa.me/919492982424?text=Hello AgriVidya!','_blank')">Chat on WhatsApp</div>
 </div>
 
 <script>
@@ -1292,6 +1309,40 @@ function toggleMobileNav(){
 function closeMobileNav(){
   mobileNavOpen=false;
   document.getElementById('mobileNav').style.display='none';
+}
+
+/* Desktop nav dropdowns (Exams / Resources) */
+function toggleNavDrop(e,id){
+  if(e) e.stopPropagation();
+  document.querySelectorAll('.nav-drop-menu.open').forEach(function(m){ if(m.id!==id){ m.classList.remove('open'); var pc=m.parentElement.querySelector('.chev'); if(pc) pc.style.transform=''; } });
+  var m=document.getElementById(id);
+  if(!m) return;
+  var open=m.classList.toggle('open');
+  var chev=m.parentElement.querySelector('.chev');
+  if(chev) chev.style.transform=open?'rotate(180deg)':'';
+}
+function closeNavDrops(){
+  document.querySelectorAll('.nav-drop-menu.open').forEach(function(m){
+    m.classList.remove('open');
+    var chev=m.parentElement.querySelector('.chev'); if(chev) chev.style.transform='';
+  });
+}
+document.addEventListener('click',closeNavDrops);
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeNavDrops(); });
+/* Jump to a field section within the Exams page */
+function goExam(sectionId){
+  showPage('gate');
+  closeNavDrops();
+  var el=document.getElementById(sectionId);
+  if(el) setTimeout(function(){ el.scrollIntoView({behavior:'smooth',block:'start'}); },50);
+}
+
+/* Mobile nav accordions (Exams / Resources) */
+function toggleMnavSub(subId,chevId){
+  var s=document.getElementById(subId), c=document.getElementById(chevId);
+  if(!s) return;
+  var open=s.classList.toggle('open');
+  if(c) c.textContent=open?'▴':'▾';
 }
 
 function openModal(type){
@@ -1443,35 +1494,6 @@ function paidSuccess(url){
    enforced server-side in api/create-order.js — keep both lists in sync when adding a code. */
 const PROMOS={AAO15:{percent:15}, TAJUDDIN10:{fixed:{everything:1000,mocks:750}}, RAMYA5:{fixed:{everything:1000,mocks:750}}};
 let appliedPromo=null;
-/* MAHA PACK flash offer (added 2026-07-22, extended 2026-07-22 when exam was postponed
-   25 Jul → 8 Aug): "everything" is a flat ₹499 through end of 7 Aug IST, then reverts to
-   ₹1,499. MUST stay in sync with api/create-order.js / aao.html / mock.html — this copy
-   is cosmetic display only, checkout price is server-authoritative in api/create-order.js. */
-(function(){
-  var MAHA_OFFER_END=Date.parse('2026-08-08T00:00:00+05:30');
-  if(Date.now()>=MAHA_OFFER_END){
-    var t=document.getElementById('idxEverythingTitle'); if(t) t.textContent='EVERYTHING — Material + Mock Tests';
-    var now=document.getElementById('idxEverythingNow'); if(now) now.textContent='₹1499';
-    var was=document.getElementById('idxEverythingWas'); if(was) was.textContent='₹2997';
-    var cd=document.getElementById('idxEverythingCd'); if(cd) cd.style.display='none';
-    var btn=document.getElementById('idxEverythingBtn'); if(btn){ btn.textContent='Get everything — ₹1499 →'; btn.setAttribute('onclick',"buyMaterial('everything',149900,'AO/AAO Everything — Material + Mock Tests')"); }
-    var hl=document.getElementById('idxHeroEverythingLabel'); if(hl) hl.innerHTML='&#11088; EVERYTHING — Material + Mocks';
-    var hp=document.getElementById('idxHeroEverythingPrice'); if(hp) hp.innerHTML='&#8377;1499 &rarr;';
-    var hr=document.getElementById('idxHeroEverythingRow'); if(hr) hr.setAttribute('onclick',"buyMaterial('everything',149900,'AO/AAO Everything — Material + Mock Tests')");
-    return;
-  }
-  var cd=document.getElementById('idxEverythingCd');
-  if(cd){
-    function pad(n){return n<10?'0'+n:''+n;}
-    (function tick(){
-      var diff=MAHA_OFFER_END-Date.now();
-      if(diff<=0){ cd.style.display='none'; return; }
-      var d=Math.floor(diff/86400000), h=Math.floor(diff%86400000/3600000), m=Math.floor(diff%3600000/60000), s=Math.floor(diff%60000/1000);
-      cd.textContent='⏳ Flash price ends in '+(d>0?d+'d ':'')+pad(h)+':'+pad(m)+':'+pad(s);
-      setTimeout(tick,1000);
-    })();
-  }
-})();
 function togglePromo(n){ var f=document.getElementById(n?('promoForm'+n):'promoForm'); if(f) f.style.display = f.style.display==='none'?'flex':'none'; }
 function applyPromo(n){
   var suf=n?String(n):'';
@@ -1533,9 +1555,19 @@ async function doBuy(id,amount,desc,email){
 (function(){
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* 0) Hero carousel crossfade */
-  (function(){ var s=document.querySelectorAll('#hc .s'); if(s.length<2) return; var i=0;
-    setInterval(function(){ s[i].classList.remove('on'); i=(i+1)%s.length; s[i].classList.add('on'); }, 5000);
+  /* 0) Hero carousel crossfade + dot indicators */
+  (function(){
+    var s=document.querySelectorAll('#hc .s'); if(s.length<2) return;
+    var dots=document.querySelectorAll('#hcDots .hc-dot');
+    var i=0, timer;
+    function show(n){
+      s[i].classList.remove('on'); if(dots[i]) dots[i].classList.remove('on');
+      i=n%s.length;
+      s[i].classList.add('on'); if(dots[i]) dots[i].classList.add('on');
+    }
+    function restart(){ clearInterval(timer); timer=setInterval(function(){ show(i+1); }, 5000); }
+    window.hcGo=function(n){ show(n); restart(); };
+    restart();
   })();
 
   /* 1) Nav elevation on scroll */
@@ -1576,29 +1608,6 @@ async function doBuy(id,amount,desc,email){
 })();
 </script>
 
-<!-- AO/AAO aspirant gate — asks once, routes accordingly, never blocks repeat visitors -->
-<div id="aaoGate" style="position:fixed;inset:0;z-index:5000;background:rgba(2,30,23,.92);display:flex;align-items:center;justify-content:center;padding:1.2rem;backdrop-filter:blur(6px)">
-  <div style="background:#fff;border-radius:18px;padding:2rem 1.6rem;max-width:380px;width:100%;text-align:center;box-shadow:0 30px 70px -30px rgba(0,0,0,.6)">
-    <div style="font-size:34px;margin-bottom:10px">🌾</div>
-    <h2 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#0D1F1A;margin-bottom:8px;line-height:1.3">Preparing for KPSC AO/AAO 2026?</h2>
-    <p style="font-size:13.5px;color:#3D5E54;line-height:1.6;margin-bottom:20px">Exam is on 8 August 2026. We have Paper 1, Paper 2 and full mock tests built just for it.</p>
-    <button onclick="goAaoGate()" style="width:100%;background:linear-gradient(135deg,#1D9E75,#0F6E56);color:#fff;border:none;border-radius:11px;padding:13px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:10px;font-family:'DM Sans',sans-serif">Yes — show me AO/AAO →</button>
-    <button onclick="dismissAaoGate()" style="width:100%;background:transparent;color:#085041;border:1.5px solid #085041;border-radius:11px;padding:12px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">No, just browsing</button>
-  </div>
-</div>
-<script>
-(function(){
-  try{ if(localStorage.getItem('av_gate_answered')==='1'){ var g=document.getElementById('aaoGate'); if(g) g.style.display='none'; } }catch(e){}
-})();
-function dismissAaoGate(){
-  try{ localStorage.setItem('av_gate_answered','1'); }catch(e){}
-  document.getElementById('aaoGate').style.display='none';
-}
-function goAaoGate(){
-  try{ localStorage.setItem('av_gate_answered','1'); }catch(e){}
-  location.href='/aao.html';
-}
-</script>
 </body>
 <!-- redeploy-2 price-149-live -->
 </html>
