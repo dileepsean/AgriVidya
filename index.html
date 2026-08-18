@@ -166,6 +166,7 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:0.75re
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
 .about-point{background:var(--w);border:1px solid var(--gs);border-radius:10px;padding:1rem;display:flex;gap:10px}
 .about-icon{width:32px;height:32px;background:var(--gs);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.about-icon svg{width:17px;height:17px;stroke:var(--gm);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .about-point h4{font-size:13px;font-weight:500;margin-bottom:3px}
 .about-point p{font-size:11px;color:var(--ts);line-height:1.5}
 .expertise-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:1.25rem}
@@ -324,12 +325,11 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
   radial-gradient(820px 420px at 12% 112%,rgba(93,202,165,0.26),transparent 60%),
   linear-gradient(160deg,#021E17 0%,#04342C 55%,#053a30 100%)}
 .hero>*{position:relative;z-index:2}
-#heroFx{position:absolute;inset:0;z-index:1;width:100%;height:100%;display:block;opacity:.9}
 .hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
   background:radial-gradient(58% 48% at 50% 44%,rgba(2,30,23,.5) 0%,rgba(2,30,23,.12) 55%,transparent 78%)}
 .hero-badge{background:rgba(15,110,86,0.55);backdrop-filter:blur(6px);border-color:rgba(93,202,165,0.4);box-shadow:0 4px 18px -8px rgba(0,0,0,0.5)}
 .hero h1{font-size:40px;letter-spacing:-1px;text-shadow:0 6px 40px rgba(29,158,117,0.35)}
-.hero h1 em{background:linear-gradient(120deg,#5DCAA5,#9FE1CB 60%,#1D9E75);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.hero h1 em{color:#8FE0BE;font-style:normal}
 .hero-sub{font-size:15px;opacity:.95}
 .spec-tag{background:rgba(15,110,86,0.5);backdrop-filter:blur(4px)}
 
@@ -352,7 +352,7 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
 
 /* --- Stat numbers glow --- */
 .stats-row{box-shadow:0 18px 40px -22px rgba(0,0,0,0.6);border:1px solid rgba(93,202,165,0.18)}
-.stat-num{background:linear-gradient(120deg,#5DCAA5,#9FE1CB);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stat-num{color:#8FE0BE}
 
 /* --- Premium cards --- */
 .card{position:relative;background:linear-gradient(180deg,#fff,#fbfdfc);box-shadow:0 6px 22px -16px rgba(13,31,26,0.45);transition:transform .26s ease,box-shadow .26s ease,border-color .26s ease}
@@ -388,7 +388,6 @@ nav.av-scrolled{box-shadow:0 6px 28px -12px rgba(8,80,65,0.35);background:rgba(2
 @media(max-width:480px){.hero h1{font-size:25px}}
 @media(prefers-reduced-motion:reduce){
   .av-reveal{opacity:1;transform:none;transition:none}
-  #heroFx{display:none}
   *{scroll-behavior:auto!important}
 }
 
@@ -647,7 +646,6 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
       <button class="hc-dot" onclick="hcGo(4)" aria-label="Slide 5"></button>
       <button class="hc-dot" onclick="hcGo(5)" aria-label="Slide 6"></button>
     </div>
-    <canvas id="heroFx"></canvas>
     <div class="hero-badge"><div class="hero-dot"></div>India's AI platform for Agri & Food Engineering</div>
     <h1>The <em>AI Brain</em> for<br>Agri & Food Engineering</h1>
     <div class="hero-spec">
@@ -1027,12 +1025,12 @@ body,nav,button,input,select,textarea{font-family:'Inter',system-ui,sans-serif!i
     <div class="section-label">Why choose us</div>
     <div class="section-title">Why AgriVidya?</div>
     <div class="about-grid">
-      <div class="about-point"><div class="about-icon">🎓</div><div><h4>Syllabus aligned</h4><p>Mapped to ANGRAU, PJTSAU, ICAR & central university curricula.</p></div></div>
-      <div class="about-point"><div class="about-icon">🧪</div><div><h4>Subject-specific AI</h4><p>Correct, syllabus-relevant answers — not generic responses.</p></div></div>
-      <div class="about-point"><div class="about-icon">🌐</div><div><h4>Multilingual</h4><p>English, Telugu and Hindi — accessible across India.</p></div></div>
-      <div class="about-point"><div class="about-icon">🔒</div><div><h4>Privacy first</h4><p>Your data is never shared, sold or used for advertising.</p></div></div>
-      <div class="about-point"><div class="about-icon">📱</div><div><h4>Available everywhere</h4><p>Website, WhatsApp & Telegram — any device, any time.</p></div></div>
-      <div class="about-point"><div class="about-icon">♾️</div><div><h4>Always growing</h4><p>New topics, tools and features added regularly.</p></div></div>
+      <div class="about-point"><div class="about-icon"><svg viewBox="0 0 24 24"><path d="M2 9l10-4 10 4-10 4L2 9z"/><path d="M6 11v4.5c0 1.4 2.7 2.7 6 2.7s6-1.3 6-2.7V11"/><path d="M22 9v5"/></svg></div><div><h4>Syllabus aligned</h4><p>Mapped to ANGRAU, PJTSAU, ICAR & central university curricula.</p></div></div>
+      <div class="about-point"><div class="about-icon"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v5.5L4.5 18a2 2 0 0 0 1.7 3h11.6a2 2 0 0 0 1.7-3L14 8.5V3"/><path d="M7 14h10"/></svg></div><div><h4>Subject-specific AI</h4><p>Correct, syllabus-relevant answers — not generic responses.</p></div></div>
+      <div class="about-point"><div class="about-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.5 6 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-6-3.5-9s1-6.5 3.5-9z"/></svg></div><div><h4>Multilingual</h4><p>English, Telugu and Hindi — accessible across India.</p></div></div>
+      <div class="about-point"><div class="about-icon"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div><h4>Privacy first</h4><p>Your data is never shared, sold or used for advertising.</p></div></div>
+      <div class="about-point"><div class="about-icon"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div><div><h4>Available everywhere</h4><p>Website, WhatsApp & Telegram — any device, any time.</p></div></div>
+      <div class="about-point"><div class="about-icon"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 7-8"/><path d="M15 7h5v5"/></svg></div><div><h4>Always growing</h4><p>New topics, tools and features added regularly.</p></div></div>
     </div>
   </div>
 </div>
@@ -1586,25 +1584,6 @@ async function doBuy(id,amount,desc,email){
     }
   }catch(e){}
 
-  /* 3) Hero particle network */
-  var cv=document.getElementById('heroFx');
-  if(cv && !reduce){
-    var ctx=cv.getContext('2d'), W=0,H=0,pts=[],raf,DPR=Math.min(window.devicePixelRatio||1,2);
-    function size(){ var h=cv.parentElement; W=h.clientWidth; H=h.clientHeight; cv.width=W*DPR; cv.height=H*DPR; ctx.setTransform(DPR,0,0,DPR,0,0); build(); }
-    function build(){ var n=Math.max(26,Math.min(60,Math.floor(W/22))); pts=[]; for(var i=0;i<n;i++){ pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*0.35,vy:(Math.random()-.5)*0.35,r:Math.random()*1.8+0.8}); } }
-    function step(){
-      ctx.clearRect(0,0,W,H);
-      for(var i=0;i<pts.length;i++){ var p=pts[i]; p.x+=p.vx; p.y+=p.vy;
-        if(p.x<0||p.x>W)p.vx*=-1; if(p.y<0||p.y>H)p.vy*=-1; }
-      for(var a=0;a<pts.length;a++){ for(var b=a+1;b<pts.length;b++){ var dx=pts[a].x-pts[b].x,dy=pts[a].y-pts[b].y,d=Math.sqrt(dx*dx+dy*dy);
-        if(d<118){ ctx.strokeStyle='rgba(93,202,165,'+(1-d/118)*0.28+')'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(pts[a].x,pts[a].y); ctx.lineTo(pts[b].x,pts[b].y); ctx.stroke(); } } }
-      for(var k=0;k<pts.length;k++){ var q=pts[k]; ctx.beginPath(); ctx.arc(q.x,q.y,q.r,0,6.283); ctx.fillStyle='rgba(159,225,203,0.85)'; ctx.fill(); }
-      raf=requestAnimationFrame(step);
-    }
-    var ro=window.ResizeObserver?new ResizeObserver(size):null;
-    if(ro){ ro.observe(cv.parentElement); } else { window.addEventListener('resize',size); }
-    size(); step();
-  }
 })();
 </script>
 
